@@ -264,6 +264,57 @@ option { background: var(--surface2); }
 .troop-ctx-block .tct-sub { font-size:11px; color:var(--muted); margin-top:2px; }
 .troop-warn { background:#ff4f4f18; border:1px solid #ff4f4f40; border-radius:6px; padding:8px 12px; font-size:12px; color:#ff8080; margin-bottom:8px; }
 .troop-ok { background:#3ddc8418; border:1px solid #3ddc8440; border-radius:6px; padding:8px 12px; font-size:12px; color:#3ddc84; margin-bottom:8px; }
+
+/* KINGDOM AGE TRACKER */
+.age-hero { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:16px; }
+@media(max-width:700px){ .age-hero { grid-template-columns:1fr 1fr; } }
+.age-stat-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center; }
+.age-stat-val { font-size:32px; font-weight:800; color:var(--accent); line-height:1; margin-bottom:4px; }
+.age-stat-label { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+.age-stat-sub { font-size:12px; color:var(--text); margin-top:4px; font-weight:600; }
+
+.phase-bar-wrap { height:10px; background:var(--surface2); border-radius:5px; overflow:hidden; margin:10px 0 6px; }
+.phase-bar { height:100%; border-radius:5px; background:linear-gradient(90deg,var(--accent2),var(--accent)); transition:width .4s; }
+
+.timeline-wrap { position:relative; padding-left:24px; }
+.timeline-wrap::before { content:''; position:absolute; left:7px; top:0; bottom:0; width:2px; background:var(--border); }
+.tl-item { position:relative; margin-bottom:14px; }
+.tl-dot { position:absolute; left:-21px; top:4px; width:12px; height:12px; border-radius:50%; border:2px solid var(--border); background:var(--surface); flex-shrink:0; }
+.tl-item.past .tl-dot   { background:var(--muted); border-color:var(--muted); }
+.tl-item.current .tl-dot{ background:var(--accent); border-color:var(--accent); box-shadow:0 0 0 3px #f0a50030; }
+.tl-item.future .tl-dot { background:var(--surface2); border-color:var(--border); }
+.tl-body { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px 12px; }
+.tl-item.current .tl-body { border-color:var(--accent); background:#f0a50008; }
+.tl-item.past .tl-body { opacity:.6; }
+.tl-head { display:flex; align-items:center; gap:8px; justify-content:space-between; }
+.tl-name { font-size:13px; font-weight:700; }
+.tl-day  { font-size:11px; color:var(--muted); }
+.tl-desc { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.5; }
+.tl-countdown { font-size:11px; font-weight:700; padding:2px 7px; border-radius:4px; flex-shrink:0; }
+.tl-cnt-past    { background:var(--surface); color:var(--muted); }
+.tl-cnt-now     { background:#f0a50020; color:var(--accent); }
+.tl-cnt-soon    { background:#ff653520; color:var(--sp); }
+.tl-cnt-future  { background:var(--surface2); color:var(--muted); }
+
+.phase-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:6px; font-size:12px; font-weight:700; border:1px solid; }
+.phase-founding   { background:#f0a50015; color:var(--s);   border-color:#f0a50040; }
+.phase-rising     { background:#3ddc8415; color:var(--a);   border-color:#3ddc8440; }
+.phase-awakening  { background:#ff653520; color:var(--sp);  border-color:#ff653550; }
+.phase-war        { background:#ff4f4f18; color:#ff8080;    border-color:#ff4f4f40; }
+.phase-dominance  { background:#a855f718; color:var(--purple); border-color:#a855f740; }
+.phase-legacy     { background:#4d9fff18; color:var(--b);   border-color:#4d9fff40; }
+
+.age-setup-row { display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; margin-bottom:20px; }
+.age-setup-row label { font-size:12px; color:var(--muted); display:flex; flex-direction:column; gap:4px; }
+.milestone-list { display:flex; flex-direction:column; gap:8px; }
+.milestone-item { display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; cursor:pointer; transition:all .15s; }
+.milestone-item:hover { border-color:var(--accent); }
+.milestone-item.done { opacity:.55; }
+.milestone-item.done .mi-name { text-decoration:line-through; }
+.mi-check { width:20px; height:20px; border-radius:4px; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; transition:all .15s; }
+.milestone-item.done .mi-check { background:var(--accent); border-color:var(--accent); color:#000; }
+.mi-name  { font-size:13px; font-weight:600; flex:1; }
+.mi-tag   { font-size:10px; padding:2px 6px; border-radius:3px; }
 </style>
 </head>
 <body>
@@ -303,6 +354,10 @@ option { background: var(--surface2); }
     <div class="nav-item" onclick="goPage('tierlist')"><span class="icon">&#127942;</span>Full Tier List</div>
     <div class="nav-item" onclick="goPage('troops')"><span class="icon">&#128106;</span>Troop Calculator</div>
     <div class="nav-item" onclick="goPage('guide')"><span class="icon">&#128218;</span>Game Guide</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Alliance</div>
+    <div class="nav-item" onclick="goPage('age')"><span class="icon">&#128336;</span>Kingdom Age</div>
   </div>
 </div>
 
@@ -695,6 +750,90 @@ option { background: var(--surface2); }
       </div>
       <div style="font-size:12px;color:var(--muted);line-height:1.7">
         <div><strong style="color:var(--text)">Traps:</strong> Can contribute Hunting Arrows even after trap reaches max level. If trap is removed and rebuilt, all contributors must re-supply arrows from scratch.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== KINGDOM AGE ===== -->
+<div class="page" id="page-age">
+  <div class="page-header">
+    <h2>Kingdom Age Tracker</h2>
+    <p>Track your kingdom's age, current phase, and upcoming events. Data saved in your browser.</p>
+  </div>
+
+  <div class="age-setup-row">
+    <label>Kingdom Start Date
+      <input type="date" id="age-start-date" oninput="saveAgeData();renderAge()" style="min-width:160px">
+    </label>
+    <label>Kingdom #
+      <input type="text" id="age-kingdom-num" placeholder="e.g. 1042" oninput="saveAgeData();renderAge()" style="width:110px">
+    </label>
+    <label>Alliance Tag
+      <input type="text" id="age-alliance" placeholder="e.g. [SKS]" oninput="saveAgeData();renderAge()" style="width:110px">
+    </label>
+    <button class="btn btn-outline btn-sm" onclick="document.getElementById('age-start-date').value='';saveAgeData();renderAge()" style="align-self:flex-end">Reset</button>
+  </div>
+
+  <div id="age-no-date" class="info-box" style="display:none">
+    <strong>Set your kingdom start date above</strong> to see your current age, phase, and event timeline.
+  </div>
+
+  <div id="age-content" style="display:none">
+
+    <!-- Hero stats row -->
+    <div class="age-hero">
+      <div class="age-stat-card">
+        <div class="age-stat-val" id="age-days">—</div>
+        <div class="age-stat-label">Days Old</div>
+        <div class="age-stat-sub" id="age-week-label">—</div>
+      </div>
+      <div class="age-stat-card">
+        <div style="margin-bottom:8px" id="age-phase-badge"></div>
+        <div class="age-stat-label">Current Phase</div>
+        <div class="age-stat-sub" id="age-phase-sub">—</div>
+      </div>
+      <div class="age-stat-card">
+        <div class="age-stat-val" id="age-next-days">—</div>
+        <div class="age-stat-label">Days to Next Event</div>
+        <div class="age-stat-sub" id="age-next-name">—</div>
+      </div>
+    </div>
+
+    <!-- Phase progress -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title">Phase Progress</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span id="age-phase-name-full" style="font-size:13px;font-weight:700"></span>
+        <span id="age-phase-pct" style="font-size:12px;color:var(--muted)"></span>
+      </div>
+      <div class="phase-bar-wrap">
+        <div class="phase-bar" id="age-phase-bar" style="width:0%"></div>
+      </div>
+      <div style="font-size:11px;color:var(--muted)" id="age-phase-range"></div>
+    </div>
+
+    <div class="g2" style="align-items:start">
+
+      <!-- Timeline -->
+      <div class="card">
+        <div class="card-title">Kingdom Event Timeline</div>
+        <div class="timeline-wrap" id="age-timeline"></div>
+      </div>
+
+      <!-- Alliance Milestones -->
+      <div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-title">Alliance Milestones</div>
+          <div class="info-box" style="margin-bottom:12px">Click to check off milestones your alliance has completed. Progress is saved locally.</div>
+          <div class="milestone-list" id="age-milestones"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Alliance Notes</div>
+          <textarea id="age-notes" oninput="saveAgeData()"
+            placeholder="e.g. KvK prep: focus inf troops, hold Oasis tile Fri night..."
+            style="width:100%;height:120px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:10px;font-size:12px;resize:vertical;line-height:1.6;font-family:inherit"></textarea>
+        </div>
       </div>
     </div>
   </div>
@@ -1859,13 +1998,14 @@ function goPage(name) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => {
-    if (n.textContent.toLowerCase().includes({roster:'roster',builds:'event',powerup:'power',skills:'skill',tierlist:'tier',troops:'troop',guide:'guide'}[name]||'')) n.classList.add('active');
+    if (n.textContent.toLowerCase().includes({roster:'roster',builds:'event',powerup:'power',skills:'skill',tierlist:'tier',troops:'troop',guide:'guide',age:'kingdom'}[name]||'')) n.classList.add('active');
   });
   if (name==='builds') renderBuilds();
   if (name==='powerup') renderPowerUp();
   if (name==='skills') renderSkills();
   if (name==='tierlist') renderTierList();
   if (name==='troops') { applyT(33,33,34); analyzeTroops(33,33,34); }
+  if (name==='age') renderAge();
   updateSidebar();
 }
 
@@ -3229,10 +3369,183 @@ function analyzeTroops(inf,cav,arc) {
 }
 
 // ============================================================
+// KINGDOM AGE TRACKER
+// ============================================================
+const AGE_PHASES = [
+  { name:'Founding',   icon:'🏗️',  cls:'founding',  start:1,   end:14,  desc:'New kingdom — everyone building. Focus on TC upgrades and hero unlocks.' },
+  { name:'Rising',     icon:'⚡',  cls:'rising',    start:15,  end:45,  desc:'Growth phase. Alliance forming, tech research, early events kicking in.' },
+  { name:'Awakening',  icon:'🔥',  cls:'awakening', start:46,  end:90,  desc:'First major conflicts. KvK prep begins. Secure your tile positions.' },
+  { name:'War',        icon:'⚔️',  cls:'war',       start:91,  end:150, desc:'Active KvK season. Coordinate rallies, garrison rotations, and tile wars.' },
+  { name:'Dominance',  icon:'👑',  cls:'dominance', start:151, end:210, desc:'Season wind-down. Build power for next season. Farm and consolidate.' },
+  { name:'Legacy',     icon:'🌟',  cls:'legacy',    start:211, end:9999,desc:'Extended endgame. Cross-server prestige events and ongoing dominance.' },
+];
+
+const AGE_EVENTS = [
+  { day:1,   name:'Kingdom Founded',         icon:'🏰', desc:'Server opens. Day 1 heroes available. Start TC upgrades immediately.' },
+  { day:2,   name:'Jabel Unlocked',          icon:'🗡️', desc:'Free Day 2 login hero — Jabel (Cavalry). Best early garrison hero.' },
+  { day:4,   name:'Lostlands Expedition',    icon:'🗺️', desc:'Lostlands opens. Assign expedition heroes and start earning Journey Supplies daily.' },
+  { day:7,   name:'Alliance System Opens',   icon:'🤝', desc:'TC 7 required. Found or join your alliance — coordination starts here.' },
+  { day:10,  name:'Alliance Mobilization',   icon:'📣', desc:'TC 10 required. Alliance Mobilization and Championship participation unlocks.' },
+  { day:14,  name:'Week 2 Milestone',        icon:'📅', desc:'Two-week server event milestones. Check event board for alliance rewards.' },
+  { day:15,  name:'Mysterious Badge',        icon:'🔮', desc:'TC 15 required. Daily Mysterious Badge mission available the following day.' },
+  { day:18,  name:'Pet System',              icon:'🐾', desc:'TC 18 required. Pet system unlocks — raises passive stat bonuses.' },
+  { day:21,  name:'Week 3 Events',           icon:'📅', desc:'Three-week server events active. Mid-game push for stronger heroes.' },
+  { day:28,  name:'Mystic Trials',           icon:'⚗️', desc:'Week 4 of server + TC 19 + Command Center Lv 1. Mystic Trials open — 50/25/25 troop composition.' },
+  { day:30,  name:'Chief Gear Ready',        icon:'🛡️', desc:'TC 22 target. Chief Gear unlocks. PERMANENT once equipped — choose wisely.' },
+  { day:35,  name:'Oasis / Sanctuary',       icon:'🏝️', desc:'Oasis Island dock opens at TC 19. Contest key resource tiles with the alliance.' },
+  { day:45,  name:'KvK Registration',        icon:'⚔️', desc:'Kingdom vs Kingdom registration opens. Coordinate alliance point contributions.' },
+  { day:60,  name:'KvK Season 1 Begins',     icon:'🔥', desc:'First cross-kingdom war. Max troops ready, rally leaders assigned. Glory farming starts.' },
+  { day:75,  name:'KvK Mid-Season',          icon:'📊', desc:'Midpoint of Season 1 KvK. Assess kill points, tile scores, and alliance ranking.' },
+  { day:90,  name:'KvK Season 1 Ends',       icon:'🏆', desc:'Season 1 concludes. Rewards distributed. Recovery period — rebuild losses.' },
+  { day:105, name:'Between-Season Prep',     icon:'🔧', desc:'Upgrade heroes, restock resources, and plan Season 2 strategy.' },
+  { day:120, name:'KvK Season 2 Begins',     icon:'🔥', desc:'Second cross-kingdom war. More experienced kingdoms — expect stronger competition.' },
+  { day:150, name:'KvK Season 2 Ends',       icon:'🏆', desc:'Season 2 concludes. Evaluate server power rankings.' },
+  { day:180, name:'KvK Season 3 / Reset',    icon:'👑', desc:'Season 3 begins or server enters legacy phase. Long-term dominance consolidation.' },
+];
+
+const AGE_MILESTONES = [
+  { id:'m_alliance',   name:'Alliance Founded',              tag:'Core' },
+  { id:'m_tc20',       name:'TC 20 reached (alliance-wide avg)', tag:'Build' },
+  { id:'m_widget5',    name:'Rally leader widget maxed (Lv 5)',   tag:'Combat' },
+  { id:'m_mystic',     name:'Mystic Trials first clear',     tag:'Event' },
+  { id:'m_oasis',      name:'Oasis tile secured',            tag:'Map' },
+  { id:'m_kvk1reg',    name:'KvK Season 1 registered',       tag:'KvK' },
+  { id:'m_kvk1done',   name:'KvK Season 1 completed',        tag:'KvK' },
+  { id:'m_charmall',   name:'All core members have Chief Charm', tag:'Build' },
+  { id:'m_s2top',      name:'Top-10 alliance in Season 2',   tag:'KvK' },
+  { id:'m_s3dom',      name:'Kingdom dominance established (Season 3)', tag:'KvK' },
+];
+
+function loadAgeData() {
+  try {
+    const d = JSON.parse(localStorage.getItem('ageData')||'{}');
+    if (d.startDate) document.getElementById('age-start-date').value = d.startDate;
+    if (d.kingdomNum) document.getElementById('age-kingdom-num').value = d.kingdomNum;
+    if (d.alliance)   document.getElementById('age-alliance').value   = d.alliance;
+    if (d.notes)      document.getElementById('age-notes').value      = d.notes;
+    return d;
+  } catch(e) { return {}; }
+}
+
+function saveAgeData() {
+  const d = {
+    startDate:  document.getElementById('age-start-date').value,
+    kingdomNum: document.getElementById('age-kingdom-num').value,
+    alliance:   document.getElementById('age-alliance').value,
+    notes:      document.getElementById('age-notes').value,
+    milestones: getMilestoneState(),
+  };
+  localStorage.setItem('ageData', JSON.stringify(d));
+}
+
+function getMilestoneState() {
+  const state = {};
+  AGE_MILESTONES.forEach(m => {
+    const el = document.getElementById('mi-'+m.id);
+    if (el) state[m.id] = el.classList.contains('done');
+  });
+  return state;
+}
+
+function toggleMilestone(id) {
+  const el = document.getElementById('mi-'+id);
+  if (!el) return;
+  el.classList.toggle('done');
+  saveAgeData();
+}
+
+function renderAge() {
+  const startVal = document.getElementById('age-start-date').value;
+  const noDate   = document.getElementById('age-no-date');
+  const content  = document.getElementById('age-content');
+
+  if (!startVal) {
+    noDate.style.display  = '';
+    content.style.display = 'none';
+    return;
+  }
+  noDate.style.display  = 'none';
+  content.style.display = '';
+
+  const start = new Date(startVal);
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  start.setHours(0,0,0,0);
+
+  const dayNum = Math.floor((today - start) / 86400000) + 1;
+  const weekNum = Math.ceil(dayNum / 7);
+
+  document.getElementById('age-days').textContent  = Math.max(dayNum, 1);
+  document.getElementById('age-week-label').textContent = `Week ${Math.max(weekNum,1)}`;
+
+  // Phase
+  const phase = AGE_PHASES.find(p => dayNum >= p.start && dayNum <= p.end) || AGE_PHASES[AGE_PHASES.length-1];
+  document.getElementById('age-phase-badge').innerHTML =
+    `<span class="phase-badge phase-${phase.cls}">${phase.icon} ${phase.name}</span>`;
+  document.getElementById('age-phase-sub').textContent = phase.desc.split('.')[0];
+  document.getElementById('age-phase-name-full').innerHTML =
+    `<span class="phase-badge phase-${phase.cls}">${phase.icon} ${phase.name}</span>`;
+
+  const phaseLen = phase.end - phase.start + 1;
+  const phaseDays = dayNum - phase.start;
+  const phasePct = Math.min(Math.round((phaseDays / phaseLen) * 100), 100);
+  document.getElementById('age-phase-bar').style.width = phasePct + '%';
+  document.getElementById('age-phase-pct').textContent = `${phaseDays} / ${phaseLen} days (${phasePct}%)`;
+  document.getElementById('age-phase-range').textContent =
+    `Days ${phase.start}–${phase.end === 9999 ? '∞' : phase.end}: ${phase.desc}`;
+
+  // Next event countdown
+  const upcoming = AGE_EVENTS.filter(e => e.day > dayNum).sort((a,b)=>a.day-b.day);
+  if (upcoming.length) {
+    const next = upcoming[0];
+    const daysTo = next.day - dayNum;
+    document.getElementById('age-next-days').textContent = daysTo;
+    document.getElementById('age-next-name').textContent = next.name;
+  } else {
+    document.getElementById('age-next-days').textContent = '—';
+    document.getElementById('age-next-name').textContent = 'All events passed';
+  }
+
+  // Timeline
+  const tlEl = document.getElementById('age-timeline');
+  tlEl.innerHTML = AGE_EVENTS.map(ev => {
+    let state, cntClass, cntText;
+    if (ev.day < dayNum)       { state='past';    cntClass='tl-cnt-past';   cntText='Day '+ev.day; }
+    else if (ev.day === dayNum){ state='current';  cntClass='tl-cnt-now';    cntText='TODAY'; }
+    else if (ev.day - dayNum <= 7){ state='future'; cntClass='tl-cnt-soon';  cntText='in '+(ev.day-dayNum)+'d'; }
+    else                       { state='future';  cntClass='tl-cnt-future'; cntText='Day '+ev.day+' (in '+(ev.day-dayNum)+'d)'; }
+    return `<div class="tl-item ${state}">
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-head">
+          <span class="tl-name">${ev.icon} ${ev.name}</span>
+          <span class="tl-countdown ${cntClass}">${cntText}</span>
+        </div>
+        <div class="tl-desc">${ev.desc}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Milestones
+  const savedState = (() => { try { return JSON.parse(localStorage.getItem('ageData')||'{}').milestones||{}; } catch(e){ return {}; } })();
+  const mlEl = document.getElementById('age-milestones');
+  mlEl.innerHTML = AGE_MILESTONES.map(m => {
+    const done = !!savedState[m.id];
+    const tagColor = {Core:'var(--accent)',Build:'var(--b)',Combat:'var(--sp)',Event:'var(--purple)',Map:'var(--a)',KvK:'#ff8080'}[m.tag]||'var(--muted)';
+    return `<div class="milestone-item ${done?'done':''}" id="mi-${m.id}" onclick="toggleMilestone('${m.id}')">
+      <div class="mi-check">${done?'✓':''}</div>
+      <span class="mi-name">${m.name}</span>
+      <span class="mi-tag" style="background:${tagColor}18;color:${tagColor};border:1px solid ${tagColor}40">${m.tag}</span>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
 // INIT
 // ============================================================
 loadRoster();
 loadTroops();
+loadAgeData();
 renderArmyWidget();
 buildRosterPage();
 updateSidebar();
@@ -3241,7 +3554,7 @@ renderTierList();
 
 // Fix nav click detection
 document.querySelectorAll('.nav-item').forEach((el, i) => {
-  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide'];
+  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age'];
   el.addEventListener('click', () => goPage(pages[i]));
 });
 </script>
