@@ -366,6 +366,115 @@ option { background: var(--surface2); }
 .cal-toggle { display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap; }
 .cal-toggle-btn { padding:6px 14px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);cursor:pointer;font-size:12px;font-weight:600;transition:all .15s; }
 .cal-toggle-btn.active { background:#f0a50018;border-color:var(--accent);color:var(--accent); }
+
+/* KVK WAR PLANNER */
+.war-plan-slot { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px; }
+.war-plan-slot.assigned { border-color:var(--accent); background:#f0a50005; }
+.wps-role { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:4px; }
+.wps-name { font-size:14px; font-weight:700; margin-bottom:6px; }
+.wps-status { font-size:11px; font-weight:700; padding:2px 7px; border-radius:4px; display:inline-block; margin-bottom:6px; }
+.status-ready { background:#3ddc8415; color:var(--a); border:1px solid #3ddc8440; }
+.status-no    { background:#ff4f4f15; color:#ff8080;  border:1px solid #ff4f4f40; }
+.status-unk   { background:var(--surface); color:var(--muted); border:1px solid var(--border); }
+.war-plan-slot select, .war-plan-slot input { width:100%; margin-bottom:4px; font-size:11px; }
+.war-summary-bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.wsb-item { display:flex; flex-direction:column; align-items:center; padding:10px 16px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; min-width:80px; }
+.wsb-val { font-size:22px; font-weight:800; color:var(--accent); }
+.wsb-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+
+/* STOCKPILE TRACKER */
+.stockpile-table { width:100%; border-collapse:collapse; }
+.stockpile-table th { background:var(--surface2); color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:1px; padding:8px 8px; white-space:nowrap; text-align:center; }
+.stockpile-table th:first-child { text-align:left; }
+.stockpile-table td { padding:6px 6px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:middle; text-align:center; }
+.stockpile-table td:first-child { text-align:left; font-weight:600; }
+.stockpile-table tr:hover td { background:#ffffff05; }
+.stockpile-table input[type=number] { background:var(--surface); border:1px solid var(--border); color:var(--text); padding:4px 5px; border-radius:4px; font-size:11px; width:68px; text-align:center; }
+.stockpile-table input:focus { border-color:var(--accent); outline:none; }
+.ready-yes { color:var(--a); font-size:11px; font-weight:700; }
+.ready-no  { color:var(--red); font-size:11px; font-weight:700; }
+.ready-na  { color:var(--muted); font-size:11px; }
+
+/* DAILY CHECKLIST */
+.daily-task { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; margin-bottom:6px; cursor:pointer; user-select:none; transition:border-color .15s; }
+.daily-task:hover { border-color:var(--muted); }
+.daily-task.done { opacity:.45; }
+.daily-task.done .dt-label { text-decoration:line-through; }
+.dt-check { width:20px; height:20px; border-radius:4px; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; transition:all .15s; }
+.daily-task.done .dt-check { background:var(--a); border-color:var(--a); color:#000; }
+.dt-icon { font-size:16px; flex-shrink:0; width:20px; text-align:center; }
+.dt-label { font-size:13px; font-weight:600; flex:1; }
+.dt-category { font-size:10px; padding:2px 6px; border-radius:3px; background:var(--surface); border:1px solid var(--border); color:var(--muted); flex-shrink:0; }
+.dt-high { border-left:3px solid var(--accent); }
+.dt-med  { border-left:3px solid var(--b); }
+.dt-low  { border-left:3px solid var(--border); }
+.daily-reset-info { font-size:11px; color:var(--muted); margin-bottom:12px; }
+.daily-progress-wrap { height:8px; background:var(--surface2); border-radius:4px; overflow:hidden; margin-bottom:4px; }
+.daily-progress-bar { height:100%; border-radius:4px; background:linear-gradient(90deg,var(--accent2),var(--accent)); transition:width .3s; }
+
+/* HERO COMPARE */
+.compare-selectors { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+.compare-selectors select { min-width:160px; }
+.compare-table { width:100%; border-collapse:collapse; }
+.compare-table th { background:var(--surface2); padding:10px 12px; font-size:12px; font-weight:700; text-align:left; }
+.compare-table th.hero-col { text-align:center; min-width:130px; }
+.compare-table td { padding:8px 12px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:middle; }
+.compare-table td.hero-col { text-align:center; }
+.compare-table tr:hover td { background:#ffffff05; }
+.compare-best { color:var(--accent); font-weight:700; }
+.compare-row-label { color:var(--muted); font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.8px; }
+.compare-section-row td { background:var(--surface2); color:var(--accent); font-size:10px; text-transform:uppercase; letter-spacing:1px; font-weight:700; padding:5px 12px; }
+
+/* ALLIANCE POWER BOARD */
+.pb-row { display:flex; align-items:center; gap:12px; padding:12px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; margin-bottom:8px; }
+.pb-rank { font-size:18px; font-weight:800; min-width:28px; text-align:center; }
+.pb-rank-1 { color:#ffd700; }
+.pb-rank-2 { color:#c0c0c0; }
+.pb-rank-3 { color:#cd7f32; }
+.pb-rank-other { color:var(--muted); }
+.pb-avatar { width:36px; height:36px; border-radius:50%; border:2px solid var(--border); object-fit:cover; flex-shrink:0; background:var(--surface2); display:flex;align-items:center;justify-content:center;font-size:14px; }
+.pb-info { flex:1; min-width:0; }
+.pb-name { font-size:14px; font-weight:700; }
+.pb-meta { font-size:11px; color:var(--muted); }
+.pb-power-col { text-align:right; }
+.pb-power-val { font-size:16px; font-weight:800; color:var(--accent); }
+.pb-bar-wrap { height:4px; background:var(--surface); border-radius:2px; margin-top:4px; }
+.pb-bar { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--accent2),var(--accent)); }
+
+/* RESEARCH TRACKER */
+.res-tree { margin-bottom:20px; }
+.res-tree-head { display:flex; align-items:center; gap:8px; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+.res-tree-name { font-size:15px; font-weight:700; }
+.res-tree-pct { font-size:12px; color:var(--muted); margin-left:auto; }
+.res-tree-pbar { height:6px; background:var(--surface2); border-radius:3px; overflow:hidden; flex:1; max-width:120px; }
+.res-tree-pfill { height:100%; border-radius:3px; transition:width .3s; }
+.res-node-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:8px; }
+.res-node { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px 12px; cursor:default; }
+.res-node.maxed  { border-color:var(--a); background:#3ddc8408; }
+.res-node.partial{ border-color:var(--s); background:#f0a50005; }
+.res-node-name { font-size:12px; font-weight:700; margin-bottom:4px; }
+.res-node-bonus { font-size:10px; color:var(--muted); margin-bottom:7px; }
+.res-dots { display:flex; gap:3px; flex-wrap:wrap; }
+.res-dot { width:16px; height:16px; border-radius:3px; border:2px solid var(--border); cursor:pointer; transition:all .1s; flex-shrink:0; }
+.res-dot:hover { border-color:var(--muted); }
+.res-dot.lit { border-color:transparent; }
+.res-node.maxed  .res-dot.lit { background:var(--a); }
+.res-node.partial .res-dot.lit { background:var(--s); }
+.res-node-progress { font-size:10px; color:var(--muted); margin-top:5px; }
+
+/* SETTINGS PAGE */
+.settings-block { margin-bottom:20px; }
+.reminder-row { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; margin-bottom:6px; }
+.reminder-label { flex:1; font-size:13px; font-weight:600; }
+.reminder-meta  { font-size:11px; color:var(--muted); }
+.toggle { position:relative; width:40px; height:22px; flex-shrink:0; cursor:pointer; }
+.toggle input { opacity:0; width:0; height:0; position:absolute; }
+.tslider { position:absolute; inset:0; background:var(--surface); border:1px solid var(--border); border-radius:22px; transition:.2s; }
+.toggle input:checked + .tslider { background:var(--accent); border-color:var(--accent); }
+.tslider::before { content:''; position:absolute; width:16px; height:16px; left:2px; top:2px; background:#fff; border-radius:50%; transition:.2s; }
+.toggle input:checked + .tslider::before { left:20px; }
+.export-btn { display:flex; align-items:center; gap:8px; padding:12px 16px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; color:var(--text); transition:all .15s; margin-bottom:8px; }
+.export-btn:hover { border-color:var(--accent); color:var(--accent); }
 </style>
 </head>
 <body>
@@ -411,6 +520,16 @@ option { background: var(--surface2); }
     <div class="nav-item" onclick="goPage('age')"><span class="icon">&#128336;</span>Kingdom Age</div>
     <div class="nav-item" onclick="goPage('calendar')"><span class="icon">&#128197;</span>Event Calendar</div>
     <div class="nav-item" onclick="goPage('alliance')"><span class="icon">&#127756;</span>Alliance HQ</div>
+    <div class="nav-item" onclick="goPage('kvkplanner')"><span class="icon">&#9876;</span>KvK War Planner</div>
+    <div class="nav-item" onclick="goPage('stockpile')"><span class="icon">&#128230;</span>Stockpile Tracker</div>
+    <div class="nav-item" onclick="goPage('powerboard')"><span class="icon">&#127942;</span>Power Board</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Tools</div>
+    <div class="nav-item" onclick="goPage('daily')"><span class="icon">&#9989;</span>Daily Checklist</div>
+    <div class="nav-item" onclick="goPage('compare')"><span class="icon">&#9878;</span>Hero Compare</div>
+    <div class="nav-item" onclick="goPage('research')"><span class="icon">&#127981;</span>Research Tracker</div>
+    <div class="nav-item" onclick="goPage('settings')"><span class="icon">&#9881;</span>Settings</div>
   </div>
 </div>
 
@@ -804,6 +923,229 @@ option { background: var(--surface2); }
       <div style="font-size:12px;color:var(--muted);line-height:1.7">
         <div><strong style="color:var(--text)">Traps:</strong> Can contribute Hunting Arrows even after trap reaches max level. If trap is removed and rebuilt, all contributors must re-supply arrows from scratch.</div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== KVK WAR PLANNER ===== -->
+<div class="page" id="page-kvkplanner">
+  <div class="page-header">
+    <h2>KvK War Planner</h2>
+    <p>Assign alliance members to roles before each war event. Tracks readiness and hero recommendations.</p>
+  </div>
+  <div class="g2" style="margin-bottom:16px;align-items:start">
+    <div class="card">
+      <div class="card-title">Event &amp; Configuration</div>
+      <label style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;margin-bottom:10px">Active Event
+        <select id="kvk-event-sel" onchange="saveKvkPlan();renderKvkPlanner()" style="font-size:13px">
+          <option value="kvk">KvK</option>
+          <option value="allychamp">Alliance Championship</option>
+          <option value="cesares">Cesares Fury</option>
+          <option value="swordland">Swordland Showdown</option>
+          <option value="flamedragon">Flamedragon Tyrant</option>
+          <option value="alliancebrawl">Alliance Brawl</option>
+          <option value="sanctuary">Sanctuary Battle</option>
+          <option value="allout">All Out</option>
+        </select>
+      </label>
+      <label style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;margin-bottom:10px">Event Date
+        <input type="date" id="kvk-event-date" oninput="saveKvkPlan()" style="font-size:13px">
+      </label>
+      <label style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px">Commander Notes
+        <textarea id="kvk-notes" oninput="saveKvkPlan()" placeholder="Overall strategy, targets, rally timing..." style="width:100%;height:80px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:12px;resize:vertical;font-family:inherit;line-height:1.6"></textarea>
+      </label>
+    </div>
+    <div class="card">
+      <div class="card-title">Battle Summary</div>
+      <div class="war-summary-bar" id="kvk-summary-bar"></div>
+      <div id="kvk-readiness-bar" style="margin-top:8px"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Role Assignments
+      <button class="btn btn-outline btn-sm" onclick="clearKvkPlan()" style="margin-left:12px">Clear All</button>
+    </div>
+    <div class="info-box" style="margin-bottom:12px">Members are pulled from <strong>Alliance HQ</strong>. Set roles, mark readiness, and add per-member notes. Saves automatically.</div>
+    <div id="kvk-assignments-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px"></div>
+    <div id="kvk-no-members" class="no-data" style="display:none;padding:24px">No alliance members found. Add members in <strong>Alliance HQ</strong> first.</div>
+  </div>
+</div>
+
+<!-- ===== STOCKPILE TRACKER ===== -->
+<div class="page" id="page-stockpile">
+  <div class="page-header">
+    <h2>Stockpile Tracker</h2>
+    <p>Track what each member is holding before events. Shows event readiness per person.</p>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">Event Readiness Thresholds</div>
+    <div class="g2">
+      <div style="font-size:12px;color:var(--muted);line-height:2">
+        <div><strong style="color:var(--s)">Arsenal T1</strong> — 50+ Truegold <em>or</em> 20+ Mythic Shards</div>
+        <div><strong style="color:var(--s)">Arsenal T2</strong> — 5+ Hammers <em>and</em> 30+ Truegold</div>
+        <div><strong style="color:var(--sp)">Strongest Gov</strong> — 1 440m+ train speedups</div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);line-height:2">
+        <div><strong style="color:var(--red)">KvK Active</strong> — 1 440m+ each speedup type</div>
+        <div><strong style="color:var(--b)">Hero Rally</strong> — 5+ Hammers <em>or</em> 10+ Mythic Shards</div>
+      </div>
+    </div>
+  </div>
+  <div class="scrollable">
+    <table class="stockpile-table" id="stockpile-table">
+      <thead><tr>
+        <th style="text-align:left">Member</th>
+        <th>⚡ Build<br><span style="font-weight:400;text-transform:none;font-size:9px">mins</span></th>
+        <th>📖 Research<br><span style="font-weight:400;text-transform:none;font-size:9px">mins</span></th>
+        <th>⚔️ Train<br><span style="font-weight:400;text-transform:none;font-size:9px">mins</span></th>
+        <th>💎 TG</th>
+        <th>🔨 Hammers</th>
+        <th>🌟 Mithril</th>
+        <th>⭐ Mythic<br><span style="font-weight:400;text-transform:none;font-size:9px">shards</span></th>
+        <th>Arsenal T1</th>
+        <th>Arsenal T2</th>
+        <th>SG</th>
+        <th>KvK</th>
+      </tr></thead>
+      <tbody id="stockpile-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== DAILY CHECKLIST ===== -->
+<div class="page" id="page-daily">
+  <div class="page-header">
+    <h2>Daily Checklist</h2>
+    <p>Tick off your daily tasks. Resets automatically at midnight UTC.</p>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <span style="font-size:13px;font-weight:700" id="daily-pct-label">0 / 0 tasks done</span>
+          <span class="daily-reset-info" id="daily-reset-label">Resets at midnight UTC</span>
+        </div>
+        <div class="daily-progress-wrap"><div class="daily-progress-bar" id="daily-pbar" style="width:0%"></div></div>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="resetDailyNow()">Reset Now</button>
+    </div>
+  </div>
+  <div class="g2" style="align-items:start">
+    <div>
+      <div class="card-title" style="margin-bottom:8px">High Priority</div>
+      <div id="daily-high"></div>
+      <div class="card-title" style="margin-bottom:8px;margin-top:16px">Medium Priority</div>
+      <div id="daily-med"></div>
+    </div>
+    <div>
+      <div class="card-title" style="margin-bottom:8px">Low Priority</div>
+      <div id="daily-low"></div>
+      <div class="card-title" style="margin-bottom:8px;margin-top:16px">Custom Tasks</div>
+      <div id="daily-custom"></div>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <input type="text" id="daily-custom-input" placeholder="Add custom task..." style="flex:1">
+        <button class="btn btn-sm" onclick="addCustomDailyTask()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HERO COMPARE ===== -->
+<div class="page" id="page-compare">
+  <div class="page-header">
+    <h2>Hero Comparison</h2>
+    <p>Compare up to 3 heroes side-by-side across all tiers, widgets, and key skills.</p>
+  </div>
+  <div class="compare-selectors">
+    <select id="cmp-h1" onchange="renderCompare()"><option value="">— Hero 1 —</option></select>
+    <select id="cmp-h2" onchange="renderCompare()"><option value="">— Hero 2 —</option></select>
+    <select id="cmp-h3" onchange="renderCompare()"><option value="">— Hero 3 —</option></select>
+    <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)">
+      <input type="checkbox" id="cmp-owned-only" onchange="populateCompareSelects();renderCompare()"> Owned only
+    </label>
+  </div>
+  <div id="compare-output"></div>
+</div>
+
+<!-- ===== POWER BOARD ===== -->
+<div class="page" id="page-powerboard">
+  <div class="page-header">
+    <h2>Alliance Power Board</h2>
+    <p>Members ranked by in-game power. Update member power in <strong>Alliance HQ</strong>.</p>
+  </div>
+  <div class="g2" style="margin-bottom:16px;align-items:start">
+    <div class="card">
+      <div class="card-title">Alliance Stats</div>
+      <div id="pb-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Filter &amp; Sort</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <select id="pb-sort" onchange="renderPowerBoard()" style="font-size:13px">
+          <option value="power">Sort by Power ↓</option>
+          <option value="name">Sort by Name</option>
+          <option value="role">Sort by Role</option>
+        </select>
+        <select id="pb-filter-role" onchange="renderPowerBoard()" style="font-size:13px">
+          <option value="">All Roles</option>
+          <option>R5</option><option>R4</option><option>R3</option><option>R2</option><option>R1</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div id="powerboard-list"></div>
+</div>
+
+<!-- ===== RESEARCH TRACKER ===== -->
+<div class="page" id="page-research">
+  <div class="page-header">
+    <h2>Research Tracker</h2>
+    <p>Track completed research levels. Click level dots to set progress. Overall completion shown per tree.</p>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">Overall Progress</div>
+    <div id="res-overall" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px"></div>
+  </div>
+  <div id="research-trees"></div>
+</div>
+
+<!-- ===== SETTINGS ===== -->
+<div class="page" id="page-settings">
+  <div class="page-header">
+    <h2>Settings</h2>
+    <p>Event reminders, data backup, and import/restore.</p>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">🔔 Event Reminders</div>
+    <div class="info-box" style="margin-bottom:12px">Reminders use your browser's notification system. The tab must be open for notifications to fire. <strong>Click "Enable Notifications"</strong> to grant permission first.</div>
+    <div style="margin-bottom:12px">
+      <button class="btn btn-outline btn-sm" id="notif-perm-btn" onclick="requestNotifPermission()">Enable Notifications</button>
+      <span id="notif-perm-status" style="font-size:11px;color:var(--muted);margin-left:10px"></span>
+    </div>
+    <div id="reminder-list"></div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">📦 Data Backup &amp; Restore</div>
+    <div class="info-box" style="margin-bottom:12px">Export saves everything: roster, skills, troops, alliance roster, stockpile, research, checklists. Import restores it all. <strong>Use this when switching devices.</strong></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn" onclick="exportAllData()">⬇️ Export All Data</button>
+      <label class="btn btn-outline" style="cursor:pointer">
+        ⬆️ Import Data
+        <input type="file" accept=".json" onchange="importAllData(event)" style="display:none">
+      </label>
+    </div>
+    <div id="import-status" style="margin-top:10px;font-size:12px;color:var(--muted)"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🗑️ Clear Data</div>
+    <div class="warn-box" style="margin-bottom:12px">This permanently deletes the selected data from your browser. Cannot be undone — export a backup first!</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-outline" style="border-color:#ff4f4f40;color:#ff8080" onclick="clearDataSection('roster')">Clear Roster</button>
+      <button class="btn btn-outline" style="border-color:#ff4f4f40;color:#ff8080" onclick="clearDataSection('alliance')">Clear Alliance</button>
+      <button class="btn btn-outline" style="border-color:#ff4f4f40;color:#ff8080" onclick="clearDataSection('all')">Clear Everything</button>
     </div>
   </div>
 </div>
@@ -2174,8 +2516,16 @@ function goPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
+  const PAGE_LABELS = {
+    roster:'roster', builds:'event', powerup:'power up', skills:'skill',
+    tierlist:'tier', troops:'troop', guide:'guide', age:'kingdom',
+    calendar:'calendar', alliance:'alliance hq', kvkplanner:'kvk',
+    stockpile:'stockpile', powerboard:'power board', daily:'daily',
+    compare:'compare', research:'research', settings:'settings'
+  };
+  const label = PAGE_LABELS[name] || name;
   document.querySelectorAll('.nav-item').forEach(n => {
-    if (n.textContent.toLowerCase().includes({roster:'roster',builds:'event',powerup:'power',skills:'skill',tierlist:'tier',troops:'troop',guide:'guide',age:'kingdom',calendar:'calendar',alliance:'alliance'}[name]||'')) n.classList.add('active');
+    if (n.textContent.toLowerCase().includes(label)) n.classList.add('active');
   });
   if (name==='builds') renderBuilds();
   if (name==='powerup') renderPowerUp();
@@ -2185,6 +2535,13 @@ function goPage(name) {
   if (name==='age') renderAge();
   if (name==='calendar') renderCalendar();
   if (name==='alliance') renderAlliance();
+  if (name==='kvkplanner') renderKvkPlanner();
+  if (name==='stockpile') renderStockpile();
+  if (name==='powerboard') renderPowerBoard();
+  if (name==='daily') renderDaily();
+  if (name==='compare') renderCompare();
+  if (name==='research') renderResearch();
+  if (name==='settings') renderSettings();
   updateSidebar();
 }
 
@@ -3843,9 +4200,712 @@ function renderAge() {
 }
 
 // ============================================================
-// WEEKLY EVENT CALENDAR
+// API HELPER — routes through allorigins.win to bypass CORS
 // ============================================================
 const KINGSHOT_API = 'https://kingshot.net/api';
+
+async function ksFetch(path) {
+  const target = KINGSHOT_API + path;
+  const proxy  = `https://api.allorigins.win/get?url=${encodeURIComponent(target)}`;
+  const res = await fetch(proxy);
+  if (!res.ok) throw new Error(`Proxy HTTP ${res.status}`);
+  const wrapper = await res.json();
+  return JSON.parse(wrapper.contents);
+}
+
+// ============================================================
+// KVK WAR PLANNER
+// ============================================================
+let kvkPlan = { eventId:'kvk', eventDate:'', notes:'', assignments:{} };
+// assignments[memberIdx] = { role, status, notes }
+const KVK_ROLES = ['Rally Lead','Joiner #1','Joiner #2','Joiner #3','Joiner #4','Garrison','Support/Shield','Bench'];
+const KVK_STATUSES = ['✅ Ready','❌ Not Ready','⏳ Unknown'];
+
+function loadKvkPlan() {
+  try { kvkPlan = Object.assign({ eventId:'kvk', eventDate:'', notes:'', assignments:{} }, JSON.parse(localStorage.getItem('kvkPlan')||'{}')); } catch(e) {}
+}
+
+function saveKvkPlan() {
+  kvkPlan.eventId   = document.getElementById('kvk-event-sel')?.value   || kvkPlan.eventId;
+  kvkPlan.eventDate = document.getElementById('kvk-event-date')?.value  || '';
+  kvkPlan.notes     = document.getElementById('kvk-notes')?.value       || '';
+  localStorage.setItem('kvkPlan', JSON.stringify(kvkPlan));
+}
+
+function clearKvkPlan() {
+  if (!confirm('Clear all role assignments?')) return;
+  kvkPlan.assignments = {};
+  saveKvkPlan();
+  renderKvkPlanner();
+}
+
+function updateKvkAssignment(idx, field, val) {
+  if (!kvkPlan.assignments[idx]) kvkPlan.assignments[idx] = { role:'Bench', status:'⏳ Unknown', notes:'' };
+  kvkPlan.assignments[idx][field] = val;
+  saveKvkPlan();
+  updateKvkSummary();
+}
+
+function updateKvkSummary() {
+  const members = allianceData.members || [];
+  const counts = {};
+  KVK_ROLES.forEach(r => counts[r] = 0);
+  let ready = 0, notReady = 0;
+  members.forEach((_m, i) => {
+    const a = kvkPlan.assignments[i] || {};
+    const role = a.role || 'Bench';
+    counts[role] = (counts[role] || 0) + 1;
+    if (a.status === '✅ Ready') ready++;
+    else if (a.status === '❌ Not Ready') notReady++;
+  });
+  const total = members.length;
+  const key = [
+    { label:'Rally Leads', key:'Rally Lead', color:'var(--sp)' },
+    { label:'Joiners',     key:'Joiner',     color:'var(--s)' },
+    { label:'Garrison',    key:'Garrison',   color:'var(--b)' },
+    { label:'Support',     key:'Support/Shield', color:'var(--a)' },
+  ];
+  const barEl = document.getElementById('kvk-summary-bar');
+  if (!barEl) return;
+  barEl.innerHTML = key.map(k => {
+    const cnt = k.key === 'Joiner'
+      ? ['Joiner #1','Joiner #2','Joiner #3','Joiner #4'].reduce((s,r)=>s+(counts[r]||0),0)
+      : (counts[k.key]||0);
+    return `<div class="wsb-item"><div class="wsb-val" style="color:${k.color}">${cnt}</div><div class="wsb-label">${k.label}</div></div>`;
+  }).join('') + `<div class="wsb-item"><div class="wsb-val" style="color:var(--a)">${ready}</div><div class="wsb-label">Ready</div></div>`
+              + `<div class="wsb-item"><div class="wsb-val" style="color:var(--red)">${notReady}</div><div class="wsb-label">Not Ready</div></div>`;
+  const rbPct = total ? Math.round(ready/total*100) : 0;
+  document.getElementById('kvk-readiness-bar').innerHTML = `
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px">
+      <span>Alliance Readiness</span><span>${ready}/${total} ready (${rbPct}%)</span>
+    </div>
+    <div style="height:8px;background:var(--surface2);border-radius:4px;overflow:hidden">
+      <div style="height:100%;width:${rbPct}%;background:linear-gradient(90deg,var(--accent2),var(--a));border-radius:4px;transition:width .3s"></div>
+    </div>`;
+}
+
+function renderKvkPlanner() {
+  const selEl   = document.getElementById('kvk-event-sel');
+  const dateEl  = document.getElementById('kvk-event-date');
+  const notesEl = document.getElementById('kvk-notes');
+  if (selEl)   selEl.value   = kvkPlan.eventId || 'kvk';
+  if (dateEl)  dateEl.value  = kvkPlan.eventDate || '';
+  if (notesEl) notesEl.value = kvkPlan.notes || '';
+
+  const members = allianceData.members || [];
+  const gridEl  = document.getElementById('kvk-assignments-grid');
+  const noneEl  = document.getElementById('kvk-no-members');
+  if (!members.length) { gridEl.innerHTML=''; noneEl.style.display=''; return; }
+  noneEl.style.display = 'none';
+
+  const ev = EVENTS.find(e => e.id === (kvkPlan.eventId||'kvk')) || EVENTS[0];
+  const roleColors = {'Rally Lead':'var(--sp)','Joiner #1':'var(--s)','Joiner #2':'var(--s)','Joiner #3':'var(--s)','Joiner #4':'var(--s)','Garrison':'var(--b)','Support/Shield':'var(--a)','Bench':'var(--muted)'};
+
+  gridEl.innerHTML = members.map((m, i) => {
+    const a = kvkPlan.assignments[i] || { role:'Bench', status:'⏳ Unknown', notes:'' };
+    const statusClass = a.status === '✅ Ready' ? 'status-ready' : a.status === '❌ Not Ready' ? 'status-no' : 'status-unk';
+    const rc = roleColors[a.role] || 'var(--muted)';
+    return `<div class="war-plan-slot ${a.role !== 'Bench' ? 'assigned' : ''}">
+      <div class="wps-role" style="color:${rc}">${a.role}</div>
+      <div class="wps-name">${escHtml(m.name||'(unnamed)')}</div>
+      ${m.level ? `<div style="font-size:10px;color:var(--muted);margin-bottom:6px">Lv${m.level} · K${m.kingdom||'?'}</div>` : ''}
+      <span class="wps-status ${statusClass}">${a.status}</span>
+      <select onchange="updateKvkAssignment(${i},'role',this.value)" style="margin-top:6px">
+        ${KVK_ROLES.map(r=>`<option value="${r}" ${a.role===r?'selected':''}>${r}</option>`).join('')}
+      </select>
+      <select onchange="updateKvkAssignment(${i},'status',this.value)">
+        ${KVK_STATUSES.map(s=>`<option value="${s}" ${a.status===s?'selected':''}>${s}</option>`).join('')}
+      </select>
+      <input value="${escHtml(a.notes)}" placeholder="Notes..." oninput="updateKvkAssignment(${i},'notes',this.value)">
+    </div>`;
+  }).join('');
+  updateKvkSummary();
+}
+
+// ============================================================
+// STOCKPILE TRACKER
+// ============================================================
+let stockpileData = {};
+
+function loadStockpileData() {
+  try { stockpileData = JSON.parse(localStorage.getItem('stockpileData')||'{}'); } catch(e) {}
+}
+
+function saveStockpile(idx, field, val) {
+  if (!stockpileData[idx]) stockpileData[idx] = {};
+  stockpileData[idx][field] = parseInt(val) || 0;
+  localStorage.setItem('stockpileData', JSON.stringify(stockpileData));
+  renderStockpileReadiness(idx);
+}
+
+function renderStockpileReadiness(idx) {
+  const s = stockpileData[idx] || {};
+  const a1ok = s.truegold >= 50 || s.mythic >= 20;
+  const a2ok = s.hammers  >= 5  && s.truegold >= 30;
+  const sgok = s.train >= 1440;
+  const kvkok= s.build >= 1440 && s.research >= 1440 && s.train >= 1440;
+  ['a1','a2','sg','kvk'].forEach((k,ci) => {
+    const el = document.getElementById(`sp-${idx}-${k}`);
+    const val = [a1ok,a2ok,sgok,kvkok][ci];
+    if (el) { el.textContent = val ? '✓ Ready' : '✗ Low'; el.className = val ? 'ready-yes' : 'ready-no'; }
+  });
+}
+
+function renderStockpile() {
+  const members = allianceData.members || [];
+  const tbody = document.getElementById('stockpile-tbody');
+  if (!tbody) return;
+  if (!members.length) { tbody.innerHTML = `<tr><td colspan="12" class="no-data">Add members in Alliance HQ first</td></tr>`; return; }
+
+  tbody.innerHTML = members.map((m, i) => {
+    const s = stockpileData[i] || {};
+    const fields = ['build','research','train','truegold','hammers','mithril','mythic'];
+    return `<tr>
+      <td>${escHtml(m.name||'(unnamed)')} <span class="role-badge role-${m.role||'R3'}" style="font-size:9px;margin-left:4px">${m.role||'R3'}</span></td>
+      ${fields.map(f => `<td><input type="number" min="0" value="${s[f]||''}" placeholder="0" onchange="saveStockpile(${i},'${f}',this.value)"></td>`).join('')}
+      <td id="sp-${i}-a1" class="ready-na">—</td>
+      <td id="sp-${i}-a2" class="ready-na">—</td>
+      <td id="sp-${i}-sg" class="ready-na">—</td>
+      <td id="sp-${i}-kvk" class="ready-na">—</td>
+    </tr>`;
+  }).join('');
+
+  members.forEach((_m, i) => renderStockpileReadiness(i));
+}
+
+// ============================================================
+// DAILY CHECKLIST
+// ============================================================
+const DAILY_TASKS = [
+  { id:'d_login',    icon:'🎁', label:'Claim daily login reward',               cat:'Free',      pri:'high' },
+  { id:'d_allhelp',  icon:'🤝', label:'Collect all 30 Alliance helps',          cat:'Alliance',  pri:'high' },
+  { id:'d_alldonate',icon:'📚', label:'Donate to Alliance Tech',                cat:'Alliance',  pri:'high' },
+  { id:'d_badge',    icon:'🔮', label:'Complete Mysterious Badge mission (TC 15+)', cat:'Daily', pri:'high' },
+  { id:'d_exped',    icon:'🗺️', label:'Send Lostlands Expedition squads',       cat:'Expedition',pri:'high' },
+  { id:'d_collect_exped', icon:'📦', label:'Collect Journey Supplies',          cat:'Expedition',pri:'high' },
+  { id:'d_gather',   icon:'⛏️', label:'Fill all gathering marches',             cat:'Resources', pri:'med'  },
+  { id:'d_train',    icon:'⚔️', label:'Queue troop training',                   cat:'Military',  pri:'med'  },
+  { id:'d_research', icon:'🏛️', label:'Start War Academy research',             cat:'Military',  pri:'med'  },
+  { id:'d_quests',   icon:'📋', label:'Complete 3 daily quests',                cat:'Daily',     pri:'med'  },
+  { id:'d_free',     icon:'🎀', label:'Claim free chest / daily gift',          cat:'Free',      pri:'med'  },
+  { id:'d_allyGift', icon:'🎁', label:'Open alliance gift chests',              cat:'Alliance',  pri:'med'  },
+  { id:'d_arena',    icon:'⚔️', label:'Play Arena battles',                     cat:'PvP',       pri:'low'  },
+  { id:'d_mystic',   icon:'✨', label:'Mystic Trials attempt',                  cat:'PvE',       pri:'low'  },
+  { id:'d_pet',      icon:'🐾', label:'Pet system interactions',                cat:'Daily',     pri:'low'  },
+  { id:'d_ap',       icon:'⚡', label:'Spend Action Points before cap',         cat:'Military',  pri:'low'  },
+];
+
+let dailyState = { date:'', done:[], custom:[] };
+
+function getTodayUTC() { return new Date().toISOString().split('T')[0]; }
+
+function loadDailyState() {
+  try {
+    const d = JSON.parse(localStorage.getItem('dailyState')||'{}');
+    const today = getTodayUTC();
+    if (d.date === today) { dailyState = d; }
+    else { dailyState = { date: today, done:[], custom: d.custom||[] }; }
+  } catch(e) { dailyState = { date: getTodayUTC(), done:[], custom:[] }; }
+}
+
+function saveDailyState() { localStorage.setItem('dailyState', JSON.stringify(dailyState)); }
+
+function toggleDailyTask(id) {
+  const idx = dailyState.done.indexOf(id);
+  if (idx >= 0) dailyState.done.splice(idx, 1);
+  else dailyState.done.push(id);
+  saveDailyState();
+  renderDailyProgress();
+  const el = document.getElementById('dt-'+id);
+  if (el) el.classList.toggle('done', dailyState.done.includes(id));
+}
+
+function addCustomDailyTask() {
+  const inp = document.getElementById('daily-custom-input');
+  const val = inp.value.trim();
+  if (!val) return;
+  const id = 'custom_' + Date.now();
+  dailyState.custom.push({ id, label: val });
+  saveDailyState();
+  inp.value = '';
+  renderDailyList();
+}
+
+function removeCustomTask(id) {
+  dailyState.custom = dailyState.custom.filter(c => c.id !== id);
+  dailyState.done   = dailyState.done.filter(d => d !== id);
+  saveDailyState();
+  renderDailyList();
+}
+
+function resetDailyNow() {
+  dailyState.done = [];
+  dailyState.date = getTodayUTC();
+  saveDailyState();
+  renderDailyList();
+}
+
+function renderDailyProgress() {
+  const all   = DAILY_TASKS.length + (dailyState.custom||[]).length;
+  const done  = dailyState.done.length;
+  const pct   = all ? Math.round(done/all*100) : 0;
+  const pb    = document.getElementById('daily-pbar');
+  const lbl   = document.getElementById('daily-pct-label');
+  if (pb)  pb.style.width  = pct + '%';
+  if (lbl) lbl.textContent = `${done} / ${all} tasks done (${pct}%)`;
+}
+
+function taskHtml(t, isDone, showRemove=false) {
+  const priClass = t.pri === 'high' ? 'dt-high' : t.pri === 'med' ? 'dt-med' : 'dt-low';
+  return `<div class="daily-task ${isDone?'done':''} ${priClass}" id="dt-${t.id}" onclick="toggleDailyTask('${t.id}')">
+    <div class="dt-check">${isDone?'✓':''}</div>
+    <span class="dt-icon">${t.icon||'📌'}</span>
+    <span class="dt-label">${escHtml(t.label)}</span>
+    <span class="dt-category">${t.cat||'Custom'}</span>
+    ${showRemove ? `<span onclick="event.stopPropagation();removeCustomTask('${t.id}')" style="color:var(--red);cursor:pointer;font-size:12px;padding:2px 4px">✕</span>` : ''}
+  </div>`;
+}
+
+function renderDailyList() {
+  ['high','med','low'].forEach(p => {
+    const el = document.getElementById('daily-'+p);
+    if (!el) return;
+    el.innerHTML = DAILY_TASKS.filter(t=>t.pri===p).map(t => taskHtml(t, dailyState.done.includes(t.id))).join('');
+  });
+  const custEl = document.getElementById('daily-custom');
+  if (custEl) {
+    custEl.innerHTML = (dailyState.custom||[]).map(t =>
+      taskHtml({ ...t, cat:'Custom', pri:'low' }, dailyState.done.includes(t.id), true)
+    ).join('') || '<div style="font-size:12px;color:var(--muted);padding:8px 0">No custom tasks yet</div>';
+  }
+  renderDailyProgress();
+}
+
+function renderDaily() { renderDailyList(); }
+
+// ============================================================
+// HERO COMPARISON
+// ============================================================
+function populateCompareSelects() {
+  const ownedOnly = document.getElementById('cmp-owned-only')?.checked;
+  const heroes = ownedOnly ? HEROES.filter(h => roster[h.id]) : HEROES;
+  const opts = '<option value="">—</option>' + heroes.map(h => `<option value="${h.id}">${h.name} (G${h.gen} ${h.class})</option>`).join('');
+  ['cmp-h1','cmp-h2','cmp-h3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const prev = el.value;
+    el.innerHTML = opts;
+    el.value = prev;
+  });
+}
+
+function renderCompare() {
+  populateCompareSelects();
+  const ids = ['cmp-h1','cmp-h2','cmp-h3'].map(id => document.getElementById(id)?.value).filter(Boolean);
+  const out = document.getElementById('compare-output');
+  if (!out) return;
+  if (!ids.length) { out.innerHTML = '<div class="no-data" style="padding:32px">Select at least one hero to compare</div>'; return; }
+
+  const heroes = ids.map(id => HEROES.find(h => h.id === id)).filter(Boolean);
+  const TIER_NAMES = { rallyLeader:'Rally Lead', rallyJoiner:'Rally Join', garrison:'Garrison', bearHunt:'Terror Hunt', arena:'Arena', expedition:'Expedition' };
+  const tierScore  = t => ({ SP:6, S:5, A:4, B:3, C:2, D:1 }[t]||0);
+  const bestTier   = (key) => { const scores = heroes.map(h => tierScore(h.tiers[key]||'—')); const max = Math.max(...scores); return scores.map(s => s===max && max>0); };
+
+  const rows = [
+    { label:'Class',       vals: heroes.map(h => `<span class="class-tag ct-${h.class}" style="font-size:11px">${h.class}</span>`) },
+    { label:'Generation',  vals: heroes.map(h => `Gen ${h.gen}`) },
+    { label:'Obtain',      vals: heroes.map(h => `<span class="obtain obtain-${h.obtain}">${h.obtain}</span>`) },
+    { label:'Widget',      vals: heroes.map(h => h.widget ? `<span class="widget-tag wt-${h.widget==='offensive'?'off':'def'}" style="font-size:11px">${h.widget==='offensive'?'⚔ Offensive':'🛡 Defensive'}</span>` : '—') },
+    { section: 'Tier Ratings' },
+    ...Object.entries(TIER_NAMES).map(([key,name]) => {
+      const best = bestTier(key);
+      return { label: name, vals: heroes.map((h,i) => {
+        const t = h.tiers[key]||'—';
+        return best[i] && t!=='—' ? `<span class="tier-badge t-${t} compare-best">${t}</span>` : t !== '—' ? `<span class="tier-badge t-${t}">${t}</span>` : '<span style="color:var(--muted)">—</span>';
+      })};
+    }),
+    { section: 'In-Game Power' },
+    { label: 'Power', vals: heroes.map(h => {
+      const ps = heroPowerScore(h);
+      const hasM = (roster[h.id]?.manualPower||0) > 0;
+      return hasM ? `<strong style="color:var(--accent)">${ps.toLocaleString()}</strong>` : `<span style="color:var(--muted)">Not set</span>`;
+    })},
+    { label: 'Stars', vals: heroes.map(h => { const s=getStars(h.id); const best=Math.max(...heroes.map(h2=>getStars(h2.id))); return `<span ${s===best&&s>0?'class="compare-best"':'style="color:var(--muted)"'}>★${s}</span>`; }) },
+    { section: 'Widget Skill' },
+    ...heroes[0].skills.filter(s=>s.type==='widget').slice(0,1).map(() => heroes.map(h=>{
+      const ws = (h.skills||[]).find(s=>s.type==='widget');
+      if (!ws) return '—';
+      const lv = getSkillLevel(h.id, ws.name);
+      const val = lv > 0 ? ws.vals[lv-1] : '—';
+      return `<div style="font-size:11px">${ws.name}</div><div style="font-size:10px;color:var(--muted)">Lv${lv||0}: ${val}</div>`;
+    })).map(vals => ({ label:'Widget', vals })),
+  ].flat();
+
+  const headerCols = heroes.map(h => `<th class="hero-col">
+    <div style="font-size:15px;font-weight:800">${h.name}</div>
+    ${roster[h.id] ? '<span class="api-badge" style="font-size:10px">In Roster</span>' : '<span style="font-size:10px;color:var(--muted)">Not owned</span>'}
+  </th>`).join('');
+
+  const bodyRows = rows.map(r => {
+    if (r.section) return `<tr class="compare-section-row"><td colspan="${heroes.length+1}">${r.section}</td></tr>`;
+    return `<tr><td class="compare-row-label">${r.label}</td>${r.vals.map(v=>`<td class="hero-col">${v}</td>`).join('')}</tr>`;
+  }).join('');
+
+  out.innerHTML = `<div class="scrollable"><table class="compare-table">
+    <thead><tr><th style="width:120px"></th>${headerCols}</tr></thead>
+    <tbody>${bodyRows}</tbody>
+  </table></div>`;
+}
+
+// ============================================================
+// ALLIANCE POWER BOARD
+// ============================================================
+function renderPowerBoard() {
+  const sort   = document.getElementById('pb-sort')?.value || 'power';
+  const filter = document.getElementById('pb-filter-role')?.value || '';
+  let members  = (allianceData.members || []).map((m,i) => ({...m, _idx:i}));
+  if (filter) members = members.filter(m => m.role === filter);
+
+  // Stats
+  const withPower = members.filter(m => m.power > 0);
+  const total = members.reduce((s,m) => s + (Number(m.power)||0), 0);
+  const max   = Math.max(...members.map(m => Number(m.power)||0), 1);
+  const avg   = withPower.length ? Math.round(total / withPower.length) : 0;
+  const statsEl = document.getElementById('pb-stats');
+  if (statsEl) statsEl.innerHTML = [
+    { label:'Members', val: members.length },
+    { label:'With Power Set', val: withPower.length },
+    { label:'Alliance Total', val: total > 0 ? (total/1e6).toFixed(1)+'M' : '—' },
+    { label:'Average Power', val: avg > 0 ? avg.toLocaleString() : '—' },
+  ].map(s => `<div style="text-align:center;padding:8px;background:var(--surface2);border-radius:6px;border:1px solid var(--border)">
+    <div style="font-size:20px;font-weight:800;color:var(--accent)">${s.val}</div>
+    <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">${s.label}</div>
+  </div>`).join('');
+
+  // Sort
+  if (sort === 'power') members.sort((a,b) => (Number(b.power)||0)-(Number(a.power)||0));
+  else if (sort === 'name') members.sort((a,b) => (a.name||'').localeCompare(b.name||''));
+  else if (sort === 'role') members.sort((a,b) => { const ro={'R5':0,'R4':1,'R3':2,'R2':3,'R1':4}; return (ro[a.role]||5)-(ro[b.role]||5); });
+
+  const listEl = document.getElementById('powerboard-list');
+  if (!listEl) return;
+  if (!members.length) { listEl.innerHTML = '<div class="no-data" style="padding:32px">No members found. Add members in Alliance HQ.</div>'; return; }
+
+  listEl.innerHTML = members.map((m, rankIdx) => {
+    const rank  = rankIdx + 1;
+    const rankCls = rank===1?'pb-rank-1':rank===2?'pb-rank-2':rank===3?'pb-rank-3':'pb-rank-other';
+    const pow   = Number(m.power) || 0;
+    const pct   = max > 0 ? Math.round(pow/max*100) : 0;
+    const powCol = pow >= 2000000 ? 'var(--a)' : pow >= 1000000 ? 'var(--s)' : pow >= 500000 ? 'var(--accent2)' : 'var(--muted)';
+    const avatarContent = m.avatar ? `<img class="player-avatar" src="${escHtml(m.avatar)}" onerror="this.outerHTML='<div class=pb-avatar>👤</div>'">` : `<div class="pb-avatar">👤</div>`;
+    return `<div class="pb-row">
+      <div class="pb-rank ${rankCls}">${rank <= 3 ? ['🥇','🥈','🥉'][rank-1] : rank}</div>
+      ${avatarContent}
+      <div class="pb-info">
+        <div class="pb-name">${escHtml(m.name||'(unnamed)')}</div>
+        <div class="pb-meta"><span class="role-badge role-${m.role||'R3'}" style="font-size:9px">${m.role||'R3'}</span>${m.level?` · Lv${m.level}`:''}</div>
+        <div class="pb-bar-wrap"><div class="pb-bar" style="width:${pct}%"></div></div>
+      </div>
+      <div class="pb-power-col">
+        <div class="pb-power-val" style="color:${powCol}">${pow > 0 ? pow.toLocaleString() : '—'}</div>
+        <div style="font-size:10px;color:var(--muted)">${pow > 0 ? (pow/1e6).toFixed(2)+'M' : 'not set'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// RESEARCH TRACKER
+// ============================================================
+const RESEARCH_TREES = [
+  { id:'military', name:'Military', icon:'⚔️', color:'var(--sp)',
+    nodes:[
+      { id:'r_inf_atk',   name:'Infantry Attack',   maxLv:10, bonus:'+2% Inf ATK per level' },
+      { id:'r_cav_atk',   name:'Cavalry Attack',    maxLv:10, bonus:'+2% Cav ATK per level' },
+      { id:'r_arc_atk',   name:'Archer Attack',     maxLv:10, bonus:'+2% Arc ATK per level' },
+      { id:'r_inf_def',   name:'Infantry Defense',  maxLv:10, bonus:'+2% Inf DEF per level' },
+      { id:'r_cav_def',   name:'Cavalry Defense',   maxLv:10, bonus:'+2% Cav DEF per level' },
+      { id:'r_arc_def',   name:'Archer Defense',    maxLv:10, bonus:'+2% Arc DEF per level' },
+      { id:'r_inf_hp',    name:'Infantry HP',       maxLv:10, bonus:'+2% Inf HP per level' },
+      { id:'r_cav_hp',    name:'Cavalry HP',        maxLv:10, bonus:'+2% Cav HP per level' },
+      { id:'r_arc_hp',    name:'Archer HP',         maxLv:10, bonus:'+2% Arc HP per level' },
+      { id:'r_lethality', name:'All Troops Lethality', maxLv:10, bonus:'+1% Lethality per level' },
+      { id:'r_rally_cap', name:'Rally Capacity',    maxLv:5,  bonus:'+50k troops per level' },
+      { id:'r_march_spd', name:'March Speed',       maxLv:10, bonus:'+5% per level' },
+    ]},
+  { id:'economy', name:'Economy', icon:'🌾', color:'var(--a)',
+    nodes:[
+      { id:'r_const_spd', name:'Construction Speed',maxLv:10, bonus:'+5% per level' },
+      { id:'r_res_spd',   name:'Research Speed',    maxLv:10, bonus:'+5% per level' },
+      { id:'r_train_spd', name:'Training Speed',    maxLv:10, bonus:'+5% per level' },
+      { id:'r_gather',    name:'Gathering Speed',   maxLv:5,  bonus:'+10% per level' },
+      { id:'r_food',      name:'Food Production',   maxLv:10, bonus:'+5% per level' },
+      { id:'r_wood',      name:'Wood Production',   maxLv:10, bonus:'+5% per level' },
+      { id:'r_stone',     name:'Stone Production',  maxLv:10, bonus:'+5% per level' },
+      { id:'r_iron',      name:'Iron Production',   maxLv:10, bonus:'+5% per level' },
+      { id:'r_hospital',  name:'Hospital Capacity', maxLv:10, bonus:'+5k beds per level' },
+    ]},
+  { id:'war_academy', name:'War Academy', icon:'🏛️', color:'var(--purple)',
+    nodes:[
+      { id:'r_wa_rally',    name:'Rally Attack Bonus',  maxLv:5, bonus:'+3% Rally ATK per level' },
+      { id:'r_wa_garrison', name:'Garrison Defense',    maxLv:5, bonus:'+3% Garrison DEF per level' },
+      { id:'r_wa_kvk',      name:'KvK Kill Bonus',      maxLv:5, bonus:'+2% Kill pts per level' },
+      { id:'r_wa_stamina',  name:'Action Point Cap',    maxLv:5, bonus:'+20 AP per level' },
+      { id:'r_wa_heal',     name:'Healing Speed',       maxLv:5, bonus:'+10% Heal SPD per level' },
+      { id:'r_wa_infirmary',name:'Infirmary Capacity',  maxLv:5, bonus:'+10k beds per level' },
+      { id:'r_wa_all_atk',  name:'All Troops Attack',   maxLv:5, bonus:'+2% All ATK per level' },
+      { id:'r_wa_all_def',  name:'All Troops Defense',  maxLv:5, bonus:'+2% All DEF per level' },
+    ]},
+  { id:'hero_studies', name:'Hero Studies', icon:'⭐', color:'var(--s)',
+    nodes:[
+      { id:'r_hs_exp',      name:'Hero EXP Gain',       maxLv:5, bonus:'+10% Hero EXP per level' },
+      { id:'r_hs_skill',    name:'Skill Point Efficiency',maxLv:5,bonus:'+5% Skill Pts per level' },
+      { id:'r_hs_gear',     name:'Gear Power Bonus',    maxLv:5, bonus:'+5% Gear PWR per level' },
+      { id:'r_hs_exped',    name:'Expedition Bonus',    maxLv:5, bonus:'+5% Expedition per level' },
+      { id:'r_hs_arena',    name:'Arena Bonus',         maxLv:3, bonus:'+5% Arena stats per level' },
+    ]},
+];
+
+let researchData = {};
+
+function loadResearchData() {
+  try { researchData = JSON.parse(localStorage.getItem('researchData')||'{}'); } catch(e) {}
+}
+
+function saveResearch() { localStorage.setItem('researchData', JSON.stringify(researchData)); }
+
+function setResearchLevel(nodeId, maxLv, clickedLv) {
+  const current = researchData[nodeId] || 0;
+  researchData[nodeId] = current === clickedLv ? clickedLv - 1 : clickedLv;
+  saveResearch();
+  renderResearchNode(nodeId, maxLv);
+  renderResearchOverall();
+}
+
+function renderResearchNode(nodeId, maxLv) {
+  const lv  = researchData[nodeId] || 0;
+  const dotsEl = document.getElementById('rnd-'+nodeId);
+  const nodeEl = document.getElementById('rn-'+nodeId);
+  if (!dotsEl || !nodeEl) return;
+  dotsEl.querySelectorAll('.res-dot').forEach((d, i) => d.classList.toggle('lit', i < lv));
+  nodeEl.className = `res-node ${lv >= maxLv ? 'maxed' : lv > 0 ? 'partial' : ''}`;
+  const progEl = nodeEl.querySelector('.res-node-progress');
+  if (progEl) progEl.textContent = `Level ${lv} / ${maxLv}`;
+}
+
+function renderResearchOverall() {
+  const overallEl = document.getElementById('res-overall');
+  if (!overallEl) return;
+  overallEl.innerHTML = RESEARCH_TREES.map(tree => {
+    const totalLvs   = tree.nodes.reduce((s,n) => s + n.maxLv, 0);
+    const doneLvs    = tree.nodes.reduce((s,n) => s + Math.min(researchData[n.id]||0, n.maxLv), 0);
+    const pct        = totalLvs ? Math.round(doneLvs/totalLvs*100) : 0;
+    return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <span style="font-size:18px">${tree.icon}</span>
+        <span style="font-size:13px;font-weight:700;color:${tree.color}">${tree.name}</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:auto">${pct}%</span>
+      </div>
+      <div style="height:6px;background:var(--surface);border-radius:3px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:${tree.color};border-radius:3px;transition:width .3s"></div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin-top:4px">${doneLvs} / ${totalLvs} levels complete</div>
+    </div>`;
+  }).join('');
+}
+
+function renderResearch() {
+  renderResearchOverall();
+  const treesEl = document.getElementById('research-trees');
+  if (!treesEl) return;
+  treesEl.innerHTML = RESEARCH_TREES.map(tree => {
+    const totalLvs = tree.nodes.reduce((s,n)=>s+n.maxLv,0);
+    const doneLvs  = tree.nodes.reduce((s,n)=>s+Math.min(researchData[n.id]||0,n.maxLv),0);
+    const pct      = totalLvs ? Math.round(doneLvs/totalLvs*100) : 0;
+    return `<div class="card res-tree">
+      <div class="res-tree-head">
+        <span style="font-size:22px">${tree.icon}</span>
+        <span class="res-tree-name" style="color:${tree.color}">${tree.name}</span>
+        <div class="res-tree-pbar"><div class="res-tree-pfill" style="width:${pct}%;background:${tree.color}"></div></div>
+        <span class="res-tree-pct">${pct}% (${doneLvs}/${totalLvs})</span>
+      </div>
+      <div class="res-node-grid">
+        ${tree.nodes.map(node => {
+          const lv = researchData[node.id] || 0;
+          const nodeCls = lv >= node.maxLv ? 'maxed' : lv > 0 ? 'partial' : '';
+          return `<div class="res-node ${nodeCls}" id="rn-${node.id}">
+            <div class="res-node-name">${node.name}</div>
+            <div class="res-node-bonus">${node.bonus}</div>
+            <div class="res-dots" id="rnd-${node.id}">
+              ${Array.from({length:node.maxLv},(_,i)=>
+                `<div class="res-dot ${i<lv?'lit':''}" onclick="setResearchLevel('${node.id}',${node.maxLv},${i+1})" title="Set level ${i+1}"></div>`
+              ).join('')}
+            </div>
+            <div class="res-node-progress">Level ${lv} / ${node.maxLv}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// SETTINGS — REMINDERS + EXPORT/IMPORT
+// ============================================================
+const REMINDER_DEFS = [
+  { id:'arsenal_t1', label:'Arsenal Type 1',     meta:'Mon 00:00 UTC (Artisan Visions)',   defaultMin:60 },
+  { id:'arsenal_t2', label:'Arsenal Type 2',     meta:'Fri 00:00 UTC (Truegold)',           defaultMin:60 },
+  { id:'brawl_mm',   label:'Alliance Brawl Matchmaking', meta:'Sun 23:00 UTC',             defaultMin:60 },
+  { id:'kvk_start',  label:'KvK Start',          meta:'When KvK begins for your kingdom',  defaultMin:120 },
+];
+
+let reminderSettings = {};
+let reminderInterval = null;
+
+function loadReminderSettings() {
+  try { reminderSettings = JSON.parse(localStorage.getItem('reminderSettings')||'{}'); } catch(e) {}
+}
+
+function saveReminderSettings() { localStorage.setItem('reminderSettings', JSON.stringify(reminderSettings)); }
+
+function toggleReminder(id, enabled) {
+  if (!reminderSettings[id]) reminderSettings[id] = { enabled:false, minutesBefore: REMINDER_DEFS.find(r=>r.id===id)?.defaultMin||60 };
+  reminderSettings[id].enabled = enabled;
+  saveReminderSettings();
+}
+
+function setReminderMinutes(id, mins) {
+  if (!reminderSettings[id]) reminderSettings[id] = { enabled:false, minutesBefore: mins };
+  reminderSettings[id].minutesBefore = parseInt(mins) || 60;
+  saveReminderSettings();
+}
+
+async function requestNotifPermission() {
+  if (!('Notification' in window)) { alert('Your browser does not support notifications.'); return; }
+  const perm = await Notification.requestPermission();
+  updateNotifStatus(perm);
+}
+
+function updateNotifStatus(perm) {
+  const btn = document.getElementById('notif-perm-btn');
+  const stat = document.getElementById('notif-perm-status');
+  if (!btn || !stat) return;
+  if (perm === 'granted') {
+    stat.innerHTML = '<span class="api-status api-ok">✓ Notifications enabled</span>';
+    btn.textContent = 'Re-request Permission';
+  } else if (perm === 'denied') {
+    stat.innerHTML = '<span class="api-status api-err">✗ Blocked — allow in browser settings</span>';
+  } else {
+    stat.innerHTML = '<span class="api-status api-loading">Not yet granted</span>';
+  }
+}
+
+function scheduleReminderCheck() {
+  if (reminderInterval) clearInterval(reminderInterval);
+  reminderInterval = setInterval(checkReminders, 60000);
+}
+
+function checkReminders() {
+  if (!reminderSettings || Notification.permission !== 'granted') return;
+  const now  = new Date();
+  const dow  = now.getUTCDay(); // 0=Sun,1=Mon,...,5=Fri
+  const h    = now.getUTCHours();
+  const m    = now.getUTCMinutes();
+  const totalMins = h * 60 + m;
+
+  const triggers = [
+    { id:'arsenal_t1', dow:1, at:0   }, // Mon 00:00 UTC
+    { id:'arsenal_t2', dow:5, at:0   }, // Fri 00:00 UTC
+    { id:'brawl_mm',   dow:0, at:23*60}, // Sun 23:00 UTC
+  ];
+
+  triggers.forEach(t => {
+    const rs = reminderSettings[t.id];
+    if (!rs?.enabled) return;
+    const fireAt = t.at - rs.minutesBefore;
+    if (dow === t.dow && Math.abs(totalMins - fireAt) < 1) {
+      new Notification(`⏰ Kingshot — ${REMINDER_DEFS.find(r=>r.id===t.id)?.label}`, {
+        body: `Starts in ${rs.minutesBefore} min. Prepare your resources!`,
+        icon: '/favicon.ico',
+      });
+    }
+  });
+}
+
+function renderSettings() {
+  updateNotifStatus(Notification?.permission || 'default');
+  const listEl = document.getElementById('reminder-list');
+  if (listEl) {
+    listEl.innerHTML = REMINDER_DEFS.map(r => {
+      const rs = reminderSettings[r.id] || { enabled:false, minutesBefore: r.defaultMin };
+      return `<div class="reminder-row">
+        <div style="flex:1">
+          <div class="reminder-label">${r.label}</div>
+          <div class="reminder-meta">${r.meta}</div>
+        </div>
+        <select style="font-size:11px;width:90px" onchange="setReminderMinutes('${r.id}',this.value)">
+          ${[15,30,60,120].map(m=>`<option value="${m}" ${rs.minutesBefore===m?'selected':''}>${m} min before</option>`).join('')}
+        </select>
+        <label class="toggle" title="Enable reminder">
+          <input type="checkbox" ${rs.enabled?'checked':''} onchange="toggleReminder('${r.id}',this.checked)">
+          <span class="tslider"></span>
+        </label>
+      </div>`;
+    }).join('');
+  }
+}
+
+// ============================================================
+// DATA EXPORT / IMPORT
+// ============================================================
+const EXPORT_KEYS = ['roster','skillLevels','troops','ageData','calData','allianceData','kvkPlan','stockpileData','dailyState','researchData','reminderSettings'];
+
+function exportAllData() {
+  const dump = {};
+  EXPORT_KEYS.forEach(k => { try { dump[k] = JSON.parse(localStorage.getItem(k)||'null'); } catch(e){} });
+  dump._exported = new Date().toISOString();
+  dump._version  = '2.0';
+  const blob = new Blob([JSON.stringify(dump, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `kingshot-data-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function importAllData(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const dump = JSON.parse(e.target.result);
+      let count = 0;
+      EXPORT_KEYS.forEach(k => {
+        if (dump[k] !== undefined && dump[k] !== null) {
+          localStorage.setItem(k, JSON.stringify(dump[k]));
+          count++;
+        }
+      });
+      document.getElementById('import-status').innerHTML = `<span class="api-status api-ok">✓ Imported ${count} data sections successfully. Reload the page to see all changes.</span>`;
+      // Reload data in memory
+      loadRoster(); loadTroops(); loadAgeData(); loadCalData(); loadAllianceData();
+      loadKvkPlan(); loadStockpileData(); loadDailyState(); loadResearchData(); loadReminderSettings();
+      updateSidebar(); buildRosterPage();
+    } catch(err) {
+      document.getElementById('import-status').innerHTML = `<span class="api-status api-err">✗ Invalid file — ${err.message}</span>`;
+    }
+  };
+  reader.readAsText(file);
+}
+
+function clearDataSection(section) {
+  const labels = { roster:'roster', alliance:'alliance data', all:'ALL data' };
+  if (!confirm(`Delete ${labels[section]||section}? This cannot be undone.`)) return;
+  if (section === 'roster') { localStorage.removeItem('roster'); localStorage.removeItem('skillLevels'); loadRoster(); buildRosterPage(); updateSidebar(); }
+  else if (section === 'alliance') { localStorage.removeItem('allianceData'); loadAllianceData(); }
+  else if (section === 'all') { EXPORT_KEYS.forEach(k => localStorage.removeItem(k)); location.reload(); }
+}
 
 const CAL_SPECIALS = [
   { id:'kvk',           label:'KvK Running',          cls:'cep-combat',   days:[0,1,2,3,4,5,6] },
@@ -4077,8 +5137,7 @@ async function lookupMember(idx) {
   const m = allianceData.members[idx];
   if (!m?.playerId) { alert('Enter a Player ID first'); return; }
   try {
-    const res = await fetch(`${KINGSHOT_API}/player-info?playerId=${encodeURIComponent(m.playerId)}`);
-    const json = await res.json();
+    const json = await ksFetch(`/player-info?playerId=${encodeURIComponent(m.playerId)}`);
     if (json.status === 'success' && json.data) {
       const d = json.data;
       m.name    = m.name || d.name;
@@ -4102,8 +5161,7 @@ async function fetchKingdomInfo() {
   infoEl.style.display = '';
   infoEl.textContent = '⏳ Looking up…';
   try {
-    const res = await fetch(`${KINGSHOT_API}/kingdom-tracker?kingdomId=${encodeURIComponent(kingdomId)}`);
-    const json = await res.json();
+    const json = await ksFetch(`/kingdom-tracker?kingdomId=${encodeURIComponent(kingdomId)}`);
     const server = json.data?.servers?.[0];
     if (server) {
       const openDate = new Date(server.openTime);
@@ -4128,8 +5186,7 @@ async function fetchGiftCodes() {
   listEl.innerHTML = '<div class="no-data" style="padding:12px"><span class="spin">⟳</span> Loading…</div>';
   statusEl.innerHTML = '<span class="api-status api-loading">⟳ fetching</span>';
   try {
-    const res = await fetch(`${KINGSHOT_API}/gift-codes`);
-    const json = await res.json();
+    const json = await ksFetch(`/gift-codes`);
     if (json.status === 'success') {
       const codes = json.data?.giftCodes || [];
       statusEl.innerHTML = `<span class="api-status api-ok">✓ ${codes.length} active</span>`;
@@ -4163,8 +5220,7 @@ async function fetchKvkHistory() {
   listEl.innerHTML = '<div class="no-data" style="padding:12px"><span class="spin">⟳</span> Loading…</div>';
   statusEl.innerHTML = '<span class="api-status api-loading">⟳ fetching</span>';
   try {
-    const res = await fetch(`${KINGSHOT_API}/kvk/matches?kingdom_a=${kingdom}&limit=10`);
-    const json = await res.json();
+    const json = await ksFetch(`/kvk/matches?kingdom_a=${kingdom}&limit=10`);
     if (json.status === 'success') {
       const matches = json.data || [];
       statusEl.innerHTML = `<span class="api-status api-ok">✓ ${matches.length} matches</span>`;
@@ -4213,9 +5269,18 @@ renderTierList();
 
 // Fix nav click detection
 document.querySelectorAll('.nav-item').forEach((el, i) => {
-  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance'];
+  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance','kvkplanner','stockpile','powerboard','daily','compare','research','settings'];
   el.addEventListener('click', () => goPage(pages[i]));
 });
+
+// Load new feature data
+loadKvkPlan();
+loadStockpileData();
+loadDailyState();
+loadResearchData();
+loadReminderSettings();
+scheduleReminderCheck();
+populateCompareSelects();
 </script>
 </body>
 </html>
