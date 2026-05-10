@@ -315,6 +315,57 @@ option { background: var(--surface2); }
 .milestone-item.done .mi-check { background:var(--accent); border-color:var(--accent); color:#000; }
 .mi-name  { font-size:13px; font-weight:600; flex:1; }
 .mi-tag   { font-size:10px; padding:2px 6px; border-radius:3px; }
+
+/* ALLIANCE SETTINGS */
+.member-table { width:100%; border-collapse:collapse; }
+.member-table th { background:var(--surface2); color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:1px; padding:8px 10px; text-align:left; white-space:nowrap; }
+.member-table td { padding:8px 8px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:middle; }
+.member-table tr:last-child td { border-bottom:none; }
+.member-table tr:hover td { background:#ffffff05; }
+.member-table input, .member-table select { background:var(--surface); border:1px solid var(--border); color:var(--text); padding:4px 7px; border-radius:4px; font-size:11px; outline:none; }
+.member-table input:focus, .member-table select:focus { border-color:var(--accent); }
+.role-badge { display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;border:1px solid; }
+.role-R5 { background:#ff653522;color:var(--sp);border-color:#ff653550; }
+.role-R4 { background:#f0a50018;color:var(--s);border-color:#f0a50040; }
+.role-R3 { background:#4d9fff18;color:var(--b);border-color:#4d9fff40; }
+.role-R2 { background:var(--surface2);color:var(--muted);border-color:var(--border); }
+.role-R1 { background:var(--surface2);color:var(--muted);border-color:var(--border); }
+.api-badge { display:inline-flex;align-items:center;gap:4px;padding:2px 6px;border-radius:3px;font-size:10px;background:#3ddc8415;color:var(--a);border:1px solid #3ddc8440; }
+.btn-icon { padding:4px 8px; background:var(--surface2); border:1px solid var(--border); color:var(--muted); border-radius:4px; cursor:pointer; font-size:11px; transition:all .15s; }
+.btn-icon:hover { border-color:var(--accent); color:var(--accent); }
+.gift-code-card { display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;margin-bottom:8px; }
+.gift-code-val { font-size:15px;font-weight:800;color:var(--accent);letter-spacing:1px;flex:1; }
+.gift-code-exp { font-size:11px;color:var(--muted); }
+.kvk-row { display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;margin-bottom:6px;font-size:12px; }
+.kvk-win  { color:var(--a); }
+.kvk-loss { color:var(--red); }
+.player-avatar { width:28px;height:28px;border-radius:50%;border:2px solid var(--border);object-fit:cover; }
+.spin { display:inline-block;animation:spin .7s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.api-status { font-size:10px;padding:2px 6px;border-radius:3px;display:inline-flex;align-items:center;gap:4px; }
+.api-ok  { background:#3ddc8415;color:var(--a);border:1px solid #3ddc8440; }
+.api-err { background:#ff4f4f15;color:#ff8080;border:1px solid #ff4f4f40; }
+.api-loading { background:var(--surface2);color:var(--muted);border:1px solid var(--border); }
+
+/* WEEKLY CALENDAR */
+.cal-week-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:16px; }
+@media(max-width:700px){ .cal-week-grid { grid-template-columns:repeat(4,1fr); } }
+.cal-day { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:10px 8px; min-height:100px; }
+.cal-day.today { border-color:var(--accent); background:#f0a50008; }
+.cal-day-name { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:4px; }
+.cal-day-num { font-size:18px; font-weight:800; color:var(--text); margin-bottom:6px; }
+.cal-day.today .cal-day-num { color:var(--accent); }
+.cal-event-pill { font-size:10px; padding:2px 6px; border-radius:4px; margin-bottom:3px; display:block; font-weight:600; line-height:1.4; }
+.cep-arsenal  { background:#f0a50020;color:var(--s);border:1px solid #f0a50040; }
+.cep-combat   { background:#ff653520;color:var(--sp);border:1px solid #ff653550; }
+.cep-alliance { background:#4d9fff20;color:var(--b);border:1px solid #4d9fff40; }
+.cep-pve      { background:#3ddc8420;color:var(--a);border:1px solid #3ddc8440; }
+.cep-resource { background:#a855f720;color:var(--purple);border:1px solid #a855f740; }
+.cal-legend { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+.cal-legend-item { display:flex;align-items:center;gap:5px;font-size:11px; }
+.cal-toggle { display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap; }
+.cal-toggle-btn { padding:6px 14px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);cursor:pointer;font-size:12px;font-weight:600;transition:all .15s; }
+.cal-toggle-btn.active { background:#f0a50018;border-color:var(--accent);color:var(--accent); }
 </style>
 </head>
 <body>
@@ -358,6 +409,8 @@ option { background: var(--surface2); }
   <div class="nav-section">
     <div class="nav-label">Alliance</div>
     <div class="nav-item" onclick="goPage('age')"><span class="icon">&#128336;</span>Kingdom Age</div>
+    <div class="nav-item" onclick="goPage('calendar')"><span class="icon">&#128197;</span>Event Calendar</div>
+    <div class="nav-item" onclick="goPage('alliance')"><span class="icon">&#127756;</span>Alliance HQ</div>
   </div>
 </div>
 
@@ -750,6 +803,130 @@ option { background: var(--surface2); }
       </div>
       <div style="font-size:12px;color:var(--muted);line-height:1.7">
         <div><strong style="color:var(--text)">Traps:</strong> Can contribute Hunting Arrows even after trap reaches max level. If trap is removed and rebuilt, all contributors must re-supply arrows from scratch.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== WEEKLY CALENDAR ===== -->
+<div class="page" id="page-calendar">
+  <div class="page-header">
+    <h2>Event Calendar</h2>
+    <p>Weekly event schedule for your kingdom. Toggle Arsenal type and active events for this week.</p>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;align-items:start">
+    <div class="card">
+      <div class="card-title">Arsenal Type This Week</div>
+      <div class="info-box" style="margin-bottom:10px">Arsenal alternates <strong>Type 1</strong> (Mon–Tue, Artisan Visions) and <strong>Type 2</strong> (Fri–Sat, Truegold) each week. Select which type is running this week.</div>
+      <div class="cal-toggle">
+        <div class="cal-toggle-btn active" id="cal-a1-btn" onclick="setArsenalType(1)">⚒️ Type 1 (Mon–Tue)</div>
+        <div class="cal-toggle-btn" id="cal-a2-btn" onclick="setArsenalType(2)">⚒️ Type 2 (Fri–Sat)</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Active Special Events</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px" id="cal-special-toggles"></div>
+    </div>
+  </div>
+
+  <div class="cal-legend">
+    <div class="cal-legend-item"><span class="cal-event-pill cep-arsenal" style="margin:0;display:inline">⚒️</span> Arsenal</div>
+    <div class="cal-legend-item"><span class="cal-event-pill cep-combat" style="margin:0;display:inline">⚔️</span> Combat/PvP</div>
+    <div class="cal-legend-item"><span class="cal-event-pill cep-alliance" style="margin:0;display:inline">🤝</span> Alliance</div>
+    <div class="cal-legend-item"><span class="cal-event-pill cep-pve" style="margin:0;display:inline">🌿</span> PvE/Trials</div>
+    <div class="cal-legend-item"><span class="cal-event-pill cep-resource" style="margin:0;display:inline">👑</span> Resource/Prog</div>
+  </div>
+
+  <div class="cal-week-grid" id="cal-week-grid"></div>
+
+  <div class="card">
+    <div class="card-title">Upcoming Events</div>
+    <div id="cal-upcoming"></div>
+  </div>
+</div>
+
+<!-- ===== ALLIANCE HQ ===== -->
+<div class="page" id="page-alliance">
+  <div class="page-header">
+    <h2>Alliance HQ</h2>
+    <p>Track your alliance roster, power, gift codes, and KvK history — powered by the KingShot.net API.</p>
+  </div>
+
+  <div class="g2" style="align-items:start;margin-bottom:16px">
+    <div class="card">
+      <div class="card-title">Alliance Info</div>
+      <div style="display:grid;gap:10px">
+        <label style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px">Alliance Name
+          <input type="text" id="ally-name" placeholder="e.g. Saints Kingdom Shot" oninput="saveAllianceData()" style="font-size:14px;font-weight:700">
+        </label>
+        <label style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px">Alliance Tag
+          <input type="text" id="ally-tag" placeholder="e.g. [SKS]" oninput="saveAllianceData()" style="width:120px">
+        </label>
+        <label style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px">Kingdom Number
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="number" id="ally-kingdom" placeholder="e.g. 1042" oninput="saveAllianceData()" style="width:120px">
+            <button class="btn btn-outline btn-sm" onclick="fetchKingdomInfo()">🔍 Lookup</button>
+          </div>
+        </label>
+        <div id="ally-kingdom-info" style="display:none;font-size:12px;color:var(--muted);background:var(--surface2);border-radius:6px;padding:8px 12px;border:1px solid var(--border)"></div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title">Gift Codes <span id="gc-api-status"></span></div>
+        <div style="margin-bottom:10px;display:flex;gap:8px">
+          <button class="btn btn-outline btn-sm" onclick="fetchGiftCodes()">🔄 Refresh</button>
+          <span style="font-size:11px;color:var(--muted);align-self:center">Auto-fetches from KingShot.net API</span>
+        </div>
+        <div id="gift-codes-list"><div class="no-data" style="padding:16px">Click Refresh to load active codes</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">Member Roster
+      <button class="btn btn-outline btn-sm" onclick="addMember()" style="margin-left:12px">+ Add Member</button>
+    </div>
+    <div class="info-box" style="margin-bottom:12px">Enter each member's <strong>Player ID</strong> (from their in-game profile) and click 🔍 to auto-fetch their name and kingdom level from the API.</div>
+    <div class="scrollable">
+      <table class="member-table">
+        <thead><tr>
+          <th></th>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Player ID</th>
+          <th>Level</th>
+          <th>Power</th>
+          <th>Notes</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="member-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="g2" style="align-items:start;margin-bottom:16px">
+    <div class="card">
+      <div class="card-title">KvK History <span id="kvk-api-status"></span></div>
+      <div style="margin-bottom:10px;display:flex;gap:8px">
+        <button class="btn btn-outline btn-sm" onclick="fetchKvkHistory()">🔄 Load History</button>
+        <span style="font-size:11px;color:var(--muted);align-self:center">Uses kingdom # set above</span>
+      </div>
+      <div id="kvk-history-list"><div class="no-data" style="padding:12px">Set kingdom number and click Load History</div></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title">Alliance Rules</div>
+        <textarea id="ally-rules" oninput="saveAllianceData()"
+          placeholder="e.g. - Always shield during KvK&#10;- Coordinate rallies in Discord&#10;- No reinforce without permission..."
+          style="width:100%;height:130px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:10px;font-size:12px;resize:vertical;line-height:1.7;font-family:inherit"></textarea>
+      </div>
+      <div class="card">
+        <div class="card-title">Rally Schedule</div>
+        <textarea id="ally-schedule" oninput="saveAllianceData()"
+          placeholder="e.g. KvK rallies: Fri–Sat 20:00–22:00 UTC&#10;Sanctuary Battle: Sun 19:00 UTC&#10;Alliance Brawl: daily 20:00 UTC"
+          style="width:100%;height:100px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:10px;font-size:12px;resize:vertical;line-height:1.7;font-family:inherit"></textarea>
       </div>
     </div>
   </div>
@@ -1998,7 +2175,7 @@ function goPage(name) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => {
-    if (n.textContent.toLowerCase().includes({roster:'roster',builds:'event',powerup:'power',skills:'skill',tierlist:'tier',troops:'troop',guide:'guide',age:'kingdom'}[name]||'')) n.classList.add('active');
+    if (n.textContent.toLowerCase().includes({roster:'roster',builds:'event',powerup:'power',skills:'skill',tierlist:'tier',troops:'troop',guide:'guide',age:'kingdom',calendar:'calendar',alliance:'alliance'}[name]||'')) n.classList.add('active');
   });
   if (name==='builds') renderBuilds();
   if (name==='powerup') renderPowerUp();
@@ -2006,6 +2183,8 @@ function goPage(name) {
   if (name==='tierlist') renderTierList();
   if (name==='troops') { applyT(33,33,34); analyzeTroops(33,33,34); }
   if (name==='age') renderAge();
+  if (name==='calendar') renderCalendar();
+  if (name==='alliance') renderAlliance();
   updateSidebar();
 }
 
@@ -2083,7 +2262,18 @@ function heroRosterCard(h) {
     </div>
     ${h.widget ? `<span class="widget-tag wt-${h.widget==='offensive'?'off':'def'}" style="font-size:10px">${h.widget==='offensive'?'⚔ Atk':'🛡 Def'}</span>` : ''}
     <div class="star-row" style="margin-top:6px">${owned ? starHtml : '<span style="font-size:10px;color:var(--muted)">Tap to add</span>'}</div>
-    ${owned ? (() => { const ps = heroPowerScore(h); const psCol = ps >= 400 ? 'var(--green)' : ps >= 200 ? 'var(--s)' : ps >= 80 ? 'var(--accent2)' : 'var(--red)'; const heroLv = (roster[h.id]||{}).level||1; return `<div style="display:flex;align-items:center;gap:6px;margin-top:4px"><span style="font-size:10px;color:var(--muted)">Power</span><span style="font-size:12px;font-weight:700;color:${psCol}">${ps}</span><span style="font-size:10px;color:var(--muted)">· Lv ${heroLv}</span></div>`; })() : ''}
+    ${owned ? (() => {
+      const r2 = roster[h.id]||{};
+      const hasManual = (r2.manualPower||0) > 0;
+      const ps = heroPowerScore(h);
+      const heroLv = r2.level||1;
+      if (hasManual) {
+        const psCol = ps >= 500000 ? 'var(--green)' : ps >= 100000 ? 'var(--s)' : ps >= 10000 ? 'var(--accent2)' : 'var(--muted)';
+        return `<div style="display:flex;align-items:center;gap:4px;margin-top:4px"><span style="font-size:10px;color:var(--green)">✓</span><span style="font-size:12px;font-weight:700;color:${psCol}">${ps.toLocaleString()}</span><span style="font-size:10px;color:var(--muted)">· Lv ${heroLv}</span></div>`;
+      } else {
+        return `<div style="display:flex;align-items:center;gap:4px;margin-top:4px"><span style="font-size:10px;color:var(--muted)">Lv ${heroLv}</span><span style="font-size:10px;color:var(--border);margin-left:auto">set power ↑</span></div>`;
+      }
+    })() : ''}
     ${gearSummary}
     ${skillSummary}
     ${owned ? `<div class="hrc-edit-btn" onclick="openHeroModal('${h.id}',event)">&#9881; Gear &amp; Skills</div>` : `<div style="margin-top:6px;font-size:10px;color:var(--muted)">${h.obtainDetail}</div>`}
@@ -2152,12 +2342,14 @@ function openHeroModal(id, e) {
   const h = HEROES.find(x => x.id === id);
   document.getElementById('modal-title').textContent = h.name;
   const ps = heroPowerScore(h);
-  const psCol = ps >= 400 ? 'var(--green)' : ps >= 200 ? 'var(--s)' : ps >= 80 ? 'var(--accent2)' : 'var(--red)';
+  const hasManual = (roster[id]?.manualPower||0) > 0;
+  const psCol = ps >= 500000 ? 'var(--green)' : ps >= 100000 ? 'var(--s)' : ps >= 10000 ? 'var(--accent2)' : 'var(--muted)';
+  const psLabel = hasManual ? '✓ In-Game Power' : 'Est. Power';
   document.getElementById('modal-sub').innerHTML =
     `<span class="class-tag ct-${h.class}" style="font-size:10px">${h.class}</span> &nbsp;` +
     `<span class="gen-tag">${h.gen==='E'?'Epic':'Gen '+h.gen}</span>` +
     (h.widget ? ` &nbsp;<span class="widget-tag wt-${h.widget==='offensive'?'off':'def'}" style="font-size:10px">${h.widget==='offensive'?'⚔ Offensive Widget':'🛡 Defensive Widget'}</span>` : '') +
-    ` &nbsp;<span style="font-size:11px;color:var(--muted)">Power</span> <span style="font-size:13px;font-weight:700;color:${psCol}">${ps}</span>`;
+    ` &nbsp;<span style="font-size:11px;color:var(--muted)">${psLabel}</span> <span style="font-size:13px;font-weight:700;color:${psCol}">${ps.toLocaleString()}</span>`;
   renderModalContent(id);
   document.getElementById('hero-modal').classList.remove('hidden');
 }
@@ -2285,6 +2477,26 @@ function setHeroLevel(id, lv) {
   refreshHeroCard(id);
   if (document.getElementById('page-builds').classList.contains('active')) renderCurrentEvent();
   if (document.getElementById('page-powerup').classList.contains('active')) renderPowerUp();
+}
+
+function setManualPower(id, val) {
+  if (!roster[id]) return;
+  roster[id].manualPower = Math.max(0, val || 0);
+  saveRoster();
+  refreshHeroCard(id);
+  // Refresh modal header power readout
+  const h = HEROES.find(x => x.id === id);
+  if (!h) return;
+  const ps = heroPowerScore(h);
+  const psCol = ps >= 500000 ? 'var(--green)' : ps >= 100000 ? 'var(--s)' : ps >= 10000 ? 'var(--accent2)' : 'var(--muted)';
+  const subEl = document.getElementById('modal-sub');
+  if (subEl) {
+    const label = roster[id].manualPower > 0 ? '✓ In-Game Power' : 'Est. Power';
+    subEl.innerHTML = subEl.innerHTML.replace(
+      /<span[^>]*>(?:✓ In-Game Power|Est\. Power|Power)<\/span>\s*<span[^>]*>[\d,]+<\/span>/,
+      `<span style="font-size:11px;color:var(--muted)">${label}</span> <span style="font-size:13px;font-weight:700;color:${psCol}">${ps.toLocaleString()}</span>`
+    );
+  }
 }
 
 function setGear(id, slot, field, val) {
@@ -2700,31 +2912,121 @@ function renderMysticTrials(ev) {
     armyAnalysis = `<div class="info-box" style="margin-bottom:12px">&#128202; <strong>Enter troop counts in the sidebar</strong> for personalised Mystic Trials army analysis.</div>`;
   }
 
+  const TRIALS = [
+    {
+      name:'Forest of Life', icon:'🌿', color:'var(--a)', borderColor:'#3ddc8450',
+      inf:60, cav:20, arc:20,
+      enemy:'Nature-based waves. Vine Golems and plant creatures with high HP.',
+      why:'Infantry absorb nature damage best. Their higher HP pool survives the sustained wave damage.',
+      stages:[
+        { n:'Stage 1–5', note:'50/25/25 baseline is fine. Infantry lead absorbs early damage.' },
+        { n:'Stage 6–10', note:'Bump infantry to 60%+. Enemies hit harder; cavalry/archer losses compound.' },
+        { n:'Stage 11–15', note:'Full 65/20/15 if you can. Archers last for minor DPS contribution.' },
+      ],
+      tips:[
+        'Do NOT use archer-heavy comps — nature enemies counter ranged with vine shields.',
+        'Heal your troops between stages if available — wounded troops carry into next stage.',
+        'If stalling on a stage, swap 5% cavalry → infantry.',
+      ]
+    },
+    {
+      name:'Crystal Cave', icon:'💎', color:'var(--cav)', borderColor:'#4d9fff50',
+      inf:25, cav:50, arc:25,
+      enemy:'Magic-crystal constructs with high magic resistance and counter-archer shields.',
+      why:'Cavalry mobility bypasses crystal shield rotation. Archer damage is partially absorbed by crystal armor.',
+      stages:[
+        { n:'Stage 1–5', note:'33/33/34 balanced works early. Crystal enemies are weaker.' },
+        { n:'Stage 6–10', note:'Shift to 25/50/25. Cavalry deals consistent damage through crystal shields.' },
+        { n:'Stage 11–15', note:'Heavy cavalry 20/60/20 for end stages. Archers get penalised hard.' },
+      ],
+      tips:[
+        'Avoid archer-heavy — crystal armor reduces ranged damage significantly.',
+        'Cavalry charge mechanic gets boosted damage vs crystal-type constructs.',
+        'If you have balanced troops, 33/33/34 clears most stages — only push cavalry for Stage 11+.',
+      ]
+    },
+    {
+      name:'Knowledge Nexus', icon:'📚', color:'var(--s)', borderColor:'#f0a50050',
+      inf:33, cav:33, arc:34,
+      enemy:'Arcane scholars and book golems — mixed attack types, no clear elemental weakness.',
+      why:'No strong counter — balanced composition maximises average performance across all enemy types.',
+      stages:[
+        { n:'Stage 1–5', note:'33/33/34 works all the way through early stages.' },
+        { n:'Stage 6–10', note:'Stick with balanced. Slight infantry lean (40/30/30) if taking heavy front-line hits.' },
+        { n:'Stage 11–15', note:'Balanced still optimal. Prioritise healing between stages over composition tweaks.' },
+      ],
+      tips:[
+        'This is the most forgiving trial — balanced comp clears reliably.',
+        'Focus your best troop tiers here. Higher tier troops = proportionally more damage and survivability.',
+        'Don\'t overthink it — if 33/33/34 stalls, try 40/30/30 infantry-lean.',
+      ]
+    },
+    {
+      name:'Molten Fort', icon:'🔥', color:'var(--sp)', borderColor:'#ff653550',
+      inf:15, cav:15, arc:70,
+      enemy:'Fire constructs and magma golems. Melee units take burn damage each round.',
+      why:'Archers deal from range and avoid the melee burn-tick. Infantry and cavalry take sustained fire damage standing in melee.',
+      stages:[
+        { n:'Stage 1–5', note:'50/25/25 is fine to start — early fire enemies are weak.' },
+        { n:'Stage 6–10', note:'Start shifting to archer-heavy 20/10/70. Burn tick kills melee fast.' },
+        { n:'Stage 11–15', note:'Max archers 10/10/80. Infantry and cavalry melt from burn DoT.' },
+      ],
+      tips:[
+        'Burn DoT makes melee units the worst choice for late Molten Fort stages.',
+        'This is the Terror Hunt troop ratio (10/10/80) — same principle, DPS from range only.',
+        'Heal wounded troops before entering late stages — burn + incoming hits compound fast.',
+        'If stuck: reduce cavalry first (they take full burn + physical), keep a small infantry buffer.',
+      ]
+    },
+  ];
+
+  const trialCards = TRIALS.map(t => {
+    const total = t.inf + t.cav + t.arc;
+    return `<div class="card" style="border-color:${t.borderColor}">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="font-size:22px">${t.icon}</span>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:${t.color}">${t.name}</div>
+          <div style="font-size:11px;color:var(--muted)">${t.enemy}</div>
+        </div>
+      </div>
+      <div class="card-title" style="color:${t.color}">Optimal Troop Ratio</div>
+      <div class="tbar" style="margin-bottom:6px">
+        <div class="tbar-seg ti" style="width:${t.inf}%">${t.inf>8?t.inf+'%':''}</div>
+        <div class="tbar-seg tc" style="width:${t.cav}%">${t.cav>8?t.cav+'%':''}</div>
+        <div class="tbar-seg ta" style="width:${t.arc}%">${t.arc>8?t.arc+'%':''}</div>
+      </div>
+      <div style="display:flex;gap:12px;font-size:11px;margin-bottom:10px">
+        <span><span style="color:var(--inf)">■</span> Infantry ${t.inf}%</span>
+        <span><span style="color:var(--cav)">■</span> Cavalry ${t.cav}%</span>
+        <span><span style="color:var(--arc)">■</span> Archer ${t.arc}%</span>
+      </div>
+      <div class="card-title" style="color:${t.color}">Why This Works</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6">${t.why}</div>
+      <div class="card-title" style="color:${t.color}">Stage Progression</div>
+      <div style="display:grid;gap:4px;margin-bottom:10px">
+        ${t.stages.map(s => `<div style="font-size:11px;padding:5px 10px;background:var(--surface2);border-radius:5px;border-left:3px solid ${t.color}">
+          <strong style="color:var(--text)">${s.n}:</strong> <span style="color:var(--muted)">${s.note}</span>
+        </div>`).join('')}
+      </div>
+      <div class="card-title" style="color:${t.color}">Key Tips</div>
+      <div style="display:grid;gap:3px">
+        ${t.tips.map(tip => `<div style="font-size:11px;padding:5px 10px;background:var(--surface2);border-radius:5px;border-left:3px solid ${t.borderColor};color:var(--muted)">${tip}</div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
   return `
-    <div class="warn-box">&#128104; <strong>Mystic Trials uses NO heroes.</strong> Success is purely based on your troop composition and ratios vs the enemy in each trial.</div>
+    <div class="warn-box" style="margin-bottom:12px">&#128104; <strong>Mystic Trials uses NO heroes.</strong> Pure troop math — ratios and tier matter. Adjust per trial using the guide below.</div>
     ${armyAnalysis}
-    <div class="g2">
-      <div class="card">
-        <div class="card-title">Recommended Starting Ratio</div>
-        <div class="tbar">
-          <div class="tbar-seg ti" style="width:50%">50%</div>
-          <div class="tbar-seg tc" style="width:25%">25%</div>
-          <div class="tbar-seg ta" style="width:25%">25%</div>
-        </div>
-        <div style="font-size:12px;color:var(--muted);margin-top:8px">Adjust per trial type using the Troop Calculator tab</div>
-      </div>
-      <div class="card">
-        <div class="card-title">The 4 Trials</div>
-        <div style="font-size:13px;line-height:2;color:var(--muted)">
-          &#127795; <strong style="color:var(--text)">Forest of Life</strong> — Nature waves, go Infantry-heavy<br>
-          &#128142; <strong style="color:var(--text)">Crystal Cave</strong> — Magic resistance, Cavalry helps<br>
-          &#128218; <strong style="color:var(--text)">Knowledge Nexus</strong> — Balanced composition<br>
-          &#128293; <strong style="color:var(--text)">Molten Fort</strong> — Fire enemies, Archer ranged advantage
-        </div>
-      </div>
+    <div class="info-box" style="margin-bottom:16px">
+      <strong>4 Trials, 4 different optimal ratios.</strong> The same troop pool is used for all 4 — adjust composition <em>before</em> each trial. Use the <strong>Troop Calculator</strong> tab to dial in exact numbers. Higher troop tier = significantly more damage and survivability across all trials.
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      ${trialCards}
     </div>
     <div class="card">
-      <div class="card-title">Tips</div>
+      <div class="card-title">General Mystic Trials Tips</div>
       <div style="display:grid;gap:6px">
         ${ev.tips.map(t => `<div style="font-size:13px;padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent)">${t}</div>`).join('')}
       </div>
@@ -3541,11 +3843,368 @@ function renderAge() {
 }
 
 // ============================================================
+// WEEKLY EVENT CALENDAR
+// ============================================================
+const KINGSHOT_API = 'https://kingshot.net/api';
+
+const CAL_SPECIALS = [
+  { id:'kvk',           label:'KvK Running',          cls:'cep-combat',   days:[0,1,2,3,4,5,6] },
+  { id:'sg',            label:'Strongest Governor',    cls:'cep-resource', days:[0,1,2,3,4,5,6] },
+  { id:'cesares',       label:'Cesares Fury',          cls:'cep-combat',   days:[0,1,2,3,4,5,6] },
+  { id:'swordland',     label:'Swordland Showdown',    cls:'cep-combat',   days:[0,1,2,3,4,5,6] },
+  { id:'flamedragon',   label:'Flamedragon Tyrant',    cls:'cep-combat',   days:[0,1,2,3,4,5,6] },
+  { id:'triallianceclash',label:'Tri-Alliance Clash',  cls:'cep-alliance', days:[0,1,2,3,4,5,6] },
+  { id:'herorally',     label:'Hero Rally',             cls:'cep-resource', days:[0,1,2,3,4,5,6] },
+  { id:'sanctuary',     label:'Sanctuary Battle',       cls:'cep-pve',      days:[0,1,2,3,4,5,6] },
+  { id:'mystic',        label:'Mystic Trials',          cls:'cep-pve',      days:[1,2,3,4] }, // Tue-Thu typically
+];
+
+// DAY index: 0=Mon,1=Tue,2=Wed,3=Thu,4=Fri,5=Sat,6=Sun
+const CAL_FIXED = {
+  // Arsenal Type 1 (Mon-Tue) — shown when calArsenalType===1
+  type1: [
+    { day:0, label:'Arsenal T1 Start', cls:'cep-arsenal', icon:'⚒️' },
+    { day:1, label:'Arsenal T1 Ends',  cls:'cep-arsenal', icon:'⚒️' },
+  ],
+  // Arsenal Type 2 (Fri-Sat) — shown when calArsenalType===2
+  type2: [
+    { day:4, label:'Arsenal T2 Start', cls:'cep-arsenal', icon:'⚒️' },
+    { day:5, label:'Arsenal T2 Ends',  cls:'cep-arsenal', icon:'⚒️' },
+  ],
+  // Alliance Brawl — always
+  always: [
+    { day:0, label:'Alliance Brawl',   cls:'cep-alliance', icon:'🛡' },
+    { day:1, label:'Alliance Brawl',   cls:'cep-alliance', icon:'🛡' },
+    { day:2, label:'Alliance Brawl',   cls:'cep-alliance', icon:'🛡' },
+    { day:3, label:'Alliance Brawl',   cls:'cep-alliance', icon:'🛡' },
+    { day:4, label:'Alliance Brawl',   cls:'cep-alliance', icon:'🛡' },
+    { day:5, label:'Alliance Brawl',   cls:'cep-alliance', icon:'🛡' },
+    { day:6, label:'Brawl Matchmaking 23:00 UTC', cls:'cep-alliance', icon:'🛡' },
+  ],
+};
+
+let calArsenalType = 1;
+let calActiveSpecials = new Set();
+let calData = {};
+
+function loadCalData() {
+  try {
+    const d = JSON.parse(localStorage.getItem('calData')||'{}');
+    if (d.arsenalType) calArsenalType = d.arsenalType;
+    if (d.activeSpecials) calActiveSpecials = new Set(d.activeSpecials);
+    calData = d;
+  } catch(e) {}
+}
+
+function saveCalData() {
+  localStorage.setItem('calData', JSON.stringify({
+    arsenalType: calArsenalType,
+    activeSpecials: [...calActiveSpecials],
+  }));
+}
+
+function setArsenalType(t) {
+  calArsenalType = t;
+  saveCalData();
+  document.getElementById('cal-a1-btn').classList.toggle('active', t===1);
+  document.getElementById('cal-a2-btn').classList.toggle('active', t===2);
+  renderCalendarGrid();
+}
+
+function toggleCalSpecial(id) {
+  if (calActiveSpecials.has(id)) calActiveSpecials.delete(id);
+  else calActiveSpecials.add(id);
+  saveCalData();
+  document.querySelectorAll(`[data-cal-special="${id}"]`).forEach(el => {
+    el.classList.toggle('active', calActiveSpecials.has(id));
+  });
+  renderCalendarGrid();
+}
+
+function renderCalendar() {
+  // Arsenal buttons
+  document.getElementById('cal-a1-btn').classList.toggle('active', calArsenalType===1);
+  document.getElementById('cal-a2-btn').classList.toggle('active', calArsenalType===2);
+
+  // Special event toggles
+  const specEl = document.getElementById('cal-special-toggles');
+  specEl.innerHTML = CAL_SPECIALS.map(s =>
+    `<div class="cal-toggle-btn ${calActiveSpecials.has(s.id)?'active':''}" data-cal-special="${s.id}" onclick="toggleCalSpecial('${s.id}')">${s.label}</div>`
+  ).join('');
+
+  renderCalendarGrid();
+}
+
+function renderCalendarGrid() {
+  const today = new Date();
+  // Mon-based week
+  const dow = (today.getDay() + 6) % 7; // 0=Mon
+  const weekStart = new Date(today);
+  weekStart.setDate(today.getDate() - dow);
+
+  const DAY_NAMES = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  // Build events per day
+  const dayEvents = Array.from({length:7}, () => []);
+
+  CAL_FIXED.always.forEach(ev => dayEvents[ev.day].push(ev));
+  (calArsenalType===1 ? CAL_FIXED.type1 : CAL_FIXED.type2).forEach(ev => dayEvents[ev.day].push(ev));
+  CAL_SPECIALS.forEach(s => {
+    if (calActiveSpecials.has(s.id)) {
+      s.days.forEach(d => dayEvents[d].push({ label: s.label, cls: s.cls, icon:'', day:d }));
+    }
+  });
+
+  const todayDow = dow;
+  const grid = document.getElementById('cal-week-grid');
+  grid.innerHTML = DAY_NAMES.map((name, i) => {
+    const d = new Date(weekStart);
+    d.setDate(weekStart.getDate() + i);
+    const isToday = i === todayDow;
+    const pills = dayEvents[i].map(ev =>
+      `<span class="cal-event-pill ${ev.cls}">${ev.icon ? ev.icon+' ' : ''}${ev.label}</span>`
+    ).join('');
+    return `<div class="cal-day ${isToday?'today':''}">
+      <div class="cal-day-name">${name}</div>
+      <div class="cal-day-num">${d.getDate()} ${MONTH_NAMES[d.getMonth()]}</div>
+      ${pills || '<span style="font-size:10px;color:var(--border)">—</span>'}
+    </div>`;
+  }).join('');
+
+  // Upcoming events card
+  const upcoming = [];
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(weekStart);
+    d.setDate(weekStart.getDate() + i);
+    const di = i % 7;
+    dayEvents[di].forEach(ev => {
+      if (i >= todayDow) upcoming.push({ ...ev, date: d, daysFrom: i - todayDow });
+    });
+  }
+  const ucEl = document.getElementById('cal-upcoming');
+  ucEl.innerHTML = upcoming.slice(0, 6).map(ev => {
+    const label = ev.daysFrom === 0 ? 'Today' : ev.daysFrom === 1 ? 'Tomorrow' : `In ${ev.daysFrom} days`;
+    const col = ev.daysFrom === 0 ? 'var(--accent)' : ev.daysFrom <= 2 ? 'var(--sp)' : 'var(--muted)';
+    return `<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface2);border-radius:6px;margin-bottom:6px;border:1px solid var(--border)">
+      <span class="cal-event-pill ${ev.cls}" style="margin:0;flex-shrink:0">${ev.icon||''} ${ev.label}</span>
+      <span style="font-size:12px;color:${col};font-weight:700;margin-left:auto">${label}</span>
+    </div>`;
+  }).join('') || '<div class="no-data" style="padding:12px">No upcoming events found</div>';
+}
+
+// ============================================================
+// ALLIANCE HQ + API
+// ============================================================
+let allianceData = { name:'', tag:'', kingdom:'', rules:'', schedule:'', members:[] };
+
+function loadAllianceData() {
+  try {
+    const d = JSON.parse(localStorage.getItem('allianceData')||'{}');
+    allianceData = Object.assign({ name:'', tag:'', kingdom:'', rules:'', schedule:'', members:[] }, d);
+  } catch(e) {}
+}
+
+function saveAllianceData() {
+  allianceData.name     = document.getElementById('ally-name')?.value || allianceData.name;
+  allianceData.tag      = document.getElementById('ally-tag')?.value  || allianceData.tag;
+  allianceData.kingdom  = document.getElementById('ally-kingdom')?.value || allianceData.kingdom;
+  allianceData.rules    = document.getElementById('ally-rules')?.value || allianceData.rules;
+  allianceData.schedule = document.getElementById('ally-schedule')?.value || allianceData.schedule;
+  localStorage.setItem('allianceData', JSON.stringify(allianceData));
+}
+
+function renderAlliance() {
+  document.getElementById('ally-name').value     = allianceData.name || '';
+  document.getElementById('ally-tag').value      = allianceData.tag  || '';
+  document.getElementById('ally-kingdom').value  = allianceData.kingdom || '';
+  document.getElementById('ally-rules').value    = allianceData.rules || '';
+  document.getElementById('ally-schedule').value = allianceData.schedule || '';
+  renderMemberTable();
+}
+
+function addMember() {
+  allianceData.members.push({ name:'', role:'R3', playerId:'', level:'', power:'', notes:'' });
+  saveAllianceData();
+  renderMemberTable();
+}
+
+function removeMember(idx) {
+  allianceData.members.splice(idx, 1);
+  saveAllianceData();
+  renderMemberTable();
+}
+
+function updateMember(idx, field, val) {
+  allianceData.members[idx][field] = val;
+  saveAllianceData();
+}
+
+function renderMemberTable() {
+  const tbody = document.getElementById('member-tbody');
+  if (!tbody) return;
+  const ROLES = ['R5','R4','R3','R2','R1'];
+  tbody.innerHTML = allianceData.members.map((m, i) => `
+    <tr>
+      <td>${m.avatar ? `<img class="player-avatar" src="${m.avatar}" onerror="this.style.display='none'">` : `<div style="width:28px;height:28px;border-radius:50%;background:var(--surface2);border:2px solid var(--border)"></div>`}</td>
+      <td><input value="${escHtml(m.name)}" placeholder="Member name" style="width:120px" oninput="updateMember(${i},'name',this.value)"></td>
+      <td>
+        <select onchange="updateMember(${i},'role',this.value)">
+          ${ROLES.map(r=>`<option value="${r}" ${m.role===r?'selected':''}>${r}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <div style="display:flex;gap:4px;align-items:center">
+          <input value="${escHtml(m.playerId)}" placeholder="Player ID" style="width:90px" oninput="updateMember(${i},'playerId',this.value)">
+          <button class="btn-icon" onclick="lookupMember(${i})" title="Fetch from API">🔍</button>
+        </div>
+        ${m.kingdom ? `<div style="font-size:10px;color:var(--muted);margin-top:2px">K${m.kingdom}</div>` : ''}
+      </td>
+      <td><span style="font-size:12px;color:var(--text)">${m.level ? `<span class="api-badge">✓ Lv${m.level}</span>` : '—'}</span></td>
+      <td><input type="number" value="${m.power||''}" placeholder="e.g. 1500000" style="width:110px" oninput="updateMember(${i},'power',this.value)">
+          ${m.power ? `<div style="font-size:10px;color:var(--muted)">${Number(m.power).toLocaleString()}</div>` : ''}</td>
+      <td><input value="${escHtml(m.notes)}" placeholder="Notes..." style="width:130px" oninput="updateMember(${i},'notes',this.value)"></td>
+      <td><button class="btn-icon" onclick="removeMember(${i})" style="color:var(--red);border-color:#ff4f4f40">✕</button></td>
+    </tr>
+  `).join('') || `<tr><td colspan="8" class="no-data">No members yet — click "+ Add Member"</td></tr>`;
+}
+
+function escHtml(str) {
+  return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function lookupMember(idx) {
+  const m = allianceData.members[idx];
+  if (!m?.playerId) { alert('Enter a Player ID first'); return; }
+  try {
+    const res = await fetch(`${KINGSHOT_API}/player-info?playerId=${encodeURIComponent(m.playerId)}`);
+    const json = await res.json();
+    if (json.status === 'success' && json.data) {
+      const d = json.data;
+      m.name    = m.name || d.name;
+      m.level   = d.levelRendered || d.level;
+      m.kingdom = d.kingdom;
+      m.avatar  = d.profilePhoto || '';
+      saveAllianceData();
+      renderMemberTable();
+    } else {
+      alert('Player not found. Check the Player ID.');
+    }
+  } catch(e) {
+    alert('API error — check your connection and try again.');
+  }
+}
+
+async function fetchKingdomInfo() {
+  const kingdomId = document.getElementById('ally-kingdom').value;
+  if (!kingdomId) { alert('Enter a kingdom number first'); return; }
+  const infoEl = document.getElementById('ally-kingdom-info');
+  infoEl.style.display = '';
+  infoEl.textContent = '⏳ Looking up…';
+  try {
+    const res = await fetch(`${KINGSHOT_API}/kingdom-tracker?kingdomId=${encodeURIComponent(kingdomId)}`);
+    const json = await res.json();
+    const server = json.data?.servers?.[0];
+    if (server) {
+      const openDate = new Date(server.openTime);
+      const daysOld = Math.floor((Date.now() - openDate)/86400000) + 1;
+      infoEl.innerHTML = `<span class="api-badge">✓ Verified</span>&nbsp; Kingdom <strong>#${server.kingdomId}</strong> opened <strong>${openDate.toLocaleDateString()}</strong> — <strong>${daysOld} days</strong> old${server.isExclusive?' · Exclusive server':''} ${server.languages?.length?'· '+server.languages.join(', '):''}`;
+      // Also pre-fill age tracker
+      if (!document.getElementById('age-start-date').value) {
+        document.getElementById('age-start-date').value = openDate.toISOString().split('T')[0];
+        saveAgeData();
+      }
+    } else {
+      infoEl.textContent = 'Kingdom not found in database. Try entering the date manually in Kingdom Age tracker.';
+    }
+  } catch(e) {
+    infoEl.textContent = 'API error — check connection.';
+  }
+}
+
+async function fetchGiftCodes() {
+  const listEl = document.getElementById('gift-codes-list');
+  const statusEl = document.getElementById('gc-api-status');
+  listEl.innerHTML = '<div class="no-data" style="padding:12px"><span class="spin">⟳</span> Loading…</div>';
+  statusEl.innerHTML = '<span class="api-status api-loading">⟳ fetching</span>';
+  try {
+    const res = await fetch(`${KINGSHOT_API}/gift-codes`);
+    const json = await res.json();
+    if (json.status === 'success') {
+      const codes = json.data?.giftCodes || [];
+      statusEl.innerHTML = `<span class="api-status api-ok">✓ ${codes.length} active</span>`;
+      if (!codes.length) {
+        listEl.innerHTML = '<div class="no-data" style="padding:12px">No active gift codes right now</div>';
+        return;
+      }
+      listEl.innerHTML = codes.map(c => {
+        const exp = c.expiresAt ? `Expires ${new Date(c.expiresAt).toLocaleDateString()}` : 'No expiry';
+        return `<div class="gift-code-card">
+          <div class="gift-code-val">${escHtml(c.code)}</div>
+          <div class="gift-code-exp">${exp}</div>
+          <button class="btn-icon" onclick="navigator.clipboard.writeText('${escHtml(c.code)}').then(()=>this.textContent='✓').catch(()=>{})" title="Copy">📋</button>
+        </div>`;
+      }).join('');
+    } else {
+      statusEl.innerHTML = '<span class="api-status api-err">✗ error</span>';
+      listEl.innerHTML = '<div class="no-data" style="padding:12px">Failed to load codes</div>';
+    }
+  } catch(e) {
+    statusEl.innerHTML = '<span class="api-status api-err">✗ offline</span>';
+    listEl.innerHTML = '<div class="no-data" style="padding:12px">Could not reach API</div>';
+  }
+}
+
+async function fetchKvkHistory() {
+  const kingdom = document.getElementById('ally-kingdom')?.value || allianceData.kingdom;
+  if (!kingdom) { alert('Set kingdom number in Alliance Info first'); return; }
+  const listEl = document.getElementById('kvk-history-list');
+  const statusEl = document.getElementById('kvk-api-status');
+  listEl.innerHTML = '<div class="no-data" style="padding:12px"><span class="spin">⟳</span> Loading…</div>';
+  statusEl.innerHTML = '<span class="api-status api-loading">⟳ fetching</span>';
+  try {
+    const res = await fetch(`${KINGSHOT_API}/kvk/matches?kingdom_a=${kingdom}&limit=10`);
+    const json = await res.json();
+    if (json.status === 'success') {
+      const matches = json.data || [];
+      statusEl.innerHTML = `<span class="api-status api-ok">✓ ${matches.length} matches</span>`;
+      if (!matches.length) {
+        listEl.innerHTML = '<div class="no-data" style="padding:12px">No KvK matches found for this kingdom</div>';
+        return;
+      }
+      listEl.innerHTML = matches.map(m => {
+        const ourKingdom = parseInt(kingdom);
+        const won = m.castle_winner === ourKingdom;
+        const opponent = m.kingdom_a === ourKingdom ? m.kingdom_b : m.kingdom_a;
+        const role = m.attacker === ourKingdom ? 'Attacker' : 'Defender';
+        const captured = m.castle_captured ? '🏰 Castle captured' : '🛡 Held';
+        return `<div class="kvk-row">
+          <span style="font-size:16px">${won?'🏆':'💀'}</span>
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:13px">vs Kingdom ${opponent} <span style="font-size:10px;font-weight:400;color:var(--muted)">${role}</span></div>
+            <div style="font-size:11px;color:var(--muted)">${m.kvk_title||'KvK'} · ${new Date(m.season_date||m.created_at).toLocaleDateString()} · ${captured}</div>
+          </div>
+          <span style="font-size:13px;font-weight:700;${won?'color:var(--a)':'color:var(--red)'}">${won?'WIN':'LOSS'}</span>
+        </div>`;
+      }).join('');
+    } else {
+      statusEl.innerHTML = '<span class="api-status api-err">✗ error</span>';
+      listEl.innerHTML = '<div class="no-data" style="padding:12px">Failed to load KvK history</div>';
+    }
+  } catch(e) {
+    statusEl.innerHTML = '<span class="api-status api-err">✗ offline</span>';
+    listEl.innerHTML = '<div class="no-data" style="padding:12px">Could not reach API</div>';
+  }
+}
+
+// ============================================================
 // INIT
 // ============================================================
 loadRoster();
 loadTroops();
 loadAgeData();
+loadCalData();
+loadAllianceData();
 renderArmyWidget();
 buildRosterPage();
 updateSidebar();
@@ -3554,7 +4213,7 @@ renderTierList();
 
 // Fix nav click detection
 document.querySelectorAll('.nav-item').forEach((el, i) => {
-  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age'];
+  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance'];
   el.addEventListener('click', () => goPage(pages[i]));
 });
 </script>
