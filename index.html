@@ -4598,14 +4598,24 @@ const AGE_MILESTONES = [
 ];
 
 function loadAgeData() {
+  let d = {};
   try {
-    const d = JSON.parse(localStorage.getItem('ageData')||'{}');
+    d = JSON.parse(localStorage.getItem('ageData')||'{}');
     if (d.startDate) document.getElementById('age-start-date').value = d.startDate;
     if (d.kingdomNum) document.getElementById('age-kingdom-num').value = d.kingdomNum;
     if (d.alliance)   document.getElementById('age-alliance').value   = d.alliance;
     if (d.notes)      document.getElementById('age-notes').value      = d.notes;
-    return d;
-  } catch(e) { return {}; }
+  } catch(e) {}
+  fsGet('ageData').then(fd => {
+    if (!fd) return;
+    localStorage.setItem('ageData', JSON.stringify(fd));
+    if (fd.startDate) document.getElementById('age-start-date').value = fd.startDate;
+    if (fd.kingdomNum) document.getElementById('age-kingdom-num').value = fd.kingdomNum;
+    if (fd.alliance)   document.getElementById('age-alliance').value   = fd.alliance;
+    if (fd.notes)      document.getElementById('age-notes').value      = fd.notes;
+    if (document.getElementById('page-age')?.classList.contains('active')) renderAge();
+  }).catch(() => {});
+  return d;
 }
 
 function saveAgeData() {
@@ -4617,6 +4627,7 @@ function saveAgeData() {
     milestones: getMilestoneState(),
   };
   localStorage.setItem('ageData', JSON.stringify(d));
+  fsSet('ageData', d);
 }
 
 function getMilestoneState() {
@@ -5993,7 +6004,7 @@ function clearDataSection(section) {
   const labels = { roster:'roster', alliance:'alliance data', all:'ALL data' };
   if (!confirm(`Delete ${labels[section]||section}? This cannot be undone.`)) return;
   if (section === 'roster') { localStorage.removeItem('roster'); localStorage.removeItem('skillLevels'); loadRoster(); buildRosterPage(); updateSidebar(); }
-  else if (section === 'alliance') { ['allianceData','kvkPlan','stockpileData','slRoster','allianceTech'].forEach(k => localStorage.removeItem(k)); loadAllianceData(); loadKvkPlan(); loadStockpileData(); slLoadRoster(); loadAllianceTech(); }
+  else if (section === 'alliance') { ['allianceData','kvkPlan','stockpileData','slRoster','allianceTech','ageData','calData'].forEach(k => localStorage.removeItem(k)); loadAllianceData(); loadKvkPlan(); loadStockpileData(); slLoadRoster(); loadAllianceTech(); loadAgeData(); loadCalData(); }
   else if (section === 'all') { EXPORT_KEYS.forEach(k => localStorage.removeItem(k)); location.reload(); }
 }
 
@@ -6044,13 +6055,20 @@ function loadCalData() {
     if (d.activeSpecials) calActiveSpecials = new Set(d.activeSpecials);
     calData = d;
   } catch(e) {}
+  fsGet('calData').then(fd => {
+    if (!fd) return;
+    if (fd.arsenalType) calArsenalType = fd.arsenalType;
+    if (fd.activeSpecials) calActiveSpecials = new Set(fd.activeSpecials);
+    calData = fd;
+    localStorage.setItem('calData', JSON.stringify(fd));
+    if (document.getElementById('page-calendar')?.classList.contains('active')) renderCalendar();
+  }).catch(() => {});
 }
 
 function saveCalData() {
-  localStorage.setItem('calData', JSON.stringify({
-    arsenalType: calArsenalType,
-    activeSpecials: [...calActiveSpecials],
-  }));
+  const d = { arsenalType: calArsenalType, activeSpecials: [...calActiveSpecials] };
+  localStorage.setItem('calData', JSON.stringify(d));
+  fsSet('calData', d);
 }
 
 function setArsenalType(t) {
