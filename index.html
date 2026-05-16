@@ -1294,15 +1294,61 @@ option { background: var(--surface2); }
     <p>Track your alliance's collective research progress and see what to prioritize next. R4/R5 can update levels.</p>
   </div>
   <div class="info-box" style="margin-bottom:16px">
-    Synced to cloud — changes are visible to all alliance members who use this tool. Priority ratings are tuned for a PvP-focused alliance.
+    Synced to cloud — changes are visible to all alliance members who use this tool.
   </div>
+
+  <!-- Phase Roadmap -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:16px">
+    <div class="card" style="border-left:3px solid var(--a)">
+      <div style="font-weight:700;color:var(--a);margin-bottom:6px">📈 Phase 1 · Days 1–30</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Rush Growth tech. Faster builds compound into higher Town Centers and better troop tiers for everyone.</div>
+      <div style="font-size:11px;line-height:1.8">
+        <div>🥇 Building Speed</div>
+        <div>🥇 Research Speed</div>
+        <div>🥈 Cooperative Protocols</div>
+        <div>🥉 Gathering Speed</div>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--sp)">
+      <div style="font-weight:700;color:var(--sp);margin-bottom:6px">⚔️ Phase 2 · Days 31–90</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Pivot to Battle 2–3 weeks before first inter-server event or contesting Level 3 Capital nodes.</div>
+      <div style="font-size:11px;line-height:1.8">
+        <div>🥇 Rally Cap Expansion</div>
+        <div>🥇 March Speed</div>
+        <div>🥈 Squad Attack / Defense</div>
+        <div>🥉 Territory prerequisites</div>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--b)">
+      <div style="font-weight:700;color:var(--b);margin-bottom:6px">🏆 Phase 3 · Days 90+</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Max all Battle tech. Prerequisite for competitive T11 Truegold rallies. Finish remaining Growth.</div>
+      <div style="font-size:11px;line-height:1.8">
+        <div>🥇 All Battle tech to max</div>
+        <div>🥇 Covenant Making</div>
+        <div>🥈 Remaining Growth tech</div>
+        <div>🥉 Territory as needed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Donation Tips -->
+  <div class="card" style="margin-bottom:16px;background:var(--surface2)">
+    <div style="font-weight:700;color:var(--accent);margin-bottom:10px">💰 Member Donation Rules</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;font-size:12px;color:var(--muted)">
+      <div><strong style="color:var(--text)">Never sit at 20/20.</strong> Donation chances cap at 20. Sitting full = bleeding Alliance Coins. Log in every few hours to dump them.</div>
+      <div><strong style="color:var(--text)">Follow the R4 highlight.</strong> Always donate to the star-marked node. If full, donate to any Growth tier.</div>
+      <div><strong style="color:var(--text)">Gem threshold.</strong> Using 10g/20g/50g donations is fine when rushing Teleports. F2P: stop past 50 gems/click.</div>
+      <div><strong style="color:var(--text)">Alliance Coins = Teleports + Shields.</strong> The shop sells Advanced Teleports and 8-Hour Peace Shields — critical for war movement and going offline safely.</div>
+    </div>
+  </div>
+
   <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
     <button class="btn" onclick="renderAllianceTech()">&#8635; Refresh</button>
     <select id="at-filter" onchange="renderAllianceTech()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 10px;font-size:13px">
-      <option value="">All Categories</option>
-      <option value="military">Military</option>
-      <option value="development">Development</option>
-      <option value="governance">Governance</option>
+      <option value="">All Trees</option>
+      <option value="growth">Growth (Economy)</option>
+      <option value="battle">Battle (Combat)</option>
+      <option value="territory">Territory (Guild)</option>
     </select>
     <select id="at-sort" onchange="renderAllianceTech()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 10px;font-size:13px">
       <option value="priority">Sort: Priority</option>
@@ -5499,30 +5545,35 @@ function renderPowerBoard() {
 // ALLIANCE TECH TREE
 // ============================================================
 const ALLIANCE_TECH_TREE = [
-  { id:'military', name:'Military', icon:'⚔️', color:'var(--sp)',
+  { id:'growth', name:'Growth', icon:'📈', color:'var(--a)', phase:'Phase 1 · Days 1–30',
+    notes:'Rush first. Faster construction compounds into higher Town Centers, better troop tiers, and higher personal research output for the entire alliance.',
     nodes:[
-      { id:'at_atk',   name:'Alliance ATK',       maxLv:10, bonus:'+0.5% all troop ATK/lv',  priority:5, desc:'Boosts every member\'s troop attack in alliance events' },
-      { id:'at_def',   name:'Alliance DEF',       maxLv:10, bonus:'+0.5% all troop DEF/lv',  priority:4, desc:'Reduces damage taken by all members\' troops' },
-      { id:'at_hp',    name:'Alliance HP',        maxLv:10, bonus:'+0.5% all troop HP/lv',   priority:4, desc:'More troop survivability across the board' },
-      { id:'at_rally', name:'Rally Capacity',     maxLv:5,  bonus:'+50k troop slots/lv',      priority:5, desc:'Larger rallies — critical for taking high-level targets' },
-      { id:'at_march', name:'March Speed',        maxLv:10, bonus:'+2% march speed/lv',      priority:3, desc:'Faster march arrival in events' },
-      { id:'at_leth',  name:'Lethality',          maxLv:5,  bonus:'+1% troop lethality/lv',  priority:4, desc:'Increases kill percentage in battle' },
+      { id:'at_build',  name:'Building Speed',        maxLv:10, bonus:'+2% construction/lv', priority:5, desc:'Directly compounds — higher Town Centers unlock better troop tiers faster for everyone' },
+      { id:'at_res',    name:'Research Speed',         maxLv:10, bonus:'+2% research/lv',     priority:5, desc:'Faster personal research for all members — compound effect with Building Speed' },
+      { id:'at_coop',   name:'Cooperative Protocols',  maxLv:5,  bonus:'+Embassy assist time', priority:4, desc:'Increases Embassy assist times — mandatory for the Batch Healing trick during KvK/Castle Battle' },
+      { id:'at_gather', name:'Gathering Speed',         maxLv:5,  bonus:'+5% gather speed/lv', priority:3, desc:'Faster resource trips, useful mid-game but lower return than build/research early on' },
+      { id:'at_prod',   name:'Resource Production',    maxLv:5,  bonus:'+5% resource output/lv',priority:2, desc:'Lower return than raw construction speed — skip until Growth core is done' },
     ]
   },
-  { id:'development', name:'Development', icon:'🏗️', color:'var(--a)',
+  { id:'battle', name:'Battle', icon:'⚔️', color:'var(--sp)', phase:'Phase 2 · Days 31–90',
+    notes:'Pivot 2–3 weeks before your first inter-server event or when contesting Level 3 Capital nodes. The alliance that puts the most troops on a node fastest wins early wars.',
     nodes:[
-      { id:'at_train', name:'Training Speed',     maxLv:10, bonus:'+3% training speed/lv',   priority:4, desc:'Rebuild armies faster after battles — high priority for active PvP' },
-      { id:'at_const', name:'Construction Speed', maxLv:10, bonus:'+2% construction/lv',     priority:2, desc:'Faster building upgrades for all members' },
-      { id:'at_res',   name:'Research Speed',     maxLv:10, bonus:'+2% research speed/lv',   priority:2, desc:'Faster personal research for all members' },
-      { id:'at_load',  name:'Load Capacity',      maxLv:5,  bonus:'+10% gather load/lv',     priority:1, desc:'More resources per gather trip' },
+      { id:'at_rally',  name:'Rally Cap Expansion',   maxLv:5,  bonus:'+50k troop slots/lv',  priority:5, desc:'More troops per rally = stronger hits. Critical for taking high-level targets and T11 Truegold rallies' },
+      { id:'at_march',  name:'March Speed',            maxLv:10, bonus:'+2% march speed/lv',   priority:5, desc:'Faster arrival in events and wars — asymmetric advantage in early server skirmishes' },
+      { id:'at_atk',    name:'Squad Attack',           maxLv:10, bonus:'+0.5% all troop ATK/lv',priority:4, desc:'Massive asymmetric spike when fighting alliances that neglected this node' },
+      { id:'at_def',    name:'Squad Defense',          maxLv:10, bonus:'+0.5% all troop DEF/lv',priority:4, desc:'Reduces damage taken by all members\' troops in every event' },
+      { id:'at_hp',     name:'Squad HP',               maxLv:10, bonus:'+0.5% all troop HP/lv', priority:3, desc:'More troop survivability — max with ATK/DEF in Phase 3' },
     ]
   },
-  { id:'governance', name:'Governance', icon:'🏰', color:'var(--b)',
+  { id:'territory', name:'Territory', icon:'🗺️', color:'var(--b)', phase:'Situational',
+    notes:'Level only as dictated by geographical necessity. Member Capacity and Banners are always needed. Tower defense nodes are only relevant if actively contested in your home region.',
     nodes:[
-      { id:'at_size',  name:'Member Capacity',    maxLv:5,  bonus:'+5 member slots/lv',      priority:5, desc:'Unlock more alliance member slots — do this first' },
-      { id:'at_reinf', name:'Reinforcement Cap',  maxLv:10, bonus:'+5k troop limit/lv',      priority:3, desc:'More troops can reinforce alliance buildings and flag' },
-      { id:'at_gift',  name:'Alliance Gift Level',maxLv:5,  bonus:'+1 gift tier/lv',         priority:3, desc:'Better chest rewards from alliance activity gifts' },
-      { id:'at_help',  name:'Help Boost',         maxLv:5,  bonus:'+2% speed per help/lv',   priority:2, desc:'Each alliance help reduces more time from builds/research' },
+      { id:'at_size',    name:'Member Capacity',       maxLv:5,  bonus:'+5 member slots/lv',   priority:5, desc:'Absorb active players from dying alliances. Unlock early when recruiting — your most important Territory node' },
+      { id:'at_banners', name:'Alliance Banners',      maxLv:5,  bonus:'+banner placements/lv', priority:4, desc:'Need enough banners to reach crucial resource nodes and fortresses — level as territory expands' },
+      { id:'at_covenant',name:'Covenant Making',       maxLv:5,  bonus:'Enables more contributions', priority:3, desc:'Phase 3 priority — enables infinite contributions so active members can keep donating past the cap' },
+      { id:'at_store',   name:'Storehouse Expansion',  maxLv:5,  bonus:'+alliance storage/lv',  priority:2, desc:'More resources storable for tech donations — useful when pushing heavy research phases' },
+      { id:'at_plains',  name:'Plains Enrichment',     maxLv:5,  bonus:'+resource node output', priority:1, desc:'Low return unless your alliance controls large farming territory — situational' },
+      { id:'at_tower',   name:'Tower Defense',         maxLv:5,  bonus:'+tower combat stats/lv',priority:2, desc:'Only level if your alliance is actively being contested in your home region' },
     ]
   }
 ];
@@ -5556,67 +5607,93 @@ function renderAllianceTech() {
     totalLevels += (allianceTechData[n.id] || 0);
     maxLevels   += n.maxLv;
   }));
-  const pct = maxLevels ? Math.round(totalLevels / maxLevels * 100) : 0;
+  const overallPct = maxLevels ? Math.round(totalLevels / maxLevels * 100) : 0;
   const statsEl = document.getElementById('at-stats');
   if (statsEl) statsEl.innerHTML = [
     { label:'Total Nodes',    val: totalNodes },
     { label:'Levels Unlocked',val: `${totalLevels} / ${maxLevels}` },
-    { label:'Completion',     val: `${pct}%` },
+    { label:'Completion',     val: `${overallPct}%` },
   ].map(s => `<div style="text-align:center;padding:10px;background:var(--surface2);border-radius:6px;border:1px solid var(--border)">
     <div style="font-size:20px;font-weight:800;color:var(--accent)">${s.val}</div>
     <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">${s.label}</div>
   </div>`).join('');
 
-  // Build flat node list
-  let nodes = [];
-  ALLIANCE_TECH_TREE.forEach(cat => {
-    if (filter && cat.id !== filter) return;
-    cat.nodes.forEach(n => nodes.push({ ...n, catId: cat.id, catName: cat.name, catColor: cat.color, catIcon: cat.icon }));
-  });
-
-  // Sort
-  if (sort === 'priority') nodes.sort((a,b) => b.priority - a.priority);
-  else if (sort === 'progress') nodes.sort((a,b) => {
-    const pA = (allianceTechData[a.id]||0) / a.maxLv;
-    const pB = (allianceTechData[b.id]||0) / b.maxLv;
-    return pA - pB;
-  });
-  else nodes.sort((a,b) => a.name.localeCompare(b.name));
-
-  const stars = p => '★'.repeat(p) + '☆'.repeat(5-p);
+  const stars  = p => '★'.repeat(p) + '☆'.repeat(5-p);
   const priCol = p => p >= 5 ? 'var(--sp)' : p >= 4 ? 'var(--accent)' : p >= 3 ? 'var(--b)' : 'var(--muted)';
 
-  const board = document.getElementById('at-board');
-  if (!board) return;
-  board.innerHTML = nodes.map(n => {
-    const cur = allianceTechData[n.id] || 0;
+  const nodeCard = (n, cat) => {
+    const cur  = allianceTechData[n.id] || 0;
     const pct  = Math.round(cur / n.maxLv * 100);
     const done = cur >= n.maxLv;
-    return `<div class="card" style="margin-bottom:10px;border-left:3px solid ${n.catColor};opacity:${done?'0.7':'1'}">
+    return `<div class="card" style="margin-bottom:8px;border-left:3px solid ${cat.color};opacity:${done?'0.65':'1'}">
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
         <div style="flex:1;min-width:180px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
-            <span style="font-size:11px;background:var(--surface3);color:var(--muted);padding:1px 6px;border-radius:4px">${n.catIcon} ${n.catName}</span>
-            ${done ? '<span style="font-size:11px;color:var(--green);font-weight:700">✓ MAXED</span>' : ''}
+          <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;flex-wrap:wrap">
+            <span style="font-size:10px;background:var(--surface3);color:var(--muted);padding:1px 6px;border-radius:4px">${cat.icon} ${cat.name} · ${cat.phase}</span>
+            ${done ? '<span style="font-size:10px;color:var(--green);font-weight:700">✓ MAXED</span>' : ''}
           </div>
-          <div style="font-weight:700;font-size:15px;color:var(--text);margin-bottom:2px">${n.name}</div>
-          <div style="font-size:12px;color:var(--muted);margin-bottom:4px">${n.desc}</div>
-          <div style="font-size:11px;color:${n.catColor}">${n.bonus}</div>
+          <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:2px">${n.name}</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:3px">${n.desc}</div>
+          <div style="font-size:11px;color:${cat.color};font-weight:600">${n.bonus}</div>
         </div>
         <div style="min-width:160px;text-align:right">
-          <div style="color:${priCol(n.priority)};font-size:13px;letter-spacing:1px;margin-bottom:6px">${stars(n.priority)}</div>
+          <div style="color:${priCol(n.priority)};font-size:13px;letter-spacing:2px;margin-bottom:6px">${stars(n.priority)}</div>
           <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end">
             <button onclick="atAdjust('${n.id}',${n.maxLv},-1)" style="width:28px;height:28px;border-radius:50%;background:var(--surface3);border:1px solid var(--border);color:var(--text);cursor:pointer;font-size:16px;line-height:1">−</button>
             <span style="min-width:60px;text-align:center;font-weight:700;font-size:15px;color:var(--text)">Lv ${cur} / ${n.maxLv}</span>
             <button onclick="atAdjust('${n.id}',${n.maxLv},+1)" style="width:28px;height:28px;border-radius:50%;background:var(--surface3);border:1px solid var(--border);color:var(--accent);cursor:pointer;font-size:16px;line-height:1">+</button>
           </div>
           <div style="margin-top:6px;background:var(--surface3);border-radius:4px;height:4px;overflow:hidden">
-            <div style="height:100%;width:${pct}%;background:${done?'var(--green)':n.catColor};transition:width .3s"></div>
+            <div style="height:100%;width:${pct}%;background:${done?'var(--green)':cat.color};transition:width .3s"></div>
           </div>
         </div>
       </div>
     </div>`;
-  }).join('') || '<div class="no-data" style="padding:32px">No nodes match the current filter.</div>';
+  };
+
+  const board = document.getElementById('at-board');
+  if (!board) return;
+
+  // When filtering to one tree, show sorted flat list; otherwise group by category
+  if (filter) {
+    const cat = ALLIANCE_TECH_TREE.find(c => c.id === filter);
+    if (!cat) { board.innerHTML = '<div class="no-data" style="padding:32px">Category not found.</div>'; return; }
+    let nodes = cat.nodes.map(n => ({ ...n }));
+    if (sort === 'priority') nodes.sort((a,b) => b.priority - a.priority);
+    else if (sort === 'progress') nodes.sort((a,b) => (allianceTechData[a.id]||0)/a.maxLv - (allianceTechData[b.id]||0)/b.maxLv);
+    else nodes.sort((a,b) => a.name.localeCompare(b.name));
+    const catLevels = nodes.reduce((s,n) => s+(allianceTechData[n.id]||0), 0);
+    const catMax    = nodes.reduce((s,n) => s+n.maxLv, 0);
+    const catPct    = catMax ? Math.round(catLevels/catMax*100) : 0;
+    board.innerHTML = `<div style="font-size:12px;color:var(--muted);margin-bottom:10px;padding:8px 12px;background:var(--surface2);border-radius:6px">${cat.notes} <strong style="color:var(--text)">${catPct}% complete (${catLevels}/${catMax} levels)</strong></div>`
+      + nodes.map(n => nodeCard(n, cat)).join('');
+    return;
+  }
+
+  // Grouped by category
+  board.innerHTML = ALLIANCE_TECH_TREE.map(cat => {
+    let nodes = cat.nodes.map(n => ({ ...n }));
+    if (sort === 'priority') nodes.sort((a,b) => b.priority - a.priority);
+    else if (sort === 'progress') nodes.sort((a,b) => (allianceTechData[a.id]||0)/a.maxLv - (allianceTechData[b.id]||0)/b.maxLv);
+    else nodes.sort((a,b) => a.name.localeCompare(b.name));
+    const catLevels = cat.nodes.reduce((s,n) => s+(allianceTechData[n.id]||0), 0);
+    const catMax    = cat.nodes.reduce((s,n) => s+n.maxLv, 0);
+    const catPct    = catMax ? Math.round(catLevels/catMax*100) : 0;
+    return `<div style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)">
+        <span style="font-size:18px">${cat.icon}</span>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:14px;color:${cat.color}">${cat.name} Tree <span style="font-weight:400;color:var(--muted);font-size:12px">— ${cat.phase}</span></div>
+          <div style="font-size:11px;color:var(--muted)">${cat.notes}</div>
+        </div>
+        <div style="text-align:right;white-space:nowrap">
+          <div style="font-size:13px;font-weight:700;color:var(--accent)">${catPct}%</div>
+          <div style="font-size:10px;color:var(--muted)">${catLevels}/${catMax} lv</div>
+        </div>
+      </div>
+      ${nodes.map(n => nodeCard(n, cat)).join('')}
+    </div>`;
+  }).join('');
 }
 
 function atAdjust(nodeId, maxLv, delta) {
