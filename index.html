@@ -584,6 +584,7 @@ option { background: var(--surface2); }
   </div>
   <div class="nav-section">
     <div class="nav-label">Tools</div>
+    <div class="nav-item" onclick="goPage('traincalc')"><span class="icon">&#9201;</span>Training Calc</div>
     <div class="nav-item" onclick="goPage('daily')"><span class="icon">&#9989;</span>Daily Checklist</div>
     <div class="nav-item" onclick="goPage('compare')"><span class="icon">&#9878;</span>Hero Compare</div>
     <div class="nav-item" onclick="goPage('research')"><span class="icon">&#127981;</span>Research Tracker</div>
@@ -972,8 +973,8 @@ option { background: var(--surface2); }
   </div>
 
   <div class="card">
-    <div class="card-title">🏆 Terror Hunt — Mechanics Reference</div>
-    <div class="g3">
+    <div class="card-title">🏆 Terror Hunt — Mechanics &amp; Level Reference</div>
+    <div class="g3" style="margin-bottom:12px">
       <div style="font-size:12px;color:var(--muted);line-height:1.7">
         <div><strong style="color:var(--text)">Start:</strong> R4+ alliance members can initiate Terror Hunt.</div>
         <div style="margin-top:4px"><strong style="color:var(--text)">Alliance change cooldown:</strong> Must wait 46 hours between sessions when switching alliances.</div>
@@ -985,6 +986,165 @@ option { background: var(--surface2); }
       <div style="font-size:12px;color:var(--muted);line-height:1.7">
         <div><strong style="color:var(--text)">Traps:</strong> Can contribute Hunting Arrows even after trap reaches max level. If trap is removed and rebuilt, all contributors must re-supply arrows from scratch.</div>
       </div>
+    </div>
+    <div class="scrollable">
+      <table class="skill-table">
+        <thead><tr>
+          <th>Lv</th><th>Beast</th>
+          <th>Bread</th><th>Wood</th><th>Stone</th><th>Iron</th><th>Total Value</th>
+          <th>Healing</th><th>Training</th><th>Satin</th>
+          <th>Special Drop</th><th>Unlock</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--accent);font-weight:700">1</td><td>Giant Rhino</td>
+            <td>20K</td><td>20K</td><td>2K</td><td>2K</td><td style="color:var(--s)">90K</td>
+            <td>5m</td><td>5m</td><td>—</td>
+            <td style="font-size:11px">Quinn Shard ×1 (50%)<br>10 Gems (50%)</td>
+            <td style="font-size:11px;color:var(--muted)">Day 3 or 1st Dreadwolf</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent);font-weight:700">2</td><td>Mighty Bison</td>
+            <td>40K</td><td>40K</td><td>4K</td><td>4K</td><td style="color:var(--s)">180K</td>
+            <td>10m</td><td>5m</td><td>—</td>
+            <td style="font-size:11px">Quinn Shard ×1 (50%)<br>15 Gems (50%)</td>
+            <td style="font-size:11px;color:var(--muted)">Day 3 or 1st Dreadwolf</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent);font-weight:700">3</td><td>Great Moose</td>
+            <td>60K</td><td>60K</td><td>6K</td><td>6K</td><td style="color:var(--s)">270K</td>
+            <td>15m</td><td>10m</td><td style="color:var(--sp)">15</td>
+            <td style="font-size:11px">Quinn Shard ×1 (50%)<br>20 Gems (50%)</td>
+            <td style="font-size:11px;color:var(--muted)">Day 12</td>
+          </tr>
+          <tr>
+            <td style="color:var(--accent);font-weight:700">4</td><td style="color:var(--sp)">Alpha Black Panther</td>
+            <td>80K</td><td>80K</td><td>8K</td><td>8K</td><td style="color:var(--sp)">360K</td>
+            <td>20m</td><td>10m</td><td style="color:var(--sp)">20</td>
+            <td style="font-size:11px">Epic Hero Shard ×1 (50%)<br>25 Gems (50%)</td>
+            <td style="font-size:11px;color:var(--muted)">Day 20</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">🐺 Beast Hunt — Level Reference (All Levels)</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Fight alongside alliance members. Monster power = minimum recommended solo power. <strong style="color:var(--text)">Hero XP</strong> is awarded to your heroes per hunt.</div>
+    <div class="scrollable">
+      <table class="skill-table">
+        <thead><tr>
+          <th>Lv</th><th>Beast</th><th>Hero XP</th>
+          <th>Bread</th><th>Wood</th><th>Stone</th><th>Iron</th><th>Total Value</th>
+          <th>Rec. Power</th><th>Unlock</th>
+        </tr></thead>
+        <tbody id="beast-hunt-tbody">
+          <tr><td style="color:var(--accent);font-weight:700">1</td><td>Gray Wolf</td><td>210</td><td>4K</td><td>4K</td><td>800</td><td>200</td><td>16K</td><td style="color:var(--muted)">108</td><td>Day 1</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">2</td><td>Gray Wolf</td><td>220</td><td>6K</td><td>6K</td><td>1.2K</td><td>300</td><td>24K</td><td style="color:var(--muted)">396</td><td>Day 1</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">3</td><td>Gray Wolf</td><td>230</td><td>8K</td><td>8K</td><td>1.6K</td><td>400</td><td>32K</td><td style="color:var(--muted)">630</td><td>Day 1</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">4</td><td>Gray Wolf</td><td>240</td><td>10K</td><td>10K</td><td>2K</td><td>500</td><td>40K</td><td style="color:var(--muted)">960</td><td>Day 1</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">5</td><td>Lynx</td><td>250</td><td>14K</td><td>14K</td><td>2.8K</td><td>700</td><td>56K</td><td style="color:var(--muted)">1,320</td><td>Day 2</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">6</td><td>Lynx</td><td>260</td><td>18K</td><td>18K</td><td>3.6K</td><td>900</td><td>72K</td><td style="color:var(--muted)">2,400</td><td>Day 2</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">7</td><td>Lynx</td><td>270</td><td>22K</td><td>22K</td><td>4.4K</td><td>1.1K</td><td>88K</td><td style="color:var(--muted)">3,840</td><td>Day 2</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">8</td><td>Lynx</td><td>280</td><td>26K</td><td>26K</td><td>5.2K</td><td>1.3K</td><td>104K</td><td style="color:var(--muted)">6,200</td><td>Day 2</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">9</td><td>Bison</td><td>290</td><td>30K</td><td>30K</td><td>6K</td><td>1.5K</td><td>120K</td><td style="color:var(--muted)">9,000</td><td>Day 2</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">10</td><td>Bison</td><td>300</td><td>34K</td><td>34K</td><td>6.8K</td><td>1.7K</td><td>136K</td><td style="color:var(--muted)">14,130</td><td>Day 2</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">11</td><td>Bison</td><td>310</td><td>38K</td><td>38K</td><td>7.6K</td><td>1.9K</td><td>152K</td><td style="color:var(--muted)">20,670</td><td>Day 3</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">12</td><td>Bison</td><td>320</td><td>41.5K</td><td>41.5K</td><td>8.3K</td><td>2.1K</td><td>166K</td><td style="color:var(--muted)">34,380</td><td>Day 3</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">13</td><td>Cheetah</td><td>330</td><td>45K</td><td>45K</td><td>9K</td><td>2.3K</td><td>180K</td><td style="color:var(--muted)">48,200</td><td>Day 4</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">14</td><td>Cheetah</td><td>340</td><td>48.5K</td><td>48.5K</td><td>9.7K</td><td>2.4K</td><td>194K</td><td style="color:var(--muted)">64,530</td><td>Day 6</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">15</td><td>Cheetah</td><td>350</td><td>56K</td><td>56K</td><td>11.2K</td><td>2.8K</td><td>224K</td><td style="color:var(--muted)">100,157</td><td>Day 8</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">16</td><td>Cheetah</td><td>360</td><td>56K</td><td>56K</td><td>11.2K</td><td>2.8K</td><td>224K</td><td style="color:var(--muted)">177,168</td><td>Day 10</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">17</td><td>Moose</td><td>370</td><td>62.5K</td><td>62.5K</td><td>12.5K</td><td>3.1K</td><td>249.5K</td><td style="color:var(--muted)">295,832</td><td>Day 13</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">18</td><td>Moose</td><td>380</td><td>66.5K</td><td>66.5K</td><td>13.3K</td><td>3.4K</td><td>266.5K</td><td style="color:var(--muted)">567,112</td><td>Day 18</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">19</td><td>Moose</td><td>390</td><td>70.5K</td><td>70.5K</td><td>14.1K</td><td>3.5K</td><td>281.5K</td><td style="color:var(--muted)">926,361</td><td>Day 23</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">20</td><td>Moose</td><td>400</td><td>74.5K</td><td>74.5K</td><td>14.9K</td><td>3.7K</td><td>297.5K</td><td style="color:var(--muted)">1.47M</td><td>Day 30</td></tr>
+          <tr><td style="color:var(--sp);font-weight:700">26</td><td style="color:var(--sp)">Grizzly Bear</td><td>460</td><td>119K</td><td>119K</td><td>23.8K</td><td>5.95K</td><td>476K</td><td style="color:var(--muted)">29.4M</td><td>Day 74</td></tr>
+          <tr><td style="color:var(--sp);font-weight:700">27</td><td style="color:var(--sp)">Grizzly Bear</td><td>470</td><td>133.5K</td><td>133.5K</td><td>26.7K</td><td>6.65K</td><td>533.5K</td><td style="color:var(--muted)">40.8M</td><td>Day 79</td></tr>
+          <tr><td style="color:var(--sp);font-weight:700">28</td><td style="color:var(--sp)">Grizzly Bear</td><td>480</td><td>149K</td><td>149K</td><td>29.8K</td><td>7.45K</td><td>596K</td><td style="color:var(--muted)">61.5M</td><td>Day 92</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">🤠 Crazy Joe — Wave Reference (Alliance Event)</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">
+      Alliance PvE event. Defend all members (or online members / HQ on special waves). Troop counts are <strong style="color:var(--text)">per march slot</strong>. Waves 10 &amp; 20 target the <strong style="color:var(--red)">Alliance HQ</strong> — max reinforce those!
+    </div>
+    <div class="scrollable">
+      <table class="skill-table" style="font-size:11px">
+        <thead><tr>
+          <th>Wave</th><th>Target</th><th>Points</th><th>Attacker</th>
+          <th>Infantry</th><th>Lancer</th><th>Marksman</th><th>Key Tiers</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="color:var(--accent);font-weight:700">1</td><td>All</td><td>3,000</td><td>Bandit</td><td>90</td><td>105</td><td>105</td><td>T1–T2</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">2</td><td>All</td><td>4,200</td><td>Bandit</td><td>163</td><td>190</td><td>193</td><td>T2</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">3</td><td>All</td><td>5,400</td><td>Bandit</td><td>252</td><td>294</td><td>294</td><td>T2–T3</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">4</td><td>All</td><td>6,600</td><td>Bandit</td><td>381</td><td>445</td><td>445</td><td>T2–T3</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">5</td><td>All</td><td>7,800</td><td>Bandit</td><td>569</td><td>663</td><td>663</td><td>T3</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">6</td><td>All</td><td>9,000</td><td>Bandit</td><td>772</td><td>900</td><td>900</td><td>T3–T4</td></tr>
+          <tr><td style="color:var(--sp);font-weight:700">7</td><td style="color:var(--sp)">Online</td><td style="color:var(--sp)">20,400</td><td>Bandit Hero</td><td>1,097</td><td>1,280</td><td>1,280</td><td>T3–T4</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">8</td><td>All</td><td>11,400</td><td>Bandit</td><td>1,425</td><td>1,662</td><td>1,662</td><td>T4</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">9</td><td>All</td><td>12,600</td><td>Bandit</td><td>1,765</td><td>2,060</td><td>2,060</td><td>T4–T5</td></tr>
+          <tr style="background:rgba(239,68,68,.12)"><td style="color:var(--red);font-weight:700">10</td><td style="color:var(--red)">⚠️ HQ</td><td style="color:var(--red)">138,006</td><td>Crazy Joe</td><td>2,310</td><td>2,697</td><td>2,697</td><td>T4–T5</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">11</td><td>All</td><td>15,000</td><td>Bandit</td><td>2,843</td><td>3,317</td><td>3,317</td><td>T5</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">12</td><td>All</td><td>16,200</td><td>Bandit</td><td>3,643</td><td>4,251</td><td>4,251</td><td>T5–T6</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">13</td><td>All</td><td>17,400</td><td>Bandit</td><td>4,867</td><td>5,678</td><td>5,678</td><td>T5–T6</td></tr>
+          <tr><td style="color:var(--sp);font-weight:700">14</td><td style="color:var(--sp)">Online</td><td style="color:var(--sp)">37,200</td><td>Bandit Hero</td><td>6,775</td><td>7,880</td><td>7,880</td><td>T6</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">15</td><td>All</td><td>19,800</td><td>Bandit</td><td>11,690</td><td>13,638</td><td>13,638</td><td>T6–T7</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">16</td><td>All</td><td>21,000</td><td>Bandit</td><td>18,615</td><td>21,718</td><td>21,718</td><td>T7–T8</td></tr>
+          <tr><td style="color:var(--sp);font-weight:700">17</td><td style="color:var(--sp)">Online</td><td style="color:var(--sp)">44,400</td><td>Bandit Hero</td><td>26,992</td><td>31,490</td><td>31,490</td><td>T8</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">18</td><td>All</td><td>23,400</td><td>Bandit</td><td>37,472</td><td>43,718</td><td>43,718</td><td>T8–T9</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">19</td><td>All</td><td>24,600</td><td>Bandit</td><td>52,081</td><td>60,760</td><td>60,760</td><td>T8–T9</td></tr>
+          <tr style="background:rgba(239,68,68,.12)"><td style="color:var(--red);font-weight:700">20</td><td style="color:var(--red)">⚠️ HQ</td><td style="color:var(--red)">258,005</td><td>Crazy Joe</td><td>72,448</td><td>84,523</td><td>84,523</td><td>T9–T10</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.8">
+      <strong style="color:var(--text)">Waves 7, 14, 17</strong> — Target only online members (higher point reward). <strong style="color:var(--text)">Waves 10 &amp; 20</strong> — Crazy Joe attacks HQ directly (huge point spike — reinforce HQ immediately).
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">⚔️ Viking Vengeance — Wave Reference (Alliance Event)</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">
+      Same format as Crazy Joe — defend members and HQ across 20 waves. Troop totals shown. <strong style="color:var(--red)">Waves 10 &amp; 20</strong> target Alliance HQ with massive point rewards.
+    </div>
+    <div class="scrollable">
+      <table class="skill-table" style="font-size:11px">
+        <thead><tr>
+          <th>Wave</th><th>Target</th><th>Points</th><th>Total Troops</th>
+          <th>Max Self Def</th><th>Max Reinforce</th><th>Enemy Tiers</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="color:var(--accent);font-weight:700">1</td><td>All</td><td>3,000</td><td>300</td><td>3,000</td><td>1,500</td><td>T1–T2</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">2</td><td>All</td><td>4,200</td><td>546</td><td>4,200</td><td>2,100</td><td>T2</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">3</td><td>All</td><td>5,400</td><td>840</td><td>5,400</td><td>2,700</td><td>T2–T3</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">4</td><td>All</td><td>6,600</td><td>1,271</td><td>6,600</td><td>3,300</td><td>T2–T3</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">5</td><td>All</td><td>7,800</td><td>1,895</td><td>7,800</td><td>3,900</td><td>T3</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">6</td><td>All</td><td>9,000</td><td>2,572</td><td>9,000</td><td>4,500</td><td>T3–T4</td></tr>
+          <tr><td style="color:var(--sp);font-weight:700">7</td><td style="color:var(--sp)">Online</td><td style="color:var(--sp)">20,400</td><td>3,657</td><td>20,400</td><td>10,200</td><td>T3–T4</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">8</td><td>All</td><td>11,400</td><td>4,749</td><td>11,400</td><td>5,700</td><td>T4</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">9</td><td>All</td><td>12,600</td><td>5,885</td><td>12,600</td><td>6,300</td><td>T4–T5</td></tr>
+          <tr style="background:rgba(239,68,68,.12)"><td style="color:var(--red);font-weight:700">10</td><td style="color:var(--red)">⚠️ HQ</td><td style="color:var(--red)">138,005</td><td>7,704</td><td>—</td><td>138,005</td><td>T4–T5</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">11</td><td>All</td><td>15,000</td><td>9,477</td><td>15,000</td><td>7,500</td><td>T5</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">12</td><td>All</td><td>16,200</td><td>12,145</td><td>16,200</td><td>8,100</td><td>T5–T6</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">13</td><td>All</td><td>17,400</td><td>16,223</td><td>17,400</td><td>8,700</td><td>T5–T6</td></tr>
+          <tr><td style="color:var(--sp);font-weight:700">14</td><td style="color:var(--sp)">Online</td><td style="color:var(--sp)">37,200</td><td>22,535</td><td>37,200</td><td>18,600</td><td>T6</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">15</td><td>All</td><td>19,800</td><td>38,966</td><td>19,800</td><td>9,900</td><td>T6–T7</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">16</td><td>All</td><td>21,000</td><td>62,051</td><td>21,000</td><td>10,500</td><td>T7–T8</td></tr>
+          <tr><td style="color:var(--sp);font-weight:700">17</td><td style="color:var(--sp)">Online</td><td style="color:var(--sp)">44,400</td><td>89,972</td><td>44,400</td><td>22,200</td><td>T8</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">18</td><td>All</td><td>23,400</td><td>124,908</td><td>23,400</td><td>11,700</td><td>T8–T9</td></tr>
+          <tr><td style="color:var(--accent);font-weight:700">19</td><td>All</td><td>24,600</td><td>173,601</td><td>24,600</td><td>12,300</td><td>T8–T9</td></tr>
+          <tr style="background:rgba(239,68,68,.12)"><td style="color:var(--red);font-weight:700">20</td><td style="color:var(--red)">⚠️ HQ</td><td style="color:var(--red)">258,005</td><td>241,494</td><td>—</td><td>258,005</td><td>T9–T10</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.8">
+      <strong style="color:var(--text)">Waves 7, 14, 17</strong> — Online members only. <strong style="color:var(--text)">Waves 10 &amp; 20 (HQ)</strong> — No self-defense cap; max reinforce equals the point value. Stack reinforce marches on HQ before these waves hit.
     </div>
   </div>
 
@@ -1252,6 +1412,100 @@ option { background: var(--surface2); }
           Desert Trial + Champions Way = best F2P gem sources.
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TRAINING EFFICIENCY CALCULATOR ===== -->
+<div class="page" id="page-traincalc">
+  <div class="page-header">
+    <h2>Training Efficiency Calculator</h2>
+    <p>Find the optimal troop tier to train or promote for maximum event points per hour. Based on measured in-game data.</p>
+  </div>
+
+  <div class="g2" style="margin-bottom:16px;align-items:start">
+    <div class="card">
+      <div class="card-title">Settings</div>
+      <label style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;margin-bottom:12px">Mode
+        <select id="tc-mode" onchange="renderTrainCalc()" style="font-size:13px">
+          <option value="train">Train (recruit new troops)</option>
+          <option value="promote">Promote (promote T_start → T10)</option>
+        </select>
+      </label>
+      <label style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;margin-bottom:12px">Event
+        <select id="tc-event" onchange="renderTrainCalc()" style="font-size:13px">
+          <option value="hog">HoG (KvK Bye Week)</option>
+          <option value="sg">Strongest Governor</option>
+          <option value="kop">KoP (KvK Prep)</option>
+          <option value="brawl">Alliance Brawl</option>
+        </select>
+      </label>
+      <label style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;margin-bottom:12px">Training Speed Bonus (%)
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="range" id="tc-speed-range" min="0" max="500" value="0" oninput="document.getElementById('tc-speed-val').value=this.value;renderTrainCalc()" style="flex:1">
+          <input type="number" id="tc-speed-val" min="0" max="500" value="0" oninput="document.getElementById('tc-speed-range').value=this.value;renderTrainCalc()" style="width:64px;font-size:13px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:4px 8px;text-align:center">
+        </div>
+      </label>
+      <div style="font-size:11px;color:var(--muted);line-height:1.7">
+        <div>Enter your total training speed bonus from research, gear, and heroes combined.</div>
+        <div style="margin-top:4px;color:var(--accent)">Tip: Check your academy / training camp buffs screen for the exact total.</div>
+      </div>
+    </div>
+    <div class="card" id="tc-summary-card">
+      <div class="card-title">Best Tier</div>
+      <div id="tc-best"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Tier Comparison Table</div>
+    <div class="scrollable">
+      <table class="skill-table" id="tc-table">
+        <thead><tr>
+          <th>Tier</th>
+          <th>Points / Troop</th>
+          <th>Sec / Troop</th>
+          <th>Troops / Hour</th>
+          <th>Points / Hour</th>
+          <th>Relative Efficiency</th>
+        </tr></thead>
+        <tbody id="tc-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="card-title">Event Points Per Troop Reference</div>
+    <div class="scrollable">
+      <table class="skill-table">
+        <thead><tr>
+          <th>Event</th>
+          <th>T1</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th>
+          <th>T6</th><th>T7</th><th>T8</th><th>T9</th><th>T10</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--text);font-weight:600">HoG (KvK Bye Week)</td>
+            <td>90</td><td>120</td><td>180</td><td>265</td><td>385</td>
+            <td>595</td><td>830</td><td>1,130</td><td>1,485</td><td>1,960</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text);font-weight:600">Strongest Governor</td>
+            <td>1</td><td>2</td><td>3</td><td>5</td><td>7</td>
+            <td>11</td><td>16</td><td>23</td><td>30</td><td>39</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text);font-weight:600">KoP (KvK Prep)</td>
+            <td>3</td><td>4</td><td>5</td><td>8</td><td>12</td>
+            <td>18</td><td>25</td><td>35</td><td>45</td><td>60</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text);font-weight:600">Alliance Brawl</td>
+            <td>1</td><td>1</td><td>2</td><td>3</td><td>4</td>
+            <td>7</td><td>10</td><td>14</td><td>18</td><td>24</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -3111,7 +3365,7 @@ function goPage(name) {
     calendar:'calendar', alliance:'alliance hq', kvkplanner:'kvk',
     stockpile:'stockpile', powerboard:'power board', swordland:'swordland',
     alliancetech:'alliance tech', indivtech:'research tree',
-    daily:'daily', compare:'compare', research:'research', settings:'settings'
+    traincalc:'training', daily:'daily', compare:'compare', research:'research', settings:'settings'
   };
   const label = PAGE_LABELS[name] || name;
   document.querySelectorAll('.nav-item').forEach(n => {
@@ -3131,6 +3385,7 @@ function goPage(name) {
   if (name==='swordland') renderSwordland();
   if (name==='alliancetech') renderAllianceTech();
   if (name==='indivtech') { itSetTab(indivCurrentTab); }
+  if (name==='traincalc') renderTrainCalc();
   if (name==='daily') renderDaily();
   if (name==='compare') renderCompare();
   if (name==='research') renderResearch();
@@ -6238,6 +6493,106 @@ function checkReminders() {
   });
 }
 
+// ============================================================
+// TRAINING EFFICIENCY CALCULATOR
+// ============================================================
+const TC_EVENT_PTS = {
+  hog:   { name:'HoG (KvK Bye Week)', pts:[90,120,180,265,385,595,830,1130,1485,1960] },
+  sg:    { name:'Strongest Governor',  pts:[1,2,3,5,7,11,16,23,30,39] },
+  kop:   { name:'KoP (KvK Prep)',      pts:[3,4,5,8,12,18,25,35,45,60] },
+  brawl: { name:'Alliance Brawl',      pts:[1,1,2,3,4,7,10,14,18,24] },
+};
+// Base seconds-per-troop at 0% speed bonus (T1–T10)
+const TC_BASE_SPT = [12.00,16.98,23.99,31.97,44.00,59.98,82.98,112.99,131.00,152.00];
+// Promotion T_start→T10 base seconds per batch of 100 troops (T1 start through T9 start)
+const TC_PROMO_BASE_S100 = [4492,4332,4107,3851,3465,2952,2214,1251,673];
+
+function renderTrainCalc() {
+  const mode = document.getElementById('tc-mode')?.value || 'train';
+  const eventKey = document.getElementById('tc-event')?.value || 'hog';
+  const speedPct = parseFloat(document.getElementById('tc-speed-val')?.value || 0);
+  const speedMult = 1 + speedPct / 100;
+  const evtPts = TC_EVENT_PTS[eventKey].pts;
+
+  const tbody = document.getElementById('tc-tbody');
+  if (!tbody) return;
+
+  let rows = [];
+  if (mode === 'train') {
+    for (let t = 0; t < 10; t++) {
+      const spt = TC_BASE_SPT[t] / speedMult;
+      const troopsPerHour = 3600 / spt;
+      const ptsPerHour = troopsPerHour * evtPts[t];
+      rows.push({ tier: t+1, ptsPerTroop: evtPts[t], spt, troopsPerHour, ptsPerHour });
+    }
+  } else {
+    // Promote mode: each entry represents promoting from T(i+1)→T10
+    for (let i = 0; i < 9; i++) {
+      const baseSec = TC_PROMO_BASE_S100[i];
+      const adjSec = baseSec / speedMult;
+      const spt = adjSec / 100;
+      const troopsPerHour = 3600 / spt;
+      const ptsPerHour = troopsPerHour * evtPts[9]; // promotion always yields T10 troops
+      rows.push({ tier: i+1, label:`T${i+1}→T10`, ptsPerTroop: evtPts[9], spt, troopsPerHour, ptsPerHour });
+    }
+  }
+
+  const maxPPH = Math.max(...rows.map(r => r.ptsPerHour));
+  const bestIdx = rows.findIndex(r => r.ptsPerHour === maxPPH);
+
+  const fmtSpt = s => s < 1 ? `${(s*1000).toFixed(0)}ms` : s < 60 ? `${s.toFixed(1)}s` : `${(s/60).toFixed(2)}m`;
+  const fmtNum = n => n >= 1e6 ? `${(n/1e6).toFixed(2)}M` : n >= 1e3 ? `${(n/1e3).toFixed(1)}K` : Math.round(n).toLocaleString();
+  const barColor = pct => pct >= 90 ? 'var(--s)' : pct >= 60 ? 'var(--accent)' : 'var(--muted)';
+
+  tbody.innerHTML = rows.map((r, i) => {
+    const pct = Math.round((r.ptsPerHour / maxPPH) * 100);
+    const highlight = i === bestIdx ? 'background:rgba(59,130,246,.15);' : '';
+    const label = mode === 'promote' ? r.label : `T${r.tier}`;
+    return `<tr style="${highlight}">
+      <td style="font-weight:700;color:${i===bestIdx?'var(--s)':'var(--accent)'}">${label}${i===bestIdx?' ★':''}</td>
+      <td>${r.ptsPerTroop.toLocaleString()}</td>
+      <td>${fmtSpt(r.spt)}</td>
+      <td>${fmtNum(r.troopsPerHour)}</td>
+      <td style="font-weight:${i===bestIdx?700:400};color:${i===bestIdx?'var(--s)':'inherit'}">${fmtNum(r.ptsPerHour)}</td>
+      <td style="min-width:120px">
+        <div style="display:flex;align-items:center;gap:6px">
+          <div style="flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden">
+            <div style="width:${pct}%;height:100%;background:${barColor(pct)};border-radius:3px"></div>
+          </div>
+          <span style="font-size:11px;color:var(--muted);min-width:30px">${pct}%</span>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  const best = rows[bestIdx];
+  const bestLabel = mode === 'promote' ? best.label : `T${best.tier}`;
+  document.getElementById('tc-best').innerHTML = `
+    <div style="text-align:center;padding:12px 0">
+      <div style="font-size:36px;font-weight:900;color:var(--s)">${bestLabel}</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px">${TC_EVENT_PTS[eventKey].name}</div>
+      <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left">
+        <div style="background:var(--surface2);border-radius:6px;padding:8px">
+          <div style="font-size:10px;color:var(--muted)">Points / Hour</div>
+          <div style="font-size:16px;font-weight:700;color:var(--text)">${fmtNum(best.ptsPerHour)}</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:6px;padding:8px">
+          <div style="font-size:10px;color:var(--muted)">Troops / Hour</div>
+          <div style="font-size:16px;font-weight:700;color:var(--text)">${fmtNum(best.troopsPerHour)}</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:6px;padding:8px">
+          <div style="font-size:10px;color:var(--muted)">Seconds / Troop</div>
+          <div style="font-size:16px;font-weight:700;color:var(--text)">${fmtSpt(best.spt)}</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:6px;padding:8px">
+          <div style="font-size:10px;color:var(--muted)">Points / Troop</div>
+          <div style="font-size:16px;font-weight:700;color:var(--text)">${best.ptsPerTroop.toLocaleString()}</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted)">Speed bonus: ${speedPct}%</div>
+    </div>`;
+}
+
 function renderSettings() {
   updateNotifStatus(Notification?.permission || 'default');
   const listEl = document.getElementById('reminder-list');
@@ -6692,7 +7047,7 @@ renderTierList();
 
 // Fix nav click detection
 document.querySelectorAll('.nav-item').forEach((el, i) => {
-  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance','kvkplanner','stockpile','powerboard','swordland','indivtech','alliancetech','daily','compare','research','settings'];
+  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance','kvkplanner','stockpile','powerboard','swordland','alliancetech','indivtech','traincalc','daily','compare','research','settings'];
   el.addEventListener('click', () => goPage(pages[i]));
 });
 
