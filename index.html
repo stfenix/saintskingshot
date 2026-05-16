@@ -1101,33 +1101,116 @@ option { background: var(--surface2); }
 <div class="page" id="page-swordland">
   <div class="page-header">
     <h2>⚔️ Swordland Showdown Setup</h2>
-    <p>Optimised rally team and garrison assignments for your 15 active combatants, ranked by squad power.</p>
+    <p>Three-team battle plan based on actual Swordland Showdown mechanics — territory control, building capture, and coordinated phase strategy.</p>
   </div>
   <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
-    <button class="btn btn-primary btn-sm" onclick="autoAssignSwordland()">⚡ Auto-Optimise Assignments</button>
-    <button class="btn btn-outline btn-sm" onclick="seedSwordlandRoster()">📋 Load Combatants into Alliance HQ</button>
+    <button class="btn btn-primary btn-sm" onclick="autoAssignSwordland()">⚡ Reset to Optimal Assignments</button>
+    <button class="btn btn-outline btn-sm" onclick="seedSwordlandRoster()">📋 Load Members into Alliance HQ</button>
     <button class="btn btn-outline btn-sm" onclick="exportSwordlandPlan()">📤 Copy Plan to Clipboard</button>
   </div>
+
   <div id="sl-power-bar" style="margin-bottom:16px"></div>
-  <div id="swordland-board"></div>
-  <div class="card" style="margin-top:16px">
-    <div class="card-title">⚔️ Swordland Showdown — Strategy Guide</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;font-size:12px;line-height:1.7">
-      <div>
-        <div style="color:var(--sp);font-weight:700;margin-bottom:4px">Rally Leads</div>
-        <div style="color:var(--muted)">Your top 2 by power. Each leads a separate rally. Set march size to maximum before launching. Always wait until your rally is full before sending.</div>
+  <div id="swordland-board" style="margin-bottom:16px"></div>
+
+  <!-- PHASE GUIDE -->
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-title">📋 Phase-by-Phase Battle Plan</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;font-size:12px">
+      <div style="background:var(--surface2);border-radius:8px;padding:12px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:6px">⚡ Phase 1 — Opening Rush</div>
+        <div style="color:var(--muted);line-height:1.8">
+          <div><span style="color:var(--b)">Defenders</span> + <span style="color:var(--s)">Support</span>: Capture <strong>Belltower</strong> and <strong>Royal Stables</strong> immediately.</div>
+          <div><span style="color:var(--sp)">Attackers</span>: Hit enemy players — reduce their troops before buildings open.</div>
+          <div>When Attackers run low → retreat to heal (12 min). <span style="color:var(--s)">Support</span> takes over attacking.</div>
+        </div>
       </div>
-      <div>
-        <div style="color:var(--s);font-weight:700;margin-bottom:4px">Joiners</div>
-        <div style="color:var(--muted)">Join the highest-power rally you can access. Stack ATK/Lethality heroes. Chenko + Vivian combo in the same rally is the meta joiner pairing.</div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:6px">🏛️ Phase 2 — Building Control</div>
+        <div style="color:var(--muted);line-height:1.8">
+          <div>Split <span style="color:var(--b)">Defenders</span> into two groups:</div>
+          <div>Group A → Belltower + 1 Sanctum + 2 Abbeys</div>
+          <div>Group B → Royal Stables + 1 Sanctum + 2 Abbeys</div>
+          <div><span style="color:var(--sp)">Attackers</span> keep pressing enemy. <span style="color:var(--s)">Support</span> covers gaps.</div>
+        </div>
       </div>
-      <div>
-        <div style="color:var(--b);font-weight:700;margin-bottom:4px">Garrison</div>
-        <div style="color:var(--muted)">Holds the alliance castle against incoming attacks. Use defensive widget heroes. Thatsapitty anchors the garrison — hardest fort to crack.</div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:6px">🏰 Phase 3 — Swordshrine Strike</div>
+        <div style="color:var(--muted);line-height:1.8">
+          <div>Wait until enemy has <strong>15–30k points</strong> then strike.</div>
+          <div>Teleport around Swordshrine in a circle.</div>
+          <div><span style="color:var(--sp)">Attack</span> launches rally → <span style="color:var(--s)">Support</span> (<span style="color:var(--gold,#f0a500)">_Irene_</span>) follows seconds later with second rally.</div>
+          <div>Grab <strong>Undercellers</strong> for bonus Relic Points when they appear.</div>
+        </div>
       </div>
-      <div>
-        <div style="color:var(--accent);font-weight:700;margin-bottom:4px">Reserve Pool</div>
-        <div style="color:var(--muted)">Rotate in when rally slots open — every joiner adds combat power. Farm resources and Swordland currency between active waves. Priority target: Vivian shards.</div>
+    </div>
+  </div>
+
+  <!-- PRO TIPS from community -->
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-title">💡 Good-to-Knows <span style="font-size:11px;font-weight:400;color:var(--muted)">— community tips, not hard rules</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;font-size:12px">
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px">💊 Heal Speed-ups are King</div>
+        <div style="color:var(--muted);line-height:1.7">Allies <strong>cannot</strong> help you heal here. Save speed-ups before the event — you'll burn through them fast, especially holding the Swordshrine. If you run out, you're sidelined for 12 minutes each time.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px">📱 Play on Mobile</div>
+        <div style="color:var(--muted);line-height:1.7">Much easier to manage teleports and the battle map on your phone. Use the in-game battle map — it shows building status, enemy positions, and Undercellers in real time.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px">⚡ Teleport Carefully</div>
+        <div style="color:var(--muted);line-height:1.7">You get 3 free teleports. After that it costs <strong>12,000 gems</strong> each. Don't waste them — teleport with purpose. Holding Royal Stables cuts cooldown 50% so you redeploy twice as fast.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px">🏴 R4/R5: Use Flags</div>
+        <div style="color:var(--muted);line-height:1.7">Mark buildings with flags before the battle. Players get lost mid-fight — flags tell them exactly where to go without needing Discord coordination in the moment.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px">⚔️ Teleport-Gank vs Rally</div>
+        <div style="color:var(--muted);line-height:1.7">You don't always have to rally. 3–4 top players teleporting together to the same target is fast and effective. Rallies injure fewer troops though, so use them for high-value targets like Swordshrine.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px">🔱 Mercenary Counter-play</div>
+        <div style="color:var(--muted);line-height:1.7">Enemy mercs are fast and hit hard (7,000 troops wiped per wave). Garrison buildings up to reduce impact. Sneaky play: let them build their Merc Camp up, then <strong>1-minute rally</strong> to capture it right before dispatch — steal their mercs.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px">👥 Active Players Win</div>
+        <div style="color:var(--muted);line-height:1.7">Having 24 active members beats an alliance with more power but only 18 active. Only register members who will <strong>actually show up</strong>. Activity beats raw power every time in this event.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px">💰 What to Buy with Relic Coins</div>
+        <div style="color:var(--muted);line-height:1.7">Priority buy order: <strong>Vision shards</strong> (governor gear — best F2P value) → Charm Guides → other gear materials. Winning Legion 1 lets your whole alliance benefit from bonus coins.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUILDING PRIORITY -->
+  <div class="card">
+    <div class="card-title">🗺️ Building Priority &amp; What They Do</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;font-size:12px">
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--sp);margin-bottom:3px">⭐ Swordshrine (Centre)</div>
+        <div style="color:var(--muted)">Produces continuous Relic Points. Target in Phase 3 last 10 min only — enemy will defend heavily.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--s);margin-bottom:3px">🏛️ Sanctums (×2)</div>
+        <div style="color:var(--muted)">Near Swordshrine. Control both for bonus point multiplier. High-value, high-contest.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--b);margin-bottom:3px">🔔 Belltower</div>
+        <div style="color:var(--muted)">Speeds up building captures. <strong>Capture first</strong> — makes every other building faster to take.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--b);margin-bottom:3px">🐎 Royal Stables</div>
+        <div style="color:var(--muted)">Cuts teleport cooldown 10 min → 5 min. <strong>Capture first</strong> alongside Belltower — mobility wins battles.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--a);margin-bottom:3px">⛪ Abbeys (×4)</div>
+        <div style="color:var(--muted)">Passive point generation over time. Hold as many as possible. Defenders split across these.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:6px;padding:10px">
+        <div style="font-weight:700;color:var(--accent2);margin-bottom:3px">🏕️ Mercenary Camp</div>
+        <div style="color:var(--muted)">Lets you send mercenaries to attack enemy buildings without risking your own troops.</div>
       </div>
     </div>
   </div>
@@ -4254,6 +4337,16 @@ async function ksFetch(path) {
 // ============================================================
 // SWORDLAND SHOWDOWN SETUP
 // ============================================================
+// Three-team structure per official event rules:
+//   attack   = top fighters (excl whale) — constant pressure on enemy players
+//   support  = whale + solid players — backup attack, Phase 3 rally coordination
+//   defender = hold Belltower/Royal Stables/Sanctums/Abbeys
+//
+// Optimal assignment (15 members, 5 per team):
+//   Support gets the WHALE (_Irene_ 165) — not Attack — per strategy guide rule.
+//   Attack = next 5 strongest → Stfenix leads, hits enemy's strongest first.
+//   Defenders = lower power, focus on building capture/hold.
+
 const SWORDLAND_COMBATANTS = [
   { name:'_Irene_',       power:165 },
   { name:'Stfenix',       power:146 },
@@ -4272,25 +4365,39 @@ const SWORDLAND_COMBATANTS = [
   { name:'kingphil',      power:7   },
 ];
 
-// Optimal static assignments based on power analysis
-// Alpha = strongest offensive rally, Beta = second rally, Garrison = fortress defense, Reserve = rotate in
 const SWORDLAND_PLAN = [
-  { name:'_Irene_',       power:165, team:'alpha',   role:'Rally Lead',  note:'Highest power → launch first rally. Max march size.' },
-  { name:'Stfenix',       power:146, team:'beta',    role:'Rally Lead',  note:'Second lead → run parallel rally. Do not delay for Alpha.' },
-  { name:'Thatsapitty',   power:84,  team:'garrison',role:'Garrison',    note:'Anchors fortress. Hardest garrison in alliance to crack.' },
-  { name:'Lord of Lords', power:62,  team:'alpha',   role:'Joiner #1',   note:'Priority join on Alpha. Stack ATK heroes.' },
-  { name:'L6514',         power:51,  team:'alpha',   role:'Joiner #2',   note:'Fill Alpha rally before Beta launches.' },
-  { name:'Lord Murdok',   power:32,  team:'beta',    role:'Joiner #1',   note:'First joiner on Beta. Join immediately on launch.' },
-  { name:'Hollywood',     power:29,  team:'beta',    role:'Joiner #2',   note:'Beta joiner — bring Cavalry/ATK heroes.' },
-  { name:'Countess Foxy', power:25,  team:'beta',    role:'Joiner #3',   note:'Beta joiner. If rally full, join Alpha overflow.' },
-  { name:'Saby',          power:22,  team:'alpha',   role:'Joiner #3',   note:'Alpha joiner — rotate with Gabriele between waves.' },
-  { name:'_Irene_3',      power:21,  team:'garrison',role:'Support',     note:'Garrison support — reinforce castle, cover Thatsapitty.' },
-  { name:'Gabriele',      power:19,  team:'reserve', role:'Reserve',     note:'Rotate into Alpha when slot opens. Farm currency otherwise.' },
-  { name:'Mosser',        power:16,  team:'reserve', role:'Reserve',     note:'Join any open rally. Swordland currency farm priority.' },
-  { name:'farmlord',      power:16,  team:'reserve', role:'Reserve',     note:'Resource gather + join rallies opportunistically.' },
-  { name:'ciwenn',        power:15,  team:'reserve', role:'Reserve',     note:'Daily missions + join when any rally slot opens.' },
-  { name:'kingphil',      power:7,   team:'reserve', role:'Reserve',     note:'Focus: daily login, donations, Vivian shard shop.' },
+  // SUPPORT — Whale + backup. Phase 3: whale leads coordinated rally on Swordshrine.
+  { name:'_Irene_',       power:165, team:'support',  role:'Whale / Rally Lead', note:'⭐ WHALE. Support team anchor. Phase 1: help Defenders capture Belltower & Royal Stables. Phase 3: launch rally on Swordshrine in last 10 min, seconds after Attackers.' },
+  { name:'Hollywood',     power:29,  team:'support',  role:'Support',            note:'Back up Defenders in Phase 1. Cover gaps when Attackers retreat to heal. Join _Irene_ rally in Phase 3.' },
+  { name:'Countess Foxy', power:25,  team:'support',  role:'Support',            note:'Flexible — help wherever the map needs it. Prioritise capturing Abbeys early.' },
+  { name:'Saby',          power:22,  team:'support',  role:'Support',            note:'Assist Defenders with building captures in Phase 1. Switch to attacking support in Phase 2.' },
+  { name:'_Irene_3',      power:21,  team:'support',  role:'Support',            note:'Phase 1: Belltower + Royal Stables. Phase 2: hold Sanctum. Watch for scattered points on ground when buildings flip.' },
+
+  // ATTACK — Constant pressure. Target enemy's strongest first. Retreat/heal (12 min) then re-engage.
+  { name:'Stfenix',       power:146, team:'attack',   role:'Attack Lead',        note:'🗡️ ATTACK LEAD. Target enemy whale first — take them out and the rest crumble. Phase 3: launch rally on Swordshrine first, Support follows.' },
+  { name:'Thatsapitty',   power:84,  team:'attack',   role:'Attacker',           note:'Second strongest attacker. Push enemy players continuously. When low on troops → retreat 12 min, then re-engage.' },
+  { name:'Lord of Lords', power:62,  team:'attack',   role:'Attacker',           note:'Stay aggressive. Do NOT hold buildings — that is Defenders\' job. Hit and weaken enemy for easier building captures.' },
+  { name:'L6514',         power:51,  team:'attack',   role:'Attacker',           note:'Pair with Thatsapitty when possible. Activate all buffs, pet skills, best gear before battle.' },
+  { name:'Lord Murdok',   power:32,  team:'attack',   role:'Attacker',           note:'Focus on reducing enemy troop count. Grab Undercellers when they appear in Phase 3 for bonus Relic Points.' },
+
+  // DEFENDERS — Hold Belltower, Royal Stables, both Sanctums, and 4 Abbeys. Split into two groups in Phase 2.
+  { name:'Gabriele',      power:19,  team:'defender', role:'Defender — Group A', note:'🏰 GROUP A: Hold Belltower + Sanctum 1 + 2 Abbeys. Never leave these empty — cap and stay.' },
+  { name:'Mosser',        power:16,  team:'defender', role:'Defender — Group A', note:'GROUP A: Belltower + Sanctum 1 side. Use Mercenary Camp to send mercs at enemy buildings without risking your troops.' },
+  { name:'farmlord',      power:16,  team:'defender', role:'Defender — Group B', note:'🏰 GROUP B: Hold Royal Stables + Sanctum 2 + 2 Abbeys. Keep Royal Stables — cuts teleport from 10 min to 5 min.' },
+  { name:'ciwenn',        power:15,  team:'defender', role:'Defender — Group B', note:'GROUP B: Royal Stables side. Do NOT waste teleports — keep Royal Stables so you can redeploy fast.' },
+  { name:'kingphil',      power:7,   team:'defender', role:'Defender — Group B', note:'GROUP B: Rotate between Abbeys to keep them capped. Collect scattered Relic Points when buildings flip.' },
 ];
+
+const SL_TEAM_META = {
+  support:  { label:'Support Team',  sub:'Whale + backup — Phase 3 Swordshrine rally',     col:'var(--sp)', icon:'⭐', order:0 },
+  attack:   { label:'Attack Team',   sub:'Constant pressure — target enemy whale first',    col:'var(--red,#e05252)', icon:'🗡️', order:1 },
+  defender: { label:'Defenders',     sub:'Hold Belltower · Royal Stables · Sanctums · Abbeys', col:'var(--b)', icon:'🏰', order:2 },
+};
+const SL_ROLE_COL = {
+  'Whale / Rally Lead':'var(--sp)', 'Attack Lead':'var(--red,#e05252)',
+  'Attacker':'var(--red,#e05252)', 'Support':'var(--s)',
+  'Defender — Group A':'var(--b)', 'Defender — Group B':'var(--b)',
+};
 
 let swordlandOverrides = {};
 
@@ -4328,23 +4435,26 @@ function seedSwordlandRoster() {
 function exportSwordlandPlan() {
   const plan = getSwordlandAssignments();
   const lines = ['⚔️ SWORDLAND SHOWDOWN — BATTLE PLAN', ''];
-  const teams = { alpha:'RALLY TEAM ALPHA', beta:'RALLY TEAM BETA', garrison:'GARRISON', reserve:'RESERVE POOL' };
-  const colors = { alpha:'🔴', beta:'🔵', garrison:'🏰', reserve:'📦' };
-  ['alpha','beta','garrison','reserve'].forEach(t => {
+  const teamOrder = ['support','attack','defender'];
+  const teamLabels = { support:'⭐ SUPPORT TEAM (Whale + Backup)', attack:'🗡️ ATTACK TEAM', defender:'🏰 DEFENDERS' };
+  teamOrder.forEach(t => {
     const members = plan.filter(p => p.team === t);
-    lines.push(`${colors[t]} ${teams[t]}`);
-    members.forEach(p => lines.push(`  ${p.role === 'Rally Lead' ? '★' : '·'} ${p.name} (${p.power}) — ${p.role}`));
-    const total = members.reduce((s,p)=>s+p.power,0);
-    if (t !== 'reserve') lines.push(`  Total power: ${total}`);
+    lines.push(teamLabels[t]);
+    members.forEach(p => lines.push(`  · ${p.name} (${p.power}) — ${p.role}`));
+    lines.push(`  Combined power: ${members.reduce((s,p)=>s+p.power,0)}`);
     lines.push('');
   });
-  navigator.clipboard.writeText(lines.join('\n')).then(()=>alert('Plan copied to clipboard!')).catch(()=>alert(lines.join('\n')));
+  lines.push('PHASE GUIDE:');
+  lines.push('Phase 1: Support+Defenders cap Belltower & Royal Stables. Attackers hit enemy players.');
+  lines.push('Phase 2: Defenders split — Group A (Belltower+Sanctum1+2 Abbeys), Group B (Royal Stables+Sanctum2+2 Abbeys).');
+  lines.push('Phase 3 (last 10 min): Attack launches rally on Swordshrine, Support follows seconds later.');
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>alert('Plan copied!')).catch(()=>alert(lines.join('\n')));
 }
 
 function getSwordlandAssignments() {
   return SWORDLAND_PLAN.map(p => {
     const ov = swordlandOverrides[p.name] || {};
-    return { ...p, team: ov.team || p.team, role: ov.role || p.role, note: ov.note !== undefined ? ov.note : p.note };
+    return { ...p, team: ov.team || p.team, role: ov.role || p.role };
   });
 }
 
@@ -4354,78 +4464,62 @@ function renderSwordland() {
   const barEl   = document.getElementById('sl-power-bar');
   if (!boardEl) return;
 
-  const totalPower = SWORDLAND_COMBATANTS.reduce((s,c)=>s+c.power,0);
-  const alphaPower = plan.filter(p=>p.team==='alpha').reduce((s,p)=>s+p.power,0);
-  const betaPower  = plan.filter(p=>p.team==='beta').reduce((s,p)=>s+p.power,0);
-  const garPower   = plan.filter(p=>p.team==='garrison').reduce((s,p)=>s+p.power,0);
-  const resPower   = plan.filter(p=>p.team==='reserve').reduce((s,p)=>s+p.power,0);
-
+  const totalPower  = SWORDLAND_COMBATANTS.reduce((s,c)=>s+c.power,0);
+  const supPow  = plan.filter(p=>p.team==='support').reduce((s,p)=>s+p.power,0);
+  const atkPow  = plan.filter(p=>p.team==='attack').reduce((s,p)=>s+p.power,0);
+  const defPow  = plan.filter(p=>p.team==='defender').reduce((s,p)=>s+p.power,0);
   const pct = v => Math.round(v/totalPower*100);
-  barEl.innerHTML = `
-    <div class="card" style="padding:14px">
-      <div class="card-title" style="margin-bottom:10px">Alliance Power Deployment — ${totalPower} total squad power</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:12px">
-        ${[['Rally Alpha','alpha',alphaPower,'var(--sp)'],['Rally Beta','beta',betaPower,'var(--s)'],['Garrison','garrison',garPower,'var(--b)'],['Reserve','reserve',resPower,'var(--muted)']].map(([label,_,v,col])=>`
-          <div style="text-align:center">
-            <div style="font-size:22px;font-weight:700;color:${col}">${v}</div>
-            <div style="font-size:11px;color:var(--muted)">${label} · ${pct(v)}%</div>
-          </div>`).join('')}
-      </div>
-      <div style="height:12px;background:var(--surface2);border-radius:6px;overflow:hidden;display:flex">
-        <div style="width:${pct(alphaPower)}%;background:var(--sp);transition:width .3s" title="Rally Alpha"></div>
-        <div style="width:${pct(betaPower)}%;background:var(--s);transition:width .3s" title="Rally Beta"></div>
-        <div style="width:${pct(garPower)}%;background:var(--b);transition:width .3s" title="Garrison"></div>
-        <div style="width:${pct(resPower)}%;background:var(--surface3);transition:width .3s" title="Reserve"></div>
-      </div>
-      <div style="display:flex;gap:16px;font-size:10px;color:var(--muted);margin-top:6px">
-        <span><span style="color:var(--sp)">■</span> Rally Alpha</span>
-        <span><span style="color:var(--s)">■</span> Rally Beta</span>
-        <span><span style="color:var(--b)">■</span> Garrison</span>
-        <span><span style="color:var(--muted)">■</span> Reserve</span>
-      </div>
-    </div>`;
 
-  const TEAM_ORDER = ['alpha','beta','garrison','reserve'];
-  const TEAM_META = {
-    alpha:   { label:'Rally Team Alpha',  sub:'Offensive rally — primary strike force', col:'var(--sp)', icon:'🔴' },
-    beta:    { label:'Rally Team Beta',   sub:'Parallel rally — secondary offensive',   col:'var(--s)',  icon:'🔵' },
-    garrison:{ label:'Garrison',          sub:'Fortress defense — holds the castle',     col:'var(--b)',  icon:'🏰' },
-    reserve: { label:'Reserve Pool',      sub:'Rotate in when rally slots open',         col:'var(--muted)', icon:'📦' },
-  };
-  const ROLE_COL = {
-    'Rally Lead':'var(--sp)', 'Joiner #1':'var(--s)', 'Joiner #2':'var(--s)', 'Joiner #3':'var(--s)',
-    'Garrison':'var(--b)', 'Support':'var(--a)', 'Reserve':'var(--muted)',
-  };
+  barEl.innerHTML = `<div class="card" style="padding:14px">
+    <div class="card-title" style="margin-bottom:10px">Alliance Power Split — ${totalPower} total squad power</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;text-align:center">
+      <div><div style="font-size:24px;font-weight:800;color:var(--sp)">${supPow}</div><div style="font-size:11px;color:var(--muted)">Support · ${pct(supPow)}%</div></div>
+      <div><div style="font-size:24px;font-weight:800;color:#e05252">${atkPow}</div><div style="font-size:11px;color:var(--muted)">Attack · ${pct(atkPow)}%</div></div>
+      <div><div style="font-size:24px;font-weight:800;color:var(--b)">${defPow}</div><div style="font-size:11px;color:var(--muted)">Defenders · ${pct(defPow)}%</div></div>
+    </div>
+    <div style="height:12px;background:var(--surface2);border-radius:6px;overflow:hidden;display:flex">
+      <div style="width:${pct(supPow)}%;background:var(--sp)" title="Support"></div>
+      <div style="width:${pct(atkPow)}%;background:#e05252" title="Attack"></div>
+      <div style="width:${pct(defPow)}%;background:var(--b)" title="Defenders"></div>
+    </div>
+    <div style="display:flex;gap:16px;font-size:10px;color:var(--muted);margin-top:6px">
+      <span><span style="color:var(--sp)">■</span> Support (whale + backup)</span>
+      <span><span style="color:#e05252">■</span> Attack (constant pressure)</span>
+      <span><span style="color:var(--b)">■</span> Defenders (building hold)</span>
+    </div>
+  </div>`;
 
-  boardEl.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px">` +
-    TEAM_ORDER.map(team => {
-      const m   = TEAM_META[team];
+  const teamOrder = ['support','attack','defender'];
+  boardEl.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px">` +
+    teamOrder.map(team => {
+      const m       = SL_TEAM_META[team];
       const members = plan.filter(p => p.team === team);
-      const teamPow = members.reduce((s,p)=>s+p.power,0);
+      const tPow    = members.reduce((s,p)=>s+p.power,0);
       return `<div class="card">
         <div class="card-title" style="color:${m.col};display:flex;align-items:center;gap:8px">
           <span>${m.icon}</span><span>${m.label}</span>
-          ${team !== 'reserve' ? `<span style="margin-left:auto;font-size:12px;color:var(--muted);font-weight:400">${teamPow} power</span>` : ''}
+          <span style="margin-left:auto;font-size:12px;color:var(--muted);font-weight:400">${tPow} power</span>
         </div>
         <div style="font-size:11px;color:var(--muted);margin-bottom:10px">${m.sub}</div>
-        ${members.map(p => {
-          const rc = ROLE_COL[p.role] || 'var(--muted)';
-          const isLead = p.role === 'Rally Lead';
-          return `<div style="display:flex;align-items:start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
-            <div style="width:36px;text-align:center;flex-shrink:0">
-              <div style="font-size:16px;font-weight:800;color:${rc}">${isLead ? '★' : p.power}</div>
-              ${isLead ? `<div style="font-size:9px;color:var(--muted)">${p.power}</div>` : ''}
+        ${members.map((p,idx) => {
+          const rc = SL_ROLE_COL[p.role] || 'var(--muted)';
+          const isWale = p.role === 'Whale / Rally Lead';
+          const isLead = p.role === 'Attack Lead';
+          return `<div style="display:flex;align-items:start;gap:10px;padding:9px 0;${idx < members.length-1 ? 'border-bottom:1px solid var(--border)' : ''}">
+            <div style="width:38px;text-align:center;flex-shrink:0;padding-top:2px">
+              <div style="font-size:${isWale||isLead?'18':'14'}px;font-weight:800;color:${rc}">${isWale?'⭐':isLead?'🗡️':p.power}</div>
+              ${isWale||isLead ? `<div style="font-size:9px;color:var(--muted)">${p.power}</div>` : ''}
             </div>
             <div style="flex:1;min-width:0">
               <div style="font-weight:700;font-size:13px">${escHtml(p.name)}</div>
-              <div style="font-size:11px;color:${rc};margin-bottom:3px">${p.role}</div>
-              <div style="font-size:10px;color:var(--muted);line-height:1.5">${escHtml(p.note)}</div>
+              <div style="font-size:10px;color:${rc};font-weight:600;margin-bottom:3px">${p.role}</div>
+              <div style="font-size:10px;color:var(--muted);line-height:1.55">${escHtml(p.note)}</div>
             </div>
-            <div style="flex-shrink:0">
-              <select style="font-size:10px;padding:2px 4px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:4px" onchange="saveSwordlandOverride('${escHtml(p.name)}','team',this.value);renderSwordland()">
-                ${['alpha','beta','garrison','reserve'].map(t=>`<option value="${t}" ${p.team===t?'selected':''}>${{alpha:'Alpha',beta:'Beta',garrison:'Gar',reserve:'Res'}[t]}</option>`).join('')}
-              </select>
-            </div>
+            <select style="flex-shrink:0;font-size:10px;padding:2px 4px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:4px;align-self:flex-start;margin-top:2px" onchange="saveSwordlandOverride('${escHtml(p.name)}','team',this.value);renderSwordland()">
+              <option value="support"  ${p.team==='support' ?'selected':''}>Support</option>
+              <option value="attack"   ${p.team==='attack'  ?'selected':''}>Attack</option>
+              <option value="defender" ${p.team==='defender'?'selected':''}>Defend</option>
+            </select>
           </div>`;
         }).join('')}
       </div>`;
