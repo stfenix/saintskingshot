@@ -1626,30 +1626,30 @@ option { background: var(--surface2); }
       <div style="font-weight:700;color:var(--a);margin-bottom:6px">📈 Phase 1 · Days 1–30</div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Rush Growth tech. Faster builds compound into higher Town Centers and better troop tiers for everyone.</div>
       <div style="font-size:11px;line-height:1.8">
-        <div>🥇 Building Speed</div>
-        <div>🥇 Research Speed</div>
-        <div>🥈 Cooperative Protocols</div>
-        <div>🥉 Gathering Speed</div>
+        <div>🥇 Alliance Regimentation I → Adaptive Tools + Treaties + Mechanisms + Advanced Training</div>
+        <div>🥇 Alliance Regimentation II (gate)</div>
+        <div>🥈 Sanctuary Teleport</div>
+        <div>🥉 Gathering nodes</div>
       </div>
     </div>
     <div class="card" style="border-left:3px solid var(--sp)">
       <div style="font-weight:700;color:var(--sp);margin-bottom:6px">⚔️ Phase 2 · Days 31–90</div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Pivot to Battle 2–3 weeks before first inter-server event or contesting Level 3 Capital nodes.</div>
       <div style="font-size:11px;line-height:1.8">
-        <div>🥇 Rally Cap Expansion</div>
-        <div>🥇 March Speed</div>
-        <div>🥈 Squad Attack / Defense</div>
-        <div>🥉 Territory prerequisites</div>
+        <div>🥇 Rally Expansion I → Infantry/Cavalry/Archer Attack I → Squads' Attack I</div>
+        <div>🥇 Rally Expansion II → Defense chain → Squads' Defense I</div>
+        <div>🥈 Rally Expansion III</div>
+        <div>🥉 Lethality chain</div>
       </div>
     </div>
     <div class="card" style="border-left:3px solid var(--b)">
       <div style="font-weight:700;color:var(--b);margin-bottom:6px">🏆 Phase 3 · Days 90+</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Max all Battle tech. Prerequisite for competitive T11 Truegold rallies. Finish remaining Growth.</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Finish Battle lethality chain. Begin Territory for war coordination and storage.</div>
       <div style="font-size:11px;line-height:1.8">
-        <div>🥇 All Battle tech to max</div>
-        <div>🥇 Covenant Making</div>
-        <div>🥈 Remaining Growth tech</div>
-        <div>🥉 Territory as needed</div>
+        <div>🥇 Rapid Deployment I (march speed)</div>
+        <div>🥇 Tactical Expansion I/II/III</div>
+        <div>🥈 Storehouse Expansion I/II/III</div>
+        <div>🥉 Alliance Engineering, Building Durability</div>
       </div>
     </div>
   </div>
@@ -1666,18 +1666,9 @@ option { background: var(--surface2); }
   </div>
 
   <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
-    <button class="btn" onclick="renderAllianceTech()">&#8635; Refresh</button>
-    <select id="at-filter" onchange="renderAllianceTech()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 10px;font-size:13px">
-      <option value="">All Trees</option>
-      <option value="growth">Growth (Economy)</option>
-      <option value="battle">Battle (Combat)</option>
-      <option value="territory">Territory (Guild)</option>
-    </select>
-    <select id="at-sort" onchange="renderAllianceTech()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 10px;font-size:13px">
-      <option value="priority">Sort: Priority</option>
-      <option value="progress">Sort: Progress</option>
-      <option value="name">Sort: Name</option>
-    </select>
+    <button class="btn active" id="at-tab-growth" onclick="atSetTab('growth')">📈 Growth</button>
+    <button class="btn btn-outline" id="at-tab-battle" onclick="atSetTab('battle')">⚔️ Battle</button>
+    <button class="btn btn-outline" id="at-tab-territory" onclick="atSetTab('territory')">🗺️ Territory</button>
   </div>
   <div id="at-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:16px"></div>
   <div id="at-board"></div>
@@ -3383,7 +3374,7 @@ function goPage(name) {
   if (name==='stockpile') renderStockpile();
   if (name==='powerboard') renderPowerBoard();
   if (name==='swordland') renderSwordland();
-  if (name==='alliancetech') renderAllianceTech();
+  if (name==='alliancetech') atSetTab(atCurrentTab);
   if (name==='indivtech') { itSetTab(indivCurrentTab); }
   if (name==='traincalc') renderTrainCalc();
   if (name==='daily') renderDaily();
@@ -5881,39 +5872,78 @@ function renderPowerBoard() {
 // ============================================================
 // ALLIANCE TECH TREE
 // ============================================================
-const ALLIANCE_TECH_TREE = [
-  { id:'growth', name:'Growth', icon:'📈', color:'var(--a)', phase:'Phase 1 · Days 1–30',
-    notes:'Rush first. Faster construction compounds into higher Town Centers, better troop tiers, and higher personal research output for the entire alliance.',
+const ALLIANCE_TECH_TREE = {
+  growth: { id:'growth', name:'Growth', icon:'📈', color:'#22c55e', phase:'Phase 1 Priority',
+    notes:'Rush first. Gates unlock next research phase. Faster construction and research compounds for every alliance member.',
     nodes:[
-      { id:'at_build',  name:'Building Speed',        maxLv:10, bonus:'+2% construction/lv', priority:5, desc:'Directly compounds — higher Town Centers unlock better troop tiers faster for everyone' },
-      { id:'at_res',    name:'Research Speed',         maxLv:10, bonus:'+2% research/lv',     priority:5, desc:'Faster personal research for all members — compound effect with Building Speed' },
-      { id:'at_coop',   name:'Cooperative Protocols',  maxLv:5,  bonus:'+Embassy assist time', priority:4, desc:'Increases Embassy assist times — mandatory for the Batch Healing trick during KvK/Castle Battle' },
-      { id:'at_gather', name:'Gathering Speed',         maxLv:5,  bonus:'+5% gather speed/lv', priority:3, desc:'Faster resource trips, useful mid-game but lower return than build/research early on' },
-      { id:'at_prod',   name:'Resource Production',    maxLv:5,  bonus:'+5% resource output/lv',priority:2, desc:'Lower return than raw construction speed — skip until Growth core is done' },
+      { id:'g_reg1',   name:'Alliance Regimentation I',   maxLv:5, bonus:'Unlocks Growth Phase 1', priority:5, desc:'Gates that unlock the next research tier. Rush to open the path.', col:0, row:0,  parents:[] },
+      { id:'g_coop1',  name:'Cooperative Protocols I',    maxLv:5, bonus:'+Embassy assist time',   priority:5, desc:'Increases Embassy assist time — mandatory for batch healing in KvK/Castle Battle.', col:2, row:0,  parents:[] },
+      { id:'g_adapt1', name:'Adaptive Tools I',           maxLv:5, bonus:'+Construction speed',    priority:5, desc:'Improves construction speed for members — compounds with Town Center level.', col:0, row:1,  parents:['g_reg1'] },
+      { id:'g_trea1',  name:'Treaties I',                 maxLv:5, bonus:'+Research speed',        priority:5, desc:'Unlocks research speed bonuses — helps all members progress faster.', col:2, row:1,  parents:['g_coop1'] },
+      { id:'g_mech1',  name:'Mechanisms I',               maxLv:5, bonus:'+Construction speed',    priority:5, desc:'Further construction bonuses — unlock to gate Alliance Regimentation II.', col:0, row:2,  parents:['g_adapt1'] },
+      { id:'g_adv1',   name:'Advanced Training I',        maxLv:5, bonus:'+Training speed',        priority:5, desc:'Training speed bonus — helps ramp army size before events.', col:2, row:2,  parents:['g_trea1'] },
+      { id:'g_reg2',   name:'Alliance Regimentation II',  maxLv:5, bonus:'Unlocks Growth Phase 2', priority:5, desc:'Gates that unlock the next research tier. Rush to open the path.', col:1, row:3,  parents:['g_mech1','g_adv1'] },
+      { id:'g_food1',  name:'Food Gathering I',           maxLv:5, bonus:'+Food gather speed',     priority:3, desc:'Increases gathering speed for food — useful mid-game.', col:0, row:4,  parents:['g_reg2'] },
+      { id:'g_plains', name:'Plains Enrichment',          maxLv:1, bonus:'+Plains resource yield', priority:4, desc:'Boosts resource yield on Plains tiles your alliance holds.', col:1, row:4,  parents:['g_reg2'] },
+      { id:'g_wood1',  name:'Wood Gathering I',           maxLv:5, bonus:'+Wood gather speed',     priority:3, desc:'Increases gathering speed for wood — useful mid-game.', col:2, row:4,  parents:['g_reg2'] },
+      { id:'g_stone1', name:'Stone Gathering I',          maxLv:5, bonus:'+Stone gather speed',    priority:3, desc:'Increases gathering speed for stone — useful mid-game.', col:0, row:5,  parents:['g_food1'] },
+      { id:'g_sanct',  name:'Sanctuary Teleport',         maxLv:1, bonus:'Emergency teleport',     priority:4, desc:'Allows emergency teleporting to Alliance Sanctuary — critical for war coordination.', col:1, row:5,  parents:['g_plains'] },
+      { id:'g_iron1',  name:'Iron Gathering I',           maxLv:5, bonus:'+Iron gather speed',     priority:3, desc:'Increases gathering speed for iron — useful mid-game.', col:2, row:5,  parents:['g_wood1'] },
+      { id:'g_reg3',   name:'Alliance Regimentation III', maxLv:5, bonus:'Unlocks Growth Phase 3', priority:5, desc:'Gates that unlock the next research tier. Rush to open the path.', col:1, row:6,  parents:['g_stone1','g_sanct','g_iron1'] },
+      { id:'g_adapt2', name:'Adaptive Tools II',          maxLv:5, bonus:'+Construction speed',    priority:4, desc:'Improves construction speed for members — compounds with Town Center level.', col:0, row:7,  parents:['g_reg3'] },
+      { id:'g_cult',   name:'Cultivation Drive',          maxLv:1, bonus:'Alliance resource bonus', priority:2, desc:'One-time alliance resource bonus.', col:1, row:7,  parents:['g_reg3'] },
+      { id:'g_trea2',  name:'Treaties II',                maxLv:5, bonus:'+Research speed',        priority:4, desc:'Unlocks research speed bonuses — helps all members progress faster.', col:2, row:7,  parents:['g_reg3'] },
+      { id:'g_mech2',  name:'Mechanisms II',              maxLv:5, bonus:'+Construction speed',    priority:3, desc:'Further construction bonuses — unlock to gate Alliance Regimentation III.', col:0, row:8,  parents:['g_adapt2'] },
+      { id:'g_adv2',   name:'Advanced Training II',       maxLv:5, bonus:'+Training speed',        priority:3, desc:'Training speed bonus — helps ramp army size before events.', col:2, row:8,  parents:['g_trea2'] },
+      { id:'g_first',  name:'First Aid Techniques I',     maxLv:5, bonus:'+Healing speed',         priority:3, desc:'Improves healing speed for all members — valuable before major events.', col:1, row:9,  parents:['g_mech2','g_adv2'] },
+      { id:'g_food2',  name:'Food Gathering II',          maxLv:5, bonus:'+Food gather speed',     priority:2, desc:'Increases gathering speed for food — useful mid-game.', col:0, row:10, parents:['g_first'] },
+      { id:'g_wood2',  name:'Wood Gathering II',          maxLv:5, bonus:'+Wood gather speed',     priority:2, desc:'Increases gathering speed for wood — useful mid-game.', col:2, row:10, parents:['g_first'] },
+      { id:'g_stone2', name:'Stone Gathering II',         maxLv:5, bonus:'+Stone gather speed',    priority:1, desc:'Increases gathering speed for stone — useful mid-game.', col:0, row:11, parents:['g_food2'] },
+      { id:'g_iron2',  name:'Iron Gathering II',          maxLv:5, bonus:'+Iron gather speed',     priority:1, desc:'Increases gathering speed for iron — useful mid-game.', col:2, row:11, parents:['g_wood2'] },
     ]
   },
-  { id:'battle', name:'Battle', icon:'⚔️', color:'var(--sp)', phase:'Phase 2 · Days 31–90',
-    notes:'Pivot 2–3 weeks before your first inter-server event or when contesting Level 3 Capital nodes. The alliance that puts the most troops on a node fastest wins early wars.',
+  battle: { id:'battle', name:'Battle', icon:'⚔️', color:'#ef4444', phase:'Phase 2 Priority',
+    notes:'Pivot 2–3 weeks before first inter-server event. More troops per rally plus higher attack/defense wins early wars.',
     nodes:[
-      { id:'at_rally',  name:'Rally Cap Expansion',   maxLv:5,  bonus:'+50k troop slots/lv',  priority:5, desc:'More troops per rally = stronger hits. Critical for taking high-level targets and T11 Truegold rallies' },
-      { id:'at_march',  name:'March Speed',            maxLv:10, bonus:'+2% march speed/lv',   priority:5, desc:'Faster arrival in events and wars — asymmetric advantage in early server skirmishes' },
-      { id:'at_atk',    name:'Squad Attack',           maxLv:10, bonus:'+0.5% all troop ATK/lv',priority:4, desc:'Massive asymmetric spike when fighting alliances that neglected this node' },
-      { id:'at_def',    name:'Squad Defense',          maxLv:10, bonus:'+0.5% all troop DEF/lv',priority:4, desc:'Reduces damage taken by all members\' troops in every event' },
-      { id:'at_hp',     name:'Squad HP',               maxLv:10, bonus:'+0.5% all troop HP/lv', priority:3, desc:'More troop survivability — max with ATK/DEF in Phase 3' },
+      { id:'b_rel1',    name:'Rally Expansion I',       maxLv:5, bonus:'+Rally troop cap',      priority:5, desc:'Expands rally troop cap — more troops per hit = stronger attacks.', col:1, row:0, parents:[] },
+      { id:'b_inf_atk', name:'Infantry Attack I',       maxLv:5, bonus:'+Infantry ATK',         priority:5, desc:'Per-unit-type attack bonus — stack with Squads\' Attack for maximum output.', col:0, row:1, parents:['b_rel1'] },
+      { id:'b_cav_atk', name:'Cavalry Attack I',        maxLv:5, bonus:'+Cavalry ATK',          priority:5, desc:'Per-unit-type attack bonus — stack with Squads\' Attack for maximum output.', col:1, row:1, parents:['b_rel1'] },
+      { id:'b_arc_atk', name:'Archer Attack I',         maxLv:5, bonus:'+Archer ATK',           priority:5, desc:'Per-unit-type attack bonus — stack with Squads\' Attack for maximum output.', col:2, row:1, parents:['b_rel1'] },
+      { id:'b_sq_atk',  name:"Squads' Attack I",        maxLv:5, bonus:'+All troop ATK',        priority:5, desc:"Flat attack bonus for ALL troop types — high-value node.", col:1, row:2, parents:['b_inf_atk','b_cav_atk','b_arc_atk'] },
+      { id:'b_rel2',    name:'Rally Expansion II',      maxLv:5, bonus:'+Rally troop cap',      priority:5, desc:'Expands rally troop cap — more troops per hit = stronger attacks.', col:1, row:3, parents:['b_sq_atk'] },
+      { id:'b_inf_def', name:'Infantry Defense I',      maxLv:5, bonus:'+Infantry DEF',         priority:4, desc:'Per-unit-type defense bonus.', col:0, row:4, parents:['b_rel2'] },
+      { id:'b_cav_def', name:'Cavalry Defense I',       maxLv:5, bonus:'+Cavalry DEF',          priority:4, desc:'Per-unit-type defense bonus.', col:1, row:4, parents:['b_rel2'] },
+      { id:'b_arc_def', name:'Archer Defense I',        maxLv:5, bonus:'+Archer DEF',           priority:4, desc:'Per-unit-type defense bonus.', col:2, row:4, parents:['b_rel2'] },
+      { id:'b_sq_def',  name:"Squads' Defense I",       maxLv:5, bonus:'+All troop DEF',        priority:4, desc:'Flat defense bonus for ALL troop types.', col:1, row:5, parents:['b_inf_def','b_cav_def','b_arc_def'] },
+      { id:'b_rel3',    name:'Rally Expansion III',     maxLv:4, bonus:'+Rally troop cap',      priority:4, desc:'Max level 4 (not 5 like others) — still critical for reaching highest march caps.', col:1, row:6, parents:['b_sq_def'] },
+      { id:'b_inf_let', name:'Infantry Lethality I',    maxLv:5, bonus:'+Infantry lethality',   priority:3, desc:'Damage multiplier bonus — priority when base ATK is already maxed.', col:0, row:7, parents:['b_rel3'] },
+      { id:'b_cav_let', name:'Cavalry Lethality I',     maxLv:5, bonus:'+Cavalry lethality',    priority:3, desc:'Damage multiplier bonus — priority when base ATK is already maxed.', col:1, row:7, parents:['b_rel3'] },
+      { id:'b_arc_let', name:'Archer Lethality I',      maxLv:5, bonus:'+Archer lethality',     priority:3, desc:'Damage multiplier bonus — priority when base ATK is already maxed.', col:2, row:7, parents:['b_rel3'] },
+      { id:'b_sq_let',  name:"Squads' Lethality I",     maxLv:5, bonus:'+All troop lethality',  priority:3, desc:'Damage multiplier bonus — priority when base ATK is already maxed.', col:1, row:8, parents:['b_inf_let','b_cav_let','b_arc_let'] },
     ]
   },
-  { id:'territory', name:'Territory', icon:'🗺️', color:'var(--b)', phase:'Situational',
-    notes:'Level only as dictated by geographical necessity. Member Capacity and Banners are always needed. Tower defense nodes are only relevant if actively contested in your home region.',
+  territory: { id:'territory', name:'Territory', icon:'🗺️', color:'#3b82f6', phase:'Situational',
+    notes:'Level as dictated by geographical necessity. Rapid Deployment and Storehouse Expansion give immediate value. Building Durability only matters when contested.',
     nodes:[
-      { id:'at_size',    name:'Member Capacity',       maxLv:5,  bonus:'+5 member slots/lv',   priority:5, desc:'Absorb active players from dying alliances. Unlock early when recruiting — your most important Territory node' },
-      { id:'at_banners', name:'Alliance Banners',      maxLv:5,  bonus:'+banner placements/lv', priority:4, desc:'Need enough banners to reach crucial resource nodes and fortresses — level as territory expands' },
-      { id:'at_covenant',name:'Covenant Making',       maxLv:5,  bonus:'Enables more contributions', priority:3, desc:'Phase 3 priority — enables infinite contributions so active members can keep donating past the cap' },
-      { id:'at_store',   name:'Storehouse Expansion',  maxLv:5,  bonus:'+alliance storage/lv',  priority:2, desc:'More resources storable for tech donations — useful when pushing heavy research phases' },
-      { id:'at_plains',  name:'Plains Enrichment',     maxLv:5,  bonus:'+resource node output', priority:1, desc:'Low return unless your alliance controls large farming territory — situational' },
-      { id:'at_tower',   name:'Tower Defense',         maxLv:5,  bonus:'+tower combat stats/lv',priority:2, desc:'Only level if your alliance is actively being contested in your home region' },
+      { id:'t_rapid',  name:'Rapid Deployment I',                   maxLv:5, bonus:'+March speed',          priority:5, desc:'March speed — fastest unit to unlock value, critical for territory racing.', col:1, row:0, parents:[] },
+      { id:'t_tac1',   name:'Tactical Expansion I',                  maxLv:5, bonus:'+Alliance capacity',    priority:4, desc:'Gate for each territory tier. Alliance member capacity grows.', col:1, row:1, parents:['t_rapid'] },
+      { id:'t_dur1',   name:'Alliance Building Durability I',        maxLv:5, bonus:'+Building HP',          priority:3, desc:'Tower/building HP — only matters if contested in home region.', col:0, row:2, parents:['t_tac1'] },
+      { id:'t_store1', name:'Storehouse Expansion I',                maxLv:5, bonus:'+Alliance storage',     priority:4, desc:'Alliance storage cap — lets members donate more resources without waste.', col:2, row:2, parents:['t_tac1'] },
+      { id:'t_inc1',   name:'Incendiary Bullets I',                  maxLv:5, bonus:'+Tower ATK',            priority:2, desc:'Tower attack bonus — situational unless actively fighting over territory.', col:0, row:3, parents:['t_dur1'] },
+      { id:'t_eng1',   name:'Alliance Engineering I',                maxLv:5, bonus:'+Alliance build speed', priority:3, desc:'Construction speed for alliance buildings — moderate value.', col:2, row:3, parents:['t_store1'] },
+      { id:'t_tac2',   name:'Tactical Expansion II',                 maxLv:5, bonus:'+Alliance capacity',    priority:3, desc:'Gate for each territory tier. Alliance member capacity grows.', col:1, row:4, parents:['t_inc1','t_eng1'] },
+      { id:'t_dur2',   name:'Alliance Building Durability II',       maxLv:5, bonus:'+Building HP',          priority:2, desc:'Tower/building HP — only matters if contested in home region.', col:0, row:5, parents:['t_tac2'] },
+      { id:'t_store2', name:'Storehouse Expansion II',               maxLv:5, bonus:'+Alliance storage',     priority:3, desc:'Alliance storage cap — lets members donate more resources without waste.', col:2, row:5, parents:['t_tac2'] },
+      { id:'t_inc2',   name:'Incendiary Bullets II',                 maxLv:5, bonus:'+Tower ATK',            priority:2, desc:'Tower attack bonus — situational unless actively fighting over territory.', col:0, row:6, parents:['t_dur2'] },
+      { id:'t_eng2',   name:'Alliance Engineering II',               maxLv:5, bonus:'+Alliance build speed', priority:2, desc:'Construction speed for alliance buildings — moderate value.', col:2, row:6, parents:['t_store2'] },
+      { id:'t_tac3',   name:'Tactical Expansion III',                maxLv:5, bonus:'+Alliance capacity',    priority:2, desc:'Gate for each territory tier. Alliance member capacity grows.', col:1, row:7, parents:['t_inc2','t_eng2'] },
+      { id:'t_dur3',   name:'Alliance Building Durability III',      maxLv:5, bonus:'+Building HP',          priority:1, desc:'Tower/building HP — only matters if contested in home region.', col:0, row:8, parents:['t_tac3'] },
+      { id:'t_store3', name:'Storehouse Expansion III',              maxLv:5, bonus:'+Alliance storage',     priority:2, desc:'Alliance storage cap — lets members donate more resources without waste.', col:2, row:8, parents:['t_tac3'] },
+      { id:'t_inc3',   name:'Incendiary Bullets III',                maxLv:5, bonus:'+Tower ATK',            priority:1, desc:'Tower attack bonus — situational unless actively fighting over territory.', col:0, row:9, parents:['t_dur3'] },
+      { id:'t_eng3',   name:'Alliance Engineering III',              maxLv:5, bonus:'+Alliance build speed', priority:1, desc:'Construction speed for alliance buildings — moderate value.', col:2, row:9, parents:['t_store3'] },
     ]
-  }
-];
+  },
+};
 
 let allianceTechData = {}; // { nodeId: currentLevel }
 
@@ -5923,7 +5953,7 @@ function loadAllianceTech() {
     if (!d) return;
     allianceTechData = d;
     localStorage.setItem('allianceTech', JSON.stringify(allianceTechData));
-    if (document.getElementById('page-alliancetech')?.classList.contains('active')) renderAllianceTech();
+    if (document.getElementById('page-alliancetech')?.classList.contains('active')) atSetTab(atCurrentTab);
   }).catch(() => {});
 }
 
@@ -5933,13 +5963,28 @@ function saveAllianceTech(nodeId, level) {
   fsSet('allianceTech', allianceTechData);
 }
 
-function renderAllianceTech() {
-  const filter = document.getElementById('at-filter')?.value || '';
-  const sort   = document.getElementById('at-sort')?.value   || 'priority';
+let atCurrentTab = 'growth';
 
-  // Stats bar
+function atSetTab(tab) {
+  atCurrentTab = tab;
+  ['growth','battle','territory'].forEach(t => {
+    const btn = document.getElementById('at-tab-' + t);
+    if (!btn) return;
+    btn.classList.toggle('active', t === tab);
+    btn.classList.toggle('btn-outline', t !== tab);
+  });
+  document.getElementById('at-detail')?.classList.remove('active');
+  const board = document.getElementById('at-board');
+  if (board) board.style.display = '';
+  renderAllianceTech();
+}
+
+function renderAllianceTech() {
+  const CELL_W = 185, CELL_H = 185, NODE_W = 155, NODE_H = 140, PAD = 28;
+
+  // Stats bar — all trees combined
   let totalNodes = 0, totalLevels = 0, maxLevels = 0;
-  ALLIANCE_TECH_TREE.forEach(cat => cat.nodes.forEach(n => {
+  Object.values(ALLIANCE_TECH_TREE).forEach(cat => cat.nodes.forEach(n => {
     totalNodes++; totalLevels += (allianceTechData[n.id]||0); maxLevels += n.maxLv;
   }));
   const overallPct = maxLevels ? Math.round(totalLevels/maxLevels*100) : 0;
@@ -5956,20 +6001,47 @@ function renderAllianceTech() {
   const priCol = p => p>=5?'#ef4444':p>=4?'#f59e0b':p>=3?'#3b82f6':'#4a6090';
   const stars  = p => '★'.repeat(p)+'☆'.repeat(5-p);
 
+  const board = document.getElementById('at-board');
+  if (!board) return;
+  document.getElementById('at-detail')?.classList.remove('active');
+  board.style.display = '';
+
+  const tree = ALLIANCE_TECH_TREE[atCurrentTab];
+  if (!tree) return;
+
+  const maxRow = tree.nodes.reduce((m, n) => Math.max(m, n.row), 0);
+  const canvasW = 3 * CELL_W + 2 * PAD;
+  const canvasH = (maxRow + 1) * CELL_H + 2 * PAD;
+
+  // SVG connector paths
+  let svgPaths = '';
+  tree.nodes.forEach(n => {
+    n.parents.forEach(pid => {
+      const p = tree.nodes.find(x => x.id === pid);
+      if (!p) return;
+      const px = p.col * CELL_W + CELL_W / 2 + PAD;
+      const py = p.row * CELL_H + NODE_H + PAD;
+      const cx = n.col * CELL_W + CELL_W / 2 + PAD;
+      const cy = n.row * CELL_H + PAD;
+      const midY = (py + cy) / 2;
+      svgPaths += `<path d="M${px},${py} L${px},${midY} L${cx},${midY} L${cx},${cy}" stroke="#2a3d70" stroke-width="2" fill="none"/>`;
+    });
+  });
+
+  // Node cards
   const atNodeCard = (n, cat) => {
-    const cur = allianceTechData[n.id]||0, done = cur>=n.maxLv;
-    return `<div class="ttree-node${done?' tt-maxed':''}" onclick="ttreeDetail('at','${n.id}',event)">
+    const cur = allianceTechData[n.id]||0, done = cur >= n.maxLv;
+    const left = n.col * CELL_W + PAD;
+    const top  = n.row * CELL_H + PAD;
+    return `<div class="ttree-node${done?' tt-maxed':''}" style="width:${NODE_W}px;left:${left}px;top:${top}px" onclick="ttreeDetail('at','${n.id}',event)">
       <div class="ttree-node-top">
-        <div class="ttree-icon-box" style="background:${cat.color}20;font-size:20px">${cat.icon}</div>
         <div style="flex:1">
-          <span class="ttree-lv${done?' tt-done':''}">Lv.${cur}</span>
-          <span class="ttree-cat">${cat.name}</span>
+          <span class="ttree-lv${done?' tt-done':''}">Lv.${cur}/${n.maxLv}</span>
         </div>
       </div>
-      <div class="ttree-name">${n.name}</div>
+      <div class="ttree-name" style="font-size:12px">${n.name}</div>
       <div class="ttree-sub">${n.bonus}</div>
       <div class="ttree-stats">
-        <div class="ttree-stat"><span class="ttree-stat-lbl">Progress</span><span class="ttree-stat-val" style="color:${done?'#22c55e':cat.color}">${cur}/${n.maxLv}</span></div>
         <div class="ttree-stat"><span class="ttree-stat-lbl">Priority</span><span class="ttree-stat-val" style="color:${priCol(n.priority)};font-size:9px">${stars(n.priority)}</span></div>
       </div>
       <div class="ttree-adj">
@@ -5977,7 +6049,7 @@ function renderAllianceTech() {
         <span style="font-size:9px;color:#4a6090">${n.maxLv>1?Math.round(cur/n.maxLv*100)+'%':''}</span>
         <button class="ttree-adj-btn tt-plus" onclick="event.stopPropagation();atAdjust('${n.id}',${n.maxLv},+1)">+</button>
       </div>
-      <div class="ttree-popup">
+      <div class="ttree-popup" style="left:0;right:auto;width:210px">
         <div class="ttree-popup-cat">${cat.name} · ${cat.phase}</div>
         <div class="ttree-popup-name">${n.name}</div>
         <div class="ttree-popup-sub">${n.bonus}</div>
@@ -5990,33 +6062,16 @@ function renderAllianceTech() {
     </div>`;
   };
 
-  const board = document.getElementById('at-board');
-  if (!board) return;
-  document.getElementById('at-detail').classList.remove('active');
-  board.style.display = '';
+  const nodeCards = tree.nodes.map(n => atNodeCard(n, tree)).join('');
 
-  const cats = ALLIANCE_TECH_TREE.filter(c => !filter || c.id === filter);
-  board.innerHTML = `<div class="ttree-bg"><div class="at-col-wrap">${
-    cats.map(cat => {
-      let nodes = [...cat.nodes];
-      if (sort==='priority') nodes.sort((a,b)=>b.priority-a.priority);
-      else if (sort==='progress') nodes.sort((a,b)=>(allianceTechData[a.id]||0)/a.maxLv-(allianceTechData[b.id]||0)/b.maxLv);
-      else nodes.sort((a,b)=>a.name.localeCompare(b.name));
-      const catLevels = cat.nodes.reduce((s,n)=>s+(allianceTechData[n.id]||0),0);
-      const catMax    = cat.nodes.reduce((s,n)=>s+n.maxLv,0);
-      const catPct    = catMax ? Math.round(catLevels/catMax*100) : 0;
-      return `<div class="at-col">
-        <div class="at-col-hdr">
-          <div style="font-size:20px">${cat.icon}</div>
-          <div style="font-weight:700;color:${cat.color};font-size:12px;margin:3px 0">${cat.name} Tree</div>
-          <div style="font-size:10px;color:#4a6090">${cat.phase}</div>
-          <div style="font-size:13px;font-weight:800;color:#f0a500;margin-top:5px">${catPct}%</div>
-          <div style="font-size:9px;color:#4a6090">${catLevels}/${catMax} levels</div>
-        </div>
-        ${nodes.map((n,i)=>`${i>0?'<div class="at-col-connector"></div>':''}${atNodeCard(n,cat)}`).join('')}
-      </div>`;
-    }).join('')
-  }</div></div>`;
+  board.innerHTML = `<div class="ttree-bg" style="min-height:${canvasH}px">
+    <div style="position:relative;width:${canvasW}px;height:${canvasH}px;margin:0 auto">
+      <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible" xmlns="http://www.w3.org/2000/svg">
+        ${svgPaths}
+      </svg>
+      ${nodeCards}
+    </div>
+  </div>`;
 }
 
 function atAdjust(nodeId, maxLv, delta) {
@@ -6036,7 +6091,7 @@ function ttreeDetail(tree, nodeId, e) {
 
   let node, cat;
   if (isAlliance) {
-    ALLIANCE_TECH_TREE.forEach(c => { const n = c.nodes.find(x=>x.id===nodeId); if(n){node=n;cat=c;} });
+    Object.values(ALLIANCE_TECH_TREE).forEach(c => { const n = c.nodes.find(x=>x.id===nodeId); if(n){node=n;cat=c;} });
   } else {
     const tdata = INDIV_TECH_TREE[indivCurrentTab];
     if (tdata) { cat = tdata; node = tdata.nodes.find(n=>n.id===nodeId); }
@@ -6071,7 +6126,7 @@ function ttreeDetail(tree, nodeId, e) {
   const totalBuff = bonusPerLv ? `+${(bonusPerLv*maxLv).toFixed(1)}%` : node.bonus;
   const boardId   = isAlliance ? 'at-board' : 'it-board';
   const detailId  = isAlliance ? 'at-detail' : 'it-detail';
-  const onBack    = isAlliance ? 'renderAllianceTech()' : 'renderIndivTech()';
+  const onBack    = isAlliance ? 'atSetTab(atCurrentTab)' : 'renderIndivTech()';
 
   document.getElementById(boardId).style.display = 'none';
   const detailEl = document.getElementById(detailId);
