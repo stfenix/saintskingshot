@@ -1150,6 +1150,16 @@ option { background: var(--surface2); }
   <div id="sl-power-bar" style="margin-bottom:14px"></div>
   <div id="swordland-board" style="margin-bottom:16px"></div>
 
+  <!-- COMMAND SET -->
+  <div class="card" style="margin-bottom:16px" id="sl-commands-card">
+    <div class="card-title" style="display:flex;align-items:center;gap:10px">
+      📣 Command Set
+      <span style="font-size:11px;font-weight:400;color:var(--muted)">Who goes where, per phase</span>
+      <button class="btn btn-outline btn-sm" onclick="copyCommandSet()" style="margin-left:auto;font-size:10px">📋 Copy for Discord</button>
+    </div>
+    <div id="sl-commands"></div>
+  </div>
+
   <!-- PHASE GUIDE -->
   <div class="card" style="margin-bottom:14px">
     <div class="card-title">📋 Phase-by-Phase Battle Plan</div>
@@ -4598,6 +4608,120 @@ function renderSwordland() {
       }).join('')}
     </div>` : '') +
     '</div>';
+  renderSwordlandCommands();
+}
+
+function renderSwordlandCommands() {
+  const el = document.getElementById('sl-commands');
+  if (!el) return;
+
+  const accepted = slRoster.filter(r => r.status === 'accepted');
+  const support  = accepted.filter(m => m.team === 'support').sort((a,b) => b.power - a.power);
+  const attack   = accepted.filter(m => m.team === 'attack').sort((a,b) => b.power - a.power);
+  const groupA   = accepted.filter(m => m.role === 'Defender — Group A');
+  const groupB   = accepted.filter(m => m.role === 'Defender — Group B');
+  const whale    = support.find(m => m.role === 'Whale / Rally Lead');
+  const atkLead  = attack.find(m => m.role === 'Attack Lead');
+  const backupSup = support.filter(m => m !== whale);
+
+  // Phase 1: Stables = whale + Group B, Belltower = backup support + Group A, Attack hits players
+  const stablesTeam   = [whale, ...groupB].filter(Boolean);
+  const belltowerTeam = [...backupSup, ...groupA].filter(Boolean);
+
+  // Phase 2 split is same groupA / groupB, support becomes flex
+  // Phase 3: atkLead fires first, whale follows, everyone circle-teleports
+
+  if (!accepted.length) {
+    el.innerHTML = '<div class="no-data" style="padding:12px">Set member statuses and rebuild formations first.</div>';
+    return;
+  }
+
+  const names = arr => arr.map(m => `<strong>${escHtml(m.name)}</strong>`).join(', ');
+  const plain = arr => arr.map(m => m.name).join(', ');
+
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+
+      <div style="background:var(--surface2);border-radius:8px;padding:12px">
+        <div style="font-weight:700;color:var(--accent);font-size:12px;margin-bottom:8px;display:flex;align-items:center;gap:6px">⚡ PHASE 1 — OPENING RUSH</div>
+        <div style="font-size:12px;line-height:2;color:var(--text)">
+          <div><span style="color:var(--b);font-weight:600;display:inline-block;width:110px">🐎 Royal Stables</span>${names(stablesTeam)}</div>
+          <div><span style="color:var(--b);font-weight:600;display:inline-block;width:110px">🔔 Belltower</span>${names(belltowerTeam)}</div>
+          <div><span style="color:#e05252;font-weight:600;display:inline-block;width:110px">⚔️ Hit players</span>${names(attack)}</div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6">Capture both buildings before Phase 2 unlocks. Attackers target enemy's strongest player first — keep them pinned.</div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:8px;padding:12px">
+        <div style="font-weight:700;color:var(--accent);font-size:12px;margin-bottom:8px">🏛️ PHASE 2 — HOLD &amp; CONTROL</div>
+        <div style="font-size:12px;line-height:2;color:var(--text)">
+          <div><span style="color:var(--b);font-weight:600;display:inline-block;width:110px">🔔 Group A</span>${names(groupA)}</div>
+          <div style="font-size:10px;color:var(--muted);margin-left:110px;margin-top:-6px;margin-bottom:4px">Belltower · Sanctum 1 · Abbey 1 · Abbey 2</div>
+          <div><span style="color:var(--b);font-weight:600;display:inline-block;width:110px">🐎 Group B</span>${names(groupB)}</div>
+          <div style="font-size:10px;color:var(--muted);margin-left:110px;margin-top:-6px;margin-bottom:4px">Royal Stables · Sanctum 2 · Abbey 3 · Abbey 4</div>
+          <div><span style="color:#e05252;font-weight:600;display:inline-block;width:110px">⚔️ Attack</span>${names(attack)}</div>
+          ${backupSup.length ? `<div><span style="color:var(--sp);font-weight:600;display:inline-block;width:110px">🛡 Cover/flex</span>${names(backupSup)}</div>` : ''}
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6">Never leave buildings empty. Collect scattered points off the ground when buildings flip.</div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:8px;padding:12px">
+        <div style="font-weight:700;color:var(--accent);font-size:12px;margin-bottom:8px">🏰 PHASE 3 — SWORDSHRINE (last 10 min)</div>
+        <div style="font-size:12px;line-height:2;color:var(--text)">
+          <div style="display:flex;gap:8px;align-items:baseline"><span style="color:var(--sp);font-weight:700;font-size:16px">1.</span><span>${whale ? `<strong>${escHtml(whale.name)}</strong>` : '(whale)'} — teleport to Swordshrine, circle the edge</span></div>
+          <div style="display:flex;gap:8px;align-items:baseline"><span style="color:#e05252;font-weight:700;font-size:16px">2.</span><span>${atkLead ? `<strong>${escHtml(atkLead.name)}</strong>` : '(attack lead)'} — launch rally on Swordshrine FIRST</span></div>
+          <div style="display:flex;gap:8px;align-items:baseline"><span style="color:var(--sp);font-weight:700;font-size:16px">3.</span><span>${whale ? `<strong>${escHtml(whale.name)}</strong>` : '(whale)'} — launch second rally 2–3 sec AFTER step 2</span></div>
+          <div style="display:flex;gap:8px;align-items:baseline"><span style="color:var(--muted);font-weight:700;font-size:16px">4.</span><span>${names([...attack.filter(m=>m!==atkLead), ...backupSup])} — join rallies or circle-teleport to pressure</span></div>
+          <div style="display:flex;gap:8px;align-items:baseline"><span style="color:var(--b);font-weight:700;font-size:16px">5.</span><span>Defenders — stay on buildings. Only leave if everything is secure.</span></div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6">Don't rush Swordshrine early — wait for enemy to reach 15–30k points. Grab Undercellers for bonus points when they appear.</div>
+      </div>
+
+    </div>`;
+}
+
+function copyCommandSet() {
+  const accepted = slRoster.filter(r => r.status === 'accepted');
+  const support  = accepted.filter(m => m.team === 'support').sort((a,b) => b.power - a.power);
+  const attack   = accepted.filter(m => m.team === 'attack').sort((a,b) => b.power - a.power);
+  const groupA   = accepted.filter(m => m.role === 'Defender — Group A');
+  const groupB   = accepted.filter(m => m.role === 'Defender — Group B');
+  const whale    = support.find(m => m.role === 'Whale / Rally Lead');
+  const atkLead  = attack.find(m => m.role === 'Attack Lead');
+  const backupSup = support.filter(m => m !== whale);
+  const stablesTeam   = [whale, ...groupB].filter(Boolean);
+  const belltowerTeam = [...backupSup, ...groupA].filter(Boolean);
+
+  const n = arr => arr.map(m => m.name).join(', ');
+
+  const lines = [
+    '=== SWORDLAND BATTLE PLAN ===',
+    '',
+    '-- PHASE 1: OPENING --',
+    `Royal Stables: ${n(stablesTeam)}`,
+    `Belltower: ${n(belltowerTeam)}`,
+    `Hit enemy players: ${n(attack)}`,
+    '',
+    '-- PHASE 2: HOLD --',
+    `Group A (Belltower + Sanctum + 2 Abbeys): ${n(groupA)}`,
+    `Group B (Stables + Sanctum + 2 Abbeys): ${n(groupB)}`,
+    `Keep attacking: ${n(attack)}`,
+    backupSup.length ? `Flex/cover: ${n(backupSup)}` : '',
+    '',
+    '-- PHASE 3: SWORDSHRINE (last 10 min) --',
+    `1. ${whale?.name ?? 'Whale'} - teleport to Swordshrine, circle edge`,
+    `2. ${atkLead?.name ?? 'Attack Lead'} - launch rally FIRST`,
+    `3. ${whale?.name ?? 'Whale'} - launch rally 2-3 sec AFTER`,
+    `4. ${n([...attack.filter(m=>m!==atkLead), ...backupSup])} - join rallies`,
+    `5. Defenders stay on buildings`,
+    '',
+    'Good luck!',
+  ].filter(l => l !== null);
+
+  const text = lines.join('\n');
+  navigator.clipboard.writeText(text)
+    .then(() => alert('Command set copied — paste it into game chat!'))
+    .catch(() => { prompt('Copy this:', text); });
 }
 
 // ============================================================
