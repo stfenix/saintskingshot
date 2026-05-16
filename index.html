@@ -523,6 +523,7 @@ option { background: var(--surface2); }
     <div class="nav-item" onclick="goPage('kvkplanner')"><span class="icon">&#9876;</span>KvK War Planner</div>
     <div class="nav-item" onclick="goPage('stockpile')"><span class="icon">&#128230;</span>Stockpile Tracker</div>
     <div class="nav-item" onclick="goPage('powerboard')"><span class="icon">&#127942;</span>Power Board</div>
+    <div class="nav-item" onclick="goPage('swordland')"><span class="icon">&#9876;&#65039;</span>Swordland Setup</div>
   </div>
   <div class="nav-section">
     <div class="nav-label">Tools</div>
@@ -1094,6 +1095,42 @@ option { background: var(--surface2); }
     </div>
   </div>
   <div id="powerboard-list"></div>
+</div>
+
+<!-- ===== SWORDLAND SETUP ===== -->
+<div class="page" id="page-swordland">
+  <div class="page-header">
+    <h2>⚔️ Swordland Showdown Setup</h2>
+    <p>Optimised rally team and garrison assignments for your 15 active combatants, ranked by squad power.</p>
+  </div>
+  <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+    <button class="btn btn-primary btn-sm" onclick="autoAssignSwordland()">⚡ Auto-Optimise Assignments</button>
+    <button class="btn btn-outline btn-sm" onclick="seedSwordlandRoster()">📋 Load Combatants into Alliance HQ</button>
+    <button class="btn btn-outline btn-sm" onclick="exportSwordlandPlan()">📤 Copy Plan to Clipboard</button>
+  </div>
+  <div id="sl-power-bar" style="margin-bottom:16px"></div>
+  <div id="swordland-board"></div>
+  <div class="card" style="margin-top:16px">
+    <div class="card-title">⚔️ Swordland Showdown — Strategy Guide</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;font-size:12px;line-height:1.7">
+      <div>
+        <div style="color:var(--sp);font-weight:700;margin-bottom:4px">Rally Leads</div>
+        <div style="color:var(--muted)">Your top 2 by power. Each leads a separate rally. Set march size to maximum before launching. Always wait until your rally is full before sending.</div>
+      </div>
+      <div>
+        <div style="color:var(--s);font-weight:700;margin-bottom:4px">Joiners</div>
+        <div style="color:var(--muted)">Join the highest-power rally you can access. Stack ATK/Lethality heroes. Chenko + Vivian combo in the same rally is the meta joiner pairing.</div>
+      </div>
+      <div>
+        <div style="color:var(--b);font-weight:700;margin-bottom:4px">Garrison</div>
+        <div style="color:var(--muted)">Holds the alliance castle against incoming attacks. Use defensive widget heroes. Thatsapitty anchors the garrison — hardest fort to crack.</div>
+      </div>
+      <div>
+        <div style="color:var(--accent);font-weight:700;margin-bottom:4px">Reserve Pool</div>
+        <div style="color:var(--muted)">Rotate in when rally slots open — every joiner adds combat power. Farm resources and Swordland currency between active waves. Priority target: Vivian shards.</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ===== RESEARCH TRACKER ===== -->
@@ -2520,8 +2557,8 @@ function goPage(name) {
     roster:'roster', builds:'event', powerup:'power up', skills:'skill',
     tierlist:'tier', troops:'troop', guide:'guide', age:'kingdom',
     calendar:'calendar', alliance:'alliance hq', kvkplanner:'kvk',
-    stockpile:'stockpile', powerboard:'power board', daily:'daily',
-    compare:'compare', research:'research', settings:'settings'
+    stockpile:'stockpile', powerboard:'power board', swordland:'swordland',
+    daily:'daily', compare:'compare', research:'research', settings:'settings'
   };
   const label = PAGE_LABELS[name] || name;
   document.querySelectorAll('.nav-item').forEach(n => {
@@ -2538,6 +2575,7 @@ function goPage(name) {
   if (name==='kvkplanner') renderKvkPlanner();
   if (name==='stockpile') renderStockpile();
   if (name==='powerboard') renderPowerBoard();
+  if (name==='swordland') renderSwordland();
   if (name==='daily') renderDaily();
   if (name==='compare') renderCompare();
   if (name==='research') renderResearch();
@@ -4214,6 +4252,187 @@ async function ksFetch(path) {
 }
 
 // ============================================================
+// SWORDLAND SHOWDOWN SETUP
+// ============================================================
+const SWORDLAND_COMBATANTS = [
+  { name:'_Irene_',       power:165 },
+  { name:'Stfenix',       power:146 },
+  { name:'Thatsapitty',   power:84  },
+  { name:'Lord of Lords', power:62  },
+  { name:'L6514',         power:51  },
+  { name:'Lord Murdok',   power:32  },
+  { name:'Hollywood',     power:29  },
+  { name:'Countess Foxy', power:25  },
+  { name:'Saby',          power:22  },
+  { name:'_Irene_3',      power:21  },
+  { name:'Gabriele',      power:19  },
+  { name:'Mosser',        power:16  },
+  { name:'farmlord',      power:16  },
+  { name:'ciwenn',        power:15  },
+  { name:'kingphil',      power:7   },
+];
+
+// Optimal static assignments based on power analysis
+// Alpha = strongest offensive rally, Beta = second rally, Garrison = fortress defense, Reserve = rotate in
+const SWORDLAND_PLAN = [
+  { name:'_Irene_',       power:165, team:'alpha',   role:'Rally Lead',  note:'Highest power → launch first rally. Max march size.' },
+  { name:'Stfenix',       power:146, team:'beta',    role:'Rally Lead',  note:'Second lead → run parallel rally. Do not delay for Alpha.' },
+  { name:'Thatsapitty',   power:84,  team:'garrison',role:'Garrison',    note:'Anchors fortress. Hardest garrison in alliance to crack.' },
+  { name:'Lord of Lords', power:62,  team:'alpha',   role:'Joiner #1',   note:'Priority join on Alpha. Stack ATK heroes.' },
+  { name:'L6514',         power:51,  team:'alpha',   role:'Joiner #2',   note:'Fill Alpha rally before Beta launches.' },
+  { name:'Lord Murdok',   power:32,  team:'beta',    role:'Joiner #1',   note:'First joiner on Beta. Join immediately on launch.' },
+  { name:'Hollywood',     power:29,  team:'beta',    role:'Joiner #2',   note:'Beta joiner — bring Cavalry/ATK heroes.' },
+  { name:'Countess Foxy', power:25,  team:'beta',    role:'Joiner #3',   note:'Beta joiner. If rally full, join Alpha overflow.' },
+  { name:'Saby',          power:22,  team:'alpha',   role:'Joiner #3',   note:'Alpha joiner — rotate with Gabriele between waves.' },
+  { name:'_Irene_3',      power:21,  team:'garrison',role:'Support',     note:'Garrison support — reinforce castle, cover Thatsapitty.' },
+  { name:'Gabriele',      power:19,  team:'reserve', role:'Reserve',     note:'Rotate into Alpha when slot opens. Farm currency otherwise.' },
+  { name:'Mosser',        power:16,  team:'reserve', role:'Reserve',     note:'Join any open rally. Swordland currency farm priority.' },
+  { name:'farmlord',      power:16,  team:'reserve', role:'Reserve',     note:'Resource gather + join rallies opportunistically.' },
+  { name:'ciwenn',        power:15,  team:'reserve', role:'Reserve',     note:'Daily missions + join when any rally slot opens.' },
+  { name:'kingphil',      power:7,   team:'reserve', role:'Reserve',     note:'Focus: daily login, donations, Vivian shard shop.' },
+];
+
+let swordlandOverrides = {};
+
+function loadSwordlandOverrides() {
+  try { swordlandOverrides = JSON.parse(localStorage.getItem('swordlandOverrides')||'{}'); } catch(e) {}
+}
+loadSwordlandOverrides();
+
+function saveSwordlandOverride(name, field, val) {
+  if (!swordlandOverrides[name]) swordlandOverrides[name] = {};
+  swordlandOverrides[name][field] = val;
+  localStorage.setItem('swordlandOverrides', JSON.stringify(swordlandOverrides));
+}
+
+function autoAssignSwordland() {
+  swordlandOverrides = {};
+  localStorage.removeItem('swordlandOverrides');
+  renderSwordland();
+}
+
+function seedSwordlandRoster() {
+  const existing = allianceData.members || [];
+  const names = existing.map(m => m.name?.toLowerCase());
+  let added = 0;
+  SWORDLAND_COMBATANTS.forEach(c => {
+    if (!names.includes(c.name.toLowerCase())) {
+      allianceData.members.push({ name: c.name, power: c.power, role: 'R4', playerId:'', kingdom:'', level:'', notes:'' });
+      added++;
+    }
+  });
+  saveAllianceData();
+  alert(added > 0 ? `Added ${added} combatants to Alliance HQ.` : 'All combatants already in Alliance HQ.');
+}
+
+function exportSwordlandPlan() {
+  const plan = getSwordlandAssignments();
+  const lines = ['⚔️ SWORDLAND SHOWDOWN — BATTLE PLAN', ''];
+  const teams = { alpha:'RALLY TEAM ALPHA', beta:'RALLY TEAM BETA', garrison:'GARRISON', reserve:'RESERVE POOL' };
+  const colors = { alpha:'🔴', beta:'🔵', garrison:'🏰', reserve:'📦' };
+  ['alpha','beta','garrison','reserve'].forEach(t => {
+    const members = plan.filter(p => p.team === t);
+    lines.push(`${colors[t]} ${teams[t]}`);
+    members.forEach(p => lines.push(`  ${p.role === 'Rally Lead' ? '★' : '·'} ${p.name} (${p.power}) — ${p.role}`));
+    const total = members.reduce((s,p)=>s+p.power,0);
+    if (t !== 'reserve') lines.push(`  Total power: ${total}`);
+    lines.push('');
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>alert('Plan copied to clipboard!')).catch(()=>alert(lines.join('\n')));
+}
+
+function getSwordlandAssignments() {
+  return SWORDLAND_PLAN.map(p => {
+    const ov = swordlandOverrides[p.name] || {};
+    return { ...p, team: ov.team || p.team, role: ov.role || p.role, note: ov.note !== undefined ? ov.note : p.note };
+  });
+}
+
+function renderSwordland() {
+  const plan = getSwordlandAssignments();
+  const boardEl = document.getElementById('swordland-board');
+  const barEl   = document.getElementById('sl-power-bar');
+  if (!boardEl) return;
+
+  const totalPower = SWORDLAND_COMBATANTS.reduce((s,c)=>s+c.power,0);
+  const alphaPower = plan.filter(p=>p.team==='alpha').reduce((s,p)=>s+p.power,0);
+  const betaPower  = plan.filter(p=>p.team==='beta').reduce((s,p)=>s+p.power,0);
+  const garPower   = plan.filter(p=>p.team==='garrison').reduce((s,p)=>s+p.power,0);
+  const resPower   = plan.filter(p=>p.team==='reserve').reduce((s,p)=>s+p.power,0);
+
+  const pct = v => Math.round(v/totalPower*100);
+  barEl.innerHTML = `
+    <div class="card" style="padding:14px">
+      <div class="card-title" style="margin-bottom:10px">Alliance Power Deployment — ${totalPower} total squad power</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:12px">
+        ${[['Rally Alpha','alpha',alphaPower,'var(--sp)'],['Rally Beta','beta',betaPower,'var(--s)'],['Garrison','garrison',garPower,'var(--b)'],['Reserve','reserve',resPower,'var(--muted)']].map(([label,_,v,col])=>`
+          <div style="text-align:center">
+            <div style="font-size:22px;font-weight:700;color:${col}">${v}</div>
+            <div style="font-size:11px;color:var(--muted)">${label} · ${pct(v)}%</div>
+          </div>`).join('')}
+      </div>
+      <div style="height:12px;background:var(--surface2);border-radius:6px;overflow:hidden;display:flex">
+        <div style="width:${pct(alphaPower)}%;background:var(--sp);transition:width .3s" title="Rally Alpha"></div>
+        <div style="width:${pct(betaPower)}%;background:var(--s);transition:width .3s" title="Rally Beta"></div>
+        <div style="width:${pct(garPower)}%;background:var(--b);transition:width .3s" title="Garrison"></div>
+        <div style="width:${pct(resPower)}%;background:var(--surface3);transition:width .3s" title="Reserve"></div>
+      </div>
+      <div style="display:flex;gap:16px;font-size:10px;color:var(--muted);margin-top:6px">
+        <span><span style="color:var(--sp)">■</span> Rally Alpha</span>
+        <span><span style="color:var(--s)">■</span> Rally Beta</span>
+        <span><span style="color:var(--b)">■</span> Garrison</span>
+        <span><span style="color:var(--muted)">■</span> Reserve</span>
+      </div>
+    </div>`;
+
+  const TEAM_ORDER = ['alpha','beta','garrison','reserve'];
+  const TEAM_META = {
+    alpha:   { label:'Rally Team Alpha',  sub:'Offensive rally — primary strike force', col:'var(--sp)', icon:'🔴' },
+    beta:    { label:'Rally Team Beta',   sub:'Parallel rally — secondary offensive',   col:'var(--s)',  icon:'🔵' },
+    garrison:{ label:'Garrison',          sub:'Fortress defense — holds the castle',     col:'var(--b)',  icon:'🏰' },
+    reserve: { label:'Reserve Pool',      sub:'Rotate in when rally slots open',         col:'var(--muted)', icon:'📦' },
+  };
+  const ROLE_COL = {
+    'Rally Lead':'var(--sp)', 'Joiner #1':'var(--s)', 'Joiner #2':'var(--s)', 'Joiner #3':'var(--s)',
+    'Garrison':'var(--b)', 'Support':'var(--a)', 'Reserve':'var(--muted)',
+  };
+
+  boardEl.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px">` +
+    TEAM_ORDER.map(team => {
+      const m   = TEAM_META[team];
+      const members = plan.filter(p => p.team === team);
+      const teamPow = members.reduce((s,p)=>s+p.power,0);
+      return `<div class="card">
+        <div class="card-title" style="color:${m.col};display:flex;align-items:center;gap:8px">
+          <span>${m.icon}</span><span>${m.label}</span>
+          ${team !== 'reserve' ? `<span style="margin-left:auto;font-size:12px;color:var(--muted);font-weight:400">${teamPow} power</span>` : ''}
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px">${m.sub}</div>
+        ${members.map(p => {
+          const rc = ROLE_COL[p.role] || 'var(--muted)';
+          const isLead = p.role === 'Rally Lead';
+          return `<div style="display:flex;align-items:start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+            <div style="width:36px;text-align:center;flex-shrink:0">
+              <div style="font-size:16px;font-weight:800;color:${rc}">${isLead ? '★' : p.power}</div>
+              ${isLead ? `<div style="font-size:9px;color:var(--muted)">${p.power}</div>` : ''}
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:700;font-size:13px">${escHtml(p.name)}</div>
+              <div style="font-size:11px;color:${rc};margin-bottom:3px">${p.role}</div>
+              <div style="font-size:10px;color:var(--muted);line-height:1.5">${escHtml(p.note)}</div>
+            </div>
+            <div style="flex-shrink:0">
+              <select style="font-size:10px;padding:2px 4px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:4px" onchange="saveSwordlandOverride('${escHtml(p.name)}','team',this.value);renderSwordland()">
+                ${['alpha','beta','garrison','reserve'].map(t=>`<option value="${t}" ${p.team===t?'selected':''}>${{alpha:'Alpha',beta:'Beta',garrison:'Gar',reserve:'Res'}[t]}</option>`).join('')}
+              </select>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>`;
+    }).join('') + '</div>';
+}
+
+// ============================================================
 // KVK WAR PLANNER
 // ============================================================
 let kvkPlan = { eventId:'kvk', eventDate:'', notes:'', assignments:{} };
@@ -5269,7 +5488,7 @@ renderTierList();
 
 // Fix nav click detection
 document.querySelectorAll('.nav-item').forEach((el, i) => {
-  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance','kvkplanner','stockpile','powerboard','daily','compare','research','settings'];
+  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance','kvkplanner','stockpile','powerboard','swordland','daily','compare','research','settings'];
   el.addEventListener('click', () => goPage(pages[i]));
 });
 
