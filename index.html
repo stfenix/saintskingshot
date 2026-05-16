@@ -475,30 +475,59 @@ option { background: var(--surface2); }
 .toggle input:checked + .tslider::before { left:20px; }
 .export-btn { display:flex; align-items:center; gap:8px; padding:12px 16px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; color:var(--text); transition:all .15s; margin-bottom:8px; }
 .export-btn:hover { border-color:var(--accent); color:var(--accent); }
-/* ── Alliance Tech Tree ── */
-.at-tree-wrap { overflow-x:auto; padding-bottom:16px; }
-.at-tree-grid { display:flex; gap:28px; min-width:fit-content; align-items:flex-start; }
-.at-tree-col { display:flex; flex-direction:column; align-items:center; min-width:148px; }
-.at-tree-hdr { text-align:center; margin-bottom:16px; padding:10px 12px; background:var(--surface2); border:1px solid var(--border); border-radius:10px; width:100%; }
-.at-node-wrap { display:flex; flex-direction:column; align-items:center; }
-.at-connector { width:2px; height:28px; background:var(--border); flex-shrink:0; }
-.at-node-outer { position:relative; width:110px; height:110px; }
-.at-ring-svg { position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg); }
-.at-node-circle { position:absolute; inset:10px; border-radius:50%; background:var(--surface2); border:2px solid var(--border); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; transition:border-color .2s,background .2s; }
-.at-node-outer:hover .at-node-circle { border-color:var(--accent); background:var(--surface); }
-.at-node-icon { font-size:16px; line-height:1; }
-.at-node-lv { font-size:13px; font-weight:800; color:var(--text); }
-.at-node-bonus { font-size:8px; color:var(--muted); text-align:center; max-width:68px; line-height:1.3; }
-.at-node-label { font-size:10px; color:var(--muted); text-align:center; max-width:130px; margin-top:5px; margin-bottom:2px; line-height:1.4; font-weight:600; }
-.at-node-pri { font-size:9px; letter-spacing:1px; margin-top:1px; }
-.at-btn-l,.at-btn-r { position:absolute; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; background:var(--surface); border:1.5px solid var(--border); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; line-height:1; opacity:0; transition:opacity .15s,background .15s; z-index:10; color:var(--text); }
-.at-btn-l { left:-30px; }
-.at-btn-r { right:-30px; color:var(--accent); border-color:var(--accent); }
-.at-node-outer:hover .at-btn-l,.at-node-outer:hover .at-btn-r { opacity:1; }
-.at-btn-l:hover { background:var(--surface2); }
-.at-btn-r:hover { background:#f0a50015; }
-.at-maxed .at-node-circle { border-color:var(--green) !important; }
-.at-maxed .at-node-label { color:var(--green); }
+/* ── Tech Tree shared (Alliance + Individual) ── */
+.ttree-bg { background:#080d1a; background-image:linear-gradient(rgba(59,130,246,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.07) 1px,transparent 1px); background-size:40px 40px; border-radius:12px; overflow:auto; position:relative; }
+.ttree-svg { position:absolute; inset:0; pointer-events:none; overflow:visible; }
+.ttree-node { position:absolute; width:145px; background:#12192e; border:1px solid #243060; border-radius:8px; padding:9px; cursor:pointer; transition:border-color .2s,transform .15s,z-index 0s; z-index:1; }
+.ttree-node:hover { border-color:#3b82f6; transform:translateY(-2px); z-index:50; }
+.ttree-node.tt-maxed { border-color:#166534; }
+.ttree-node-top { display:flex; align-items:flex-start; gap:6px; margin-bottom:6px; }
+.ttree-icon-box { width:36px; height:36px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.ttree-lv { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; background:#8b2020; color:#fff; }
+.ttree-lv.tt-done { background:#166534; }
+.ttree-cat { color:#6080b0; font-size:9px; margin-left:3px; }
+.ttree-name { font-size:11px; font-weight:700; color:#dde8ff; line-height:1.3; margin-bottom:3px; }
+.ttree-sub { font-size:9px; color:#4a6090; margin-bottom:6px; }
+.ttree-stats { display:grid; grid-template-columns:1fr 1fr; gap:3px; margin-bottom:6px; }
+.ttree-stat { background:#0a1020; border-radius:4px; padding:3px 5px; }
+.ttree-stat-lbl { font-size:8px; color:#3a5080; display:block; }
+.ttree-stat-val { font-size:10px; color:#dde8ff; font-weight:700; }
+.ttree-adj { display:flex; justify-content:space-between; align-items:center; margin-top:2px; }
+.ttree-adj-btn { width:24px; height:24px; border-radius:50%; background:#0a1020; border:1px solid #243060; color:#dde8ff; cursor:pointer; font-size:14px; font-weight:700; line-height:1; display:flex; align-items:center; justify-content:center; transition:background .15s; }
+.ttree-adj-btn:hover { background:#1e2d50; }
+.ttree-adj-btn.tt-plus { color:#3b82f6; border-color:#3b82f6; }
+/* Hover popup */
+.ttree-popup { display:none; position:absolute; bottom:calc(100% + 8px); left:0; width:220px; background:#12192e; border:1px solid #3b52a0; border-radius:10px; padding:14px; z-index:200; box-shadow:0 8px 32px rgba(0,0,0,.7); pointer-events:none; }
+.ttree-node:hover .ttree-popup { display:block; }
+.ttree-popup-cat { font-size:9px; letter-spacing:2px; color:#3a5080; text-transform:uppercase; margin-bottom:6px; }
+.ttree-popup-name { font-size:15px; font-weight:800; color:#dde8ff; margin-bottom:1px; }
+.ttree-popup-sub { font-size:10px; color:#4a6090; margin-bottom:10px; }
+.ttree-popup-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:10px; }
+.ttree-popup-stat { background:#0a1020; border-radius:5px; padding:5px 7px; }
+.ttree-popup-lbl { font-size:8px; color:#3a5080; display:block; margin-bottom:2px; }
+.ttree-popup-val { font-size:12px; font-weight:700; color:#dde8ff; }
+.ttree-popup-desc { font-size:10px; color:#6080a0; line-height:1.5; }
+/* Alliance tree column layout */
+.at-col-wrap { display:flex; gap:32px; min-width:fit-content; align-items:flex-start; padding:32px; }
+.at-col { display:flex; flex-direction:column; align-items:center; }
+.at-col-hdr { text-align:center; margin-bottom:14px; padding:10px 14px; background:#12192e; border:1px solid #243060; border-radius:8px; width:145px; }
+.at-col-connector { width:2px; height:24px; background:#243060; }
+/* Detail panel */
+.ttree-detail { display:none; animation:fadeIn .2s; }
+.ttree-detail.active { display:block; }
+.tt-back-btn { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:#12192e; border:1px solid #243060; border-radius:6px; color:#6080b0; font-size:12px; cursor:pointer; margin-bottom:16px; transition:border-color .2s,color .2s; }
+.tt-back-btn:hover { border-color:#3b82f6; color:#dde8ff; }
+.tt-detail-card { background:#12192e; border:1px solid #243060; border-radius:10px; padding:20px; margin-bottom:12px; }
+.tt-detail-stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:8px; margin:12px 0; }
+.tt-detail-stat { background:#0a1020; border-radius:6px; padding:8px 10px; }
+.tt-detail-stat-lbl { font-size:9px; color:#3a5080; text-transform:uppercase; letter-spacing:1px; display:block; margin-bottom:3px; }
+.tt-detail-stat-val { font-size:16px; font-weight:800; color:#dde8ff; }
+.tt-level-table { width:100%; border-collapse:collapse; font-size:11px; }
+.tt-level-table th { text-align:left; padding:6px 8px; color:#3a5080; font-size:9px; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid #243060; }
+.tt-level-table td { padding:6px 8px; color:#dde8ff; border-bottom:1px solid #1a2540; }
+.tt-level-table tr:last-child td { border-bottom:none; }
+.tt-level-table tr.tt-row-done td { color:#166534; }
+.tt-level-table tr.tt-row-cur td { background:#1a2540; }
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -551,6 +580,7 @@ option { background: var(--surface2); }
     <div class="nav-item" onclick="goPage('powerboard')"><span class="icon">&#127942;</span>Power Board</div>
     <div class="nav-item" onclick="goPage('swordland')"><span class="icon">&#9876;&#65039;</span>Swordland Setup</div>
     <div class="nav-item" onclick="goPage('alliancetech')"><span class="icon">&#128300;</span>Alliance Tech</div>
+    <div class="nav-item" onclick="goPage('indivtech')"><span class="icon">&#127981;</span>Research Tree</div>
   </div>
   <div class="nav-section">
     <div class="nav-label">Tools</div>
@@ -1311,6 +1341,21 @@ option { background: var(--surface2); }
   </div>
 </div>
 
+<!-- ===== INDIVIDUAL RESEARCH TREE ===== -->
+<div class="page" id="page-indivtech">
+  <div class="page-header">
+    <h2>Academy Research Tree</h2>
+    <p>Visual research tree for individual accounts. Click any node to see level details. Track your progress per node.</p>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+    <button class="btn active" id="it-tab-battle" onclick="itSetTab('battle')">⚔️ Battle (102)</button>
+    <button class="btn btn-outline" id="it-tab-growth" onclick="itSetTab('growth')">📈 Growth (45)</button>
+    <button class="btn btn-outline" id="it-tab-economy" onclick="itSetTab('economy')">🌾 Economy (44)</button>
+  </div>
+  <div id="it-detail" class="ttree-detail"></div>
+  <div id="it-board" class="ttree-bg" style="min-height:500px"></div>
+</div>
+
 <!-- ===== ALLIANCE TECH ===== -->
 <div class="page" id="page-alliancetech">
   <div class="page-header">
@@ -1382,6 +1427,7 @@ option { background: var(--surface2); }
   </div>
   <div id="at-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:16px"></div>
   <div id="at-board"></div>
+  <div id="at-detail" class="ttree-detail"></div>
 </div>
 
 <!-- ===== DAILY CHECKLIST ===== -->
@@ -3064,7 +3110,7 @@ function goPage(name) {
     tierlist:'tier', troops:'troop', guide:'guide', age:'kingdom',
     calendar:'calendar', alliance:'alliance hq', kvkplanner:'kvk',
     stockpile:'stockpile', powerboard:'power board', swordland:'swordland',
-    alliancetech:'alliance tech',
+    alliancetech:'alliance tech', indivtech:'research tree',
     daily:'daily', compare:'compare', research:'research', settings:'settings'
   };
   const label = PAGE_LABELS[name] || name;
@@ -3084,6 +3130,7 @@ function goPage(name) {
   if (name==='powerboard') renderPowerBoard();
   if (name==='swordland') renderSwordland();
   if (name==='alliancetech') renderAllianceTech();
+  if (name==='indivtech') { itSetTab(indivCurrentTab); }
   if (name==='daily') renderDaily();
   if (name==='compare') renderCompare();
   if (name==='research') renderResearch();
@@ -5638,75 +5685,80 @@ function renderAllianceTech() {
   // Stats bar
   let totalNodes = 0, totalLevels = 0, maxLevels = 0;
   ALLIANCE_TECH_TREE.forEach(cat => cat.nodes.forEach(n => {
-    totalNodes++;
-    totalLevels += (allianceTechData[n.id] || 0);
-    maxLevels   += n.maxLv;
+    totalNodes++; totalLevels += (allianceTechData[n.id]||0); maxLevels += n.maxLv;
   }));
-  const overallPct = maxLevels ? Math.round(totalLevels / maxLevels * 100) : 0;
+  const overallPct = maxLevels ? Math.round(totalLevels/maxLevels*100) : 0;
   const statsEl = document.getElementById('at-stats');
   if (statsEl) statsEl.innerHTML = [
-    { label:'Nodes',          val: totalNodes },
-    { label:'Levels Unlocked',val: `${totalLevels} / ${maxLevels}` },
-    { label:'Overall',        val: `${overallPct}%` },
+    { label:'Nodes', val:totalNodes },
+    { label:'Levels Unlocked', val:`${totalLevels} / ${maxLevels}` },
+    { label:'Overall', val:`${overallPct}%` },
   ].map(s => `<div style="text-align:center;padding:10px;background:var(--surface2);border-radius:6px;border:1px solid var(--border)">
     <div style="font-size:20px;font-weight:800;color:var(--accent)">${s.val}</div>
     <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">${s.label}</div>
   </div>`).join('');
 
-  // Ring geometry: r=42, circumference = 2πr
-  const R = 42, CIRC = +(2 * Math.PI * R).toFixed(2);
-  const stars  = p => '★'.repeat(p) + '☆'.repeat(5-p);
-  const priCol = p => p >= 5 ? 'var(--sp)' : p >= 4 ? 'var(--accent)' : p >= 3 ? 'var(--b)' : 'var(--muted)';
+  const priCol = p => p>=5?'#ef4444':p>=4?'#f59e0b':p>=3?'#3b82f6':'#4a6090';
+  const stars  = p => '★'.repeat(p)+'☆'.repeat(5-p);
 
-  const nodeEl = (n, cat, isFirst) => {
-    const cur    = allianceTechData[n.id] || 0;
-    const done   = cur >= n.maxLv;
-    const offset = +(CIRC * (1 - cur / n.maxLv)).toFixed(2);
-    const ringCol = done ? 'var(--green)' : cat.color;
-    return `<div class="at-node-wrap">
-      ${!isFirst ? '<div class="at-connector"></div>' : ''}
-      <div class="at-node-outer${done ? ' at-maxed' : ''}" title="${n.name} — ${n.desc}">
-        <svg class="at-ring-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
-          <circle cx="50" cy="50" r="${R}" fill="none" stroke-width="6" stroke="var(--border)"/>
-          <circle cx="50" cy="50" r="${R}" fill="none" stroke-width="6" stroke="${ringCol}"
-            stroke-dasharray="${CIRC}" stroke-dashoffset="${offset}"
-            stroke-linecap="round" style="transition:stroke-dashoffset .4s,stroke .3s"/>
-        </svg>
-        <div class="at-node-circle">
-          <div class="at-node-icon">${cat.icon}</div>
-          <div class="at-node-lv">${cur}/${n.maxLv}</div>
-          <div class="at-node-bonus">${n.bonus.split('/lv')[0]}</div>
+  const atNodeCard = (n, cat) => {
+    const cur = allianceTechData[n.id]||0, done = cur>=n.maxLv;
+    return `<div class="ttree-node${done?' tt-maxed':''}" onclick="ttreeDetail('at','${n.id}',event)">
+      <div class="ttree-node-top">
+        <div class="ttree-icon-box" style="background:${cat.color}20;font-size:20px">${cat.icon}</div>
+        <div style="flex:1">
+          <span class="ttree-lv${done?' tt-done':''}">Lv.${cur}</span>
+          <span class="ttree-cat">${cat.name}</span>
         </div>
-        <button class="at-btn-l" onclick="atAdjust('${n.id}',${n.maxLv},-1)">−</button>
-        <button class="at-btn-r" onclick="atAdjust('${n.id}',${n.maxLv},+1)">+</button>
       </div>
-      <div class="at-node-label">${n.name}</div>
-      <div class="at-node-pri" style="color:${priCol(n.priority)}">${stars(n.priority)}</div>
+      <div class="ttree-name">${n.name}</div>
+      <div class="ttree-sub">${n.bonus}</div>
+      <div class="ttree-stats">
+        <div class="ttree-stat"><span class="ttree-stat-lbl">Progress</span><span class="ttree-stat-val" style="color:${done?'#22c55e':cat.color}">${cur}/${n.maxLv}</span></div>
+        <div class="ttree-stat"><span class="ttree-stat-lbl">Priority</span><span class="ttree-stat-val" style="color:${priCol(n.priority)};font-size:9px">${stars(n.priority)}</span></div>
+      </div>
+      <div class="ttree-adj">
+        <button class="ttree-adj-btn" onclick="event.stopPropagation();atAdjust('${n.id}',${n.maxLv},-1)">−</button>
+        <span style="font-size:9px;color:#4a6090">${n.maxLv>1?Math.round(cur/n.maxLv*100)+'%':''}</span>
+        <button class="ttree-adj-btn tt-plus" onclick="event.stopPropagation();atAdjust('${n.id}',${n.maxLv},+1)">+</button>
+      </div>
+      <div class="ttree-popup">
+        <div class="ttree-popup-cat">${cat.name} · ${cat.phase}</div>
+        <div class="ttree-popup-name">${n.name}</div>
+        <div class="ttree-popup-sub">${n.bonus}</div>
+        <div class="ttree-popup-grid">
+          <div class="ttree-popup-stat"><span class="ttree-popup-lbl">Level</span><span class="ttree-popup-val">${cur} / ${n.maxLv}</span></div>
+          <div class="ttree-popup-stat"><span class="ttree-popup-lbl">Priority</span><span class="ttree-popup-val" style="color:${priCol(n.priority)}">${stars(n.priority)}</span></div>
+        </div>
+        <div class="ttree-popup-desc">${n.desc}</div>
+      </div>
     </div>`;
   };
 
   const board = document.getElementById('at-board');
   if (!board) return;
+  document.getElementById('at-detail').classList.remove('active');
+  board.style.display = '';
 
   const cats = ALLIANCE_TECH_TREE.filter(c => !filter || c.id === filter);
-
-  board.innerHTML = `<div class="at-tree-wrap"><div class="at-tree-grid">${
+  board.innerHTML = `<div class="ttree-bg"><div class="at-col-wrap">${
     cats.map(cat => {
       let nodes = [...cat.nodes];
-      if (sort === 'priority') nodes.sort((a,b) => b.priority - a.priority);
-      else if (sort === 'progress') nodes.sort((a,b) => (allianceTechData[a.id]||0)/a.maxLv - (allianceTechData[b.id]||0)/b.maxLv);
-      else nodes.sort((a,b) => a.name.localeCompare(b.name));
-      const catLevels = cat.nodes.reduce((s,n) => s+(allianceTechData[n.id]||0), 0);
-      const catMax    = cat.nodes.reduce((s,n) => s+n.maxLv, 0);
+      if (sort==='priority') nodes.sort((a,b)=>b.priority-a.priority);
+      else if (sort==='progress') nodes.sort((a,b)=>(allianceTechData[a.id]||0)/a.maxLv-(allianceTechData[b.id]||0)/b.maxLv);
+      else nodes.sort((a,b)=>a.name.localeCompare(b.name));
+      const catLevels = cat.nodes.reduce((s,n)=>s+(allianceTechData[n.id]||0),0);
+      const catMax    = cat.nodes.reduce((s,n)=>s+n.maxLv,0);
       const catPct    = catMax ? Math.round(catLevels/catMax*100) : 0;
-      return `<div class="at-tree-col">
-        <div class="at-tree-hdr">
-          <div style="font-size:22px;margin-bottom:2px">${cat.icon}</div>
-          <div style="font-weight:700;color:${cat.color};font-size:13px">${cat.name}</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:1px">${cat.phase}</div>
-          <div style="font-size:12px;font-weight:700;color:var(--accent);margin-top:5px">${catPct}% <span style="font-weight:400;color:var(--muted);font-size:10px">(${catLevels}/${catMax})</span></div>
+      return `<div class="at-col">
+        <div class="at-col-hdr">
+          <div style="font-size:20px">${cat.icon}</div>
+          <div style="font-weight:700;color:${cat.color};font-size:12px;margin:3px 0">${cat.name} Tree</div>
+          <div style="font-size:10px;color:#4a6090">${cat.phase}</div>
+          <div style="font-size:13px;font-weight:800;color:#f0a500;margin-top:5px">${catPct}%</div>
+          <div style="font-size:9px;color:#4a6090">${catLevels}/${catMax} levels</div>
         </div>
-        ${nodes.map((n, i) => nodeEl(n, cat, i === 0)).join('')}
+        ${nodes.map((n,i)=>`${i>0?'<div class="at-col-connector"></div>':''}${atNodeCard(n,cat)}`).join('')}
       </div>`;
     }).join('')
   }</div></div>`;
@@ -5718,6 +5770,254 @@ function atAdjust(nodeId, maxLv, delta) {
   if (next === cur) return;
   saveAllianceTech(nodeId, next);
   renderAllianceTech();
+}
+
+// ============================================================
+// TECH TREE DETAIL PANEL (shared by Alliance + Individual)
+// ============================================================
+function ttreeDetail(tree, nodeId, e) {
+  if (e) e.stopPropagation();
+  const isAlliance = tree === 'at';
+
+  let node, cat;
+  if (isAlliance) {
+    ALLIANCE_TECH_TREE.forEach(c => { const n = c.nodes.find(x=>x.id===nodeId); if(n){node=n;cat=c;} });
+  } else {
+    const tdata = INDIV_TECH_TREE[indivCurrentTab];
+    if (tdata) { cat = tdata; node = tdata.nodes.find(n=>n.id===nodeId); }
+  }
+  if (!node || !cat) return;
+
+  const cur     = isAlliance ? (allianceTechData[nodeId]||0) : (indivTechData[nodeId]||0);
+  const maxLv   = isAlliance ? node.maxLv : node.lv;
+  const done    = cur >= maxLv;
+  const priCol  = p => p>=5?'#ef4444':p>=4?'#f59e0b':p>=3?'#3b82f6':'#4a6090';
+  const stars   = p => '★'.repeat(p)+'☆'.repeat(5-p);
+
+  // Per-level table
+  const bonusMatch = (node.bonus||'').match(/([+-]?\d+\.?\d*)\s*%/);
+  const bonusPerLv = bonusMatch ? parseFloat(bonusMatch[1]) : 0;
+  const lvRows = Array.from({length:maxLv}, (_,i)=>{
+    const lv = i+1;
+    const lvData = node.levels ? node.levels[i] : null;
+    const buff   = lvData?.buff || (bonusPerLv ? `+${(bonusPerLv*lv).toFixed(1)}% total` : '—');
+    const power  = lvData?.power || '—';
+    const time   = lvData?.time || '—';
+    const rowClass = lv<=cur ? (lv===cur?'tt-row-cur':'tt-row-done') : '';
+    return `<tr class="${rowClass}">
+      <td style="color:${lv<=cur?'#22c55e':'#dde8ff'}">Lv.${lv}</td>
+      <td>${lvData?.prereq||'—'}</td>
+      <td style="color:#f59e0b">${buff}</td>
+      <td>${power}</td>
+      <td>${time}</td>
+    </tr>`;
+  }).join('');
+
+  const totalBuff = bonusPerLv ? `+${(bonusPerLv*maxLv).toFixed(1)}%` : node.bonus;
+  const boardId   = isAlliance ? 'at-board' : 'it-board';
+  const detailId  = isAlliance ? 'at-detail' : 'it-detail';
+  const onBack    = isAlliance ? 'renderAllianceTech()' : 'renderIndivTech()';
+
+  document.getElementById(boardId).style.display = 'none';
+  const detailEl = document.getElementById(detailId);
+  detailEl.classList.add('active');
+  detailEl.innerHTML = `
+    <button class="tt-back-btn" onclick="${onBack}">&#8592; Back to Tech Tree</button>
+    <div class="tt-detail-card">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+        <div style="width:52px;height:52px;border-radius:10px;background:${cat.color}20;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">${cat.icon}</div>
+        <div>
+          <div style="font-size:9px;color:#3a5080;text-transform:uppercase;letter-spacing:2px;margin-bottom:3px">${cat.name}</div>
+          <div style="font-size:20px;font-weight:800;color:#dde8ff">${node.name}</div>
+          <div style="font-size:11px;color:#4a6090">${node.sub||node.bonus}</div>
+        </div>
+      </div>
+      <div class="tt-detail-stat-grid">
+        <div class="tt-detail-stat"><span class="tt-detail-stat-lbl">Total Buff</span><span class="tt-detail-stat-val" style="color:${cat.color}">${totalBuff}</span></div>
+        <div class="tt-detail-stat"><span class="tt-detail-stat-lbl">Current Level</span><span class="tt-detail-stat-val" style="color:${done?'#22c55e':'#dde8ff'}">${cur} / ${maxLv}</span></div>
+        ${isAlliance?`<div class="tt-detail-stat"><span class="tt-detail-stat-lbl">Priority</span><span class="tt-detail-stat-val" style="color:${priCol(node.priority||3)}">${stars(node.priority||3)}</span></div>`:''}
+        <div class="tt-detail-stat"><span class="tt-detail-stat-lbl">Phase</span><span class="tt-detail-stat-val" style="font-size:11px">${cat.phase||'—'}</span></div>
+      </div>
+      <div style="font-size:12px;color:#6080a0;line-height:1.6;margin-bottom:14px">${node.desc}</div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
+        <button class="btn btn-outline" onclick="event.stopPropagation();${isAlliance?`atAdjust('${nodeId}',${maxLv},-1);ttreeDetail('at','${nodeId}')`:`itAdjust('${nodeId}',${maxLv},-1);ttreeDetail('it','${nodeId}')`}" style="min-width:0;padding:6px 18px;font-size:16px">−</button>
+        <span style="font-size:14px;color:#dde8ff;font-weight:700">Level ${cur} / ${maxLv}</span>
+        <button class="btn" onclick="event.stopPropagation();${isAlliance?`atAdjust('${nodeId}',${maxLv},+1);ttreeDetail('at','${nodeId}')`:`itAdjust('${nodeId}',${maxLv},+1);ttreeDetail('it','${nodeId}')`}" style="min-width:0;padding:6px 18px;font-size:16px">+</button>
+      </div>
+    </div>
+    <div class="tt-detail-card">
+      <div style="font-weight:700;color:#dde8ff;margin-bottom:10px">Level Details</div>
+      <div style="overflow-x:auto">
+        <table class="tt-level-table">
+          <thead><tr>
+            <th>Level</th><th>Prerequisites</th><th>Buff</th><th>Power</th><th>Time</th>
+          </tr></thead>
+          <tbody>${lvRows}</tbody>
+        </table>
+      </div>
+    </div>
+    ${node.prereq?`<div class="tt-detail-card"><div style="font-size:11px;color:#4a6090;margin-bottom:4px">Prerequisites</div><div style="color:#dde8ff;font-size:13px">${node.prereq}</div></div>`:''}
+    ${node.unlocks?`<div class="tt-detail-card"><div style="font-size:11px;color:#4a6090;margin-bottom:4px">Unlocks</div><div style="color:#3b82f6;font-size:13px">${node.unlocks}</div></div>`:''}
+  `;
+}
+
+// ============================================================
+// INDIVIDUAL RESEARCH TREE
+// ============================================================
+let indivCurrentTab = 'battle';
+let indivTechData   = {};
+
+function loadIndivTech() {
+  try { indivTechData = JSON.parse(localStorage.getItem('indivTech')||'{}'); } catch(e) {}
+}
+function saveIndivTech(nodeId, level) {
+  indivTechData[nodeId] = level;
+  localStorage.setItem('indivTech', JSON.stringify(indivTechData));
+}
+function itAdjust(nodeId, maxLv, delta) {
+  const cur = indivTechData[nodeId]||0;
+  const next = Math.max(0, Math.min(maxLv, cur + delta));
+  if (next === cur) return;
+  saveIndivTech(nodeId, next);
+  renderIndivTech();
+}
+function itSetTab(tab) {
+  indivCurrentTab = tab;
+  ['battle','growth','economy'].forEach(t => {
+    const el = document.getElementById('it-tab-'+t);
+    if (el) { el.classList.toggle('active', t===tab); el.classList.toggle('btn-outline', t!==tab); }
+  });
+  document.getElementById('it-detail').classList.remove('active');
+  document.getElementById('it-board').style.display = '';
+  renderIndivTech();
+}
+
+const INDIV_TECH_TREE = {
+  battle: {
+    name:'Battle', icon:'⚔️', color:'#ef4444', phase:'Mid–Late game',
+    nodes:[
+      { id:'b_wpn',   name:'Weapons Prep I',         sub:'General Combat',      lv:3, bonus:'+1.5%/lv', col:2, row:0, parents:[],         desc:'Entry node for the Battle tree. Unlocks Infantry, Archer, and Cavalry attack branches.', prereq:'Academy Lv.5', unlocks:'Reprisal Tactics I, Precision Targeting I, Cavalry Charge I',
+        levels:[{lv:1,prereq:'Academy Lv.5',buff:'+1.5%',power:'1.1K',time:'19m'},{lv:2,prereq:'Weapons Prep I Lv.1',buff:'+1.5%',power:'1.1K',time:'19m'},{lv:3,prereq:'Weapons Prep I Lv.2',buff:'+1.5%',power:'1.1K',time:'19m'}] },
+      { id:'b_inf',   name:'Reprisal Tactics I',      sub:'Infantry Attack',     lv:3, bonus:'+4%/lv',   col:0, row:1, parents:['b_wpn'],   desc:'Infantry attack boost. F2P priority: Archer Lethality > Infantry Health > Cavalry Lethality > Archer ATK > Infantry DEF.', prereq:'Weapons Prep I Lv.1', unlocks:'Defensive Formations I',
+        levels:[{lv:1,prereq:'Weapons Prep I Lv.1',buff:'+4%',power:'1.2K',time:'7m 18s'},{lv:2,prereq:'Reprisal Tactics I Lv.1',buff:'+4%',power:'1.2K',time:'7m 18s'},{lv:3,prereq:'Reprisal Tactics I Lv.2',buff:'+4%',power:'1.2K',time:'7m 18s'}] },
+      { id:'b_arc',   name:'Precision Targeting I',   sub:'Archer Attack',       lv:3, bonus:'+4%/lv',   col:2, row:1, parents:['b_wpn'],   desc:'Archers have strong lethality synergy. High priority for rally joiners — contributes more per troop than cavalry.', prereq:'Weapons Prep I Lv.1', unlocks:'Picket Lines I',
+        levels:[{lv:1,prereq:'Weapons Prep I Lv.1',buff:'+4%',power:'1.2K',time:'17m 33s'},{lv:2,prereq:'Precision Targeting I Lv.1',buff:'+4%',power:'1.2K',time:'17m 33s'},{lv:3,prereq:'Precision Targeting I Lv.2',buff:'+4%',power:'1.2K',time:'17m 33s'}] },
+      { id:'b_cav',   name:'Cavalry Charge I',        sub:'Cavalry Attack',      lv:3, bonus:'+4%/lv',   col:4, row:1, parents:['b_wpn'],   desc:'Cavalry attack — third priority troop type. Archers > Infantry > Cavalry for most builds.', prereq:'Weapons Prep I Lv.1', unlocks:'Bulwark Formations I',
+        levels:[{lv:1,prereq:'Weapons Prep I Lv.1',buff:'+4%',power:'1.2K',time:'17m 33s'},{lv:2,prereq:'Cavalry Charge I Lv.1',buff:'+4%',power:'1.2K',time:'17m 33s'},{lv:3,prereq:'Cavalry Charge I Lv.2',buff:'+4%',power:'1.2K',time:'17m 33s'}] },
+      { id:'b_idef',  name:'Defensive Formations I',  sub:'Infantry Defense',    lv:3, bonus:'+4%/lv',   col:0, row:2, parents:['b_inf'],   desc:'Infantry defense — secondary priority after lethality and attack. Defense < Health < Attack < Lethality.', prereq:'Reprisal Tactics I Lv.1',
+        levels:[{lv:1,prereq:'Reprisal Tactics I Lv.1',buff:'+4%',power:'1.2K',time:'21m 55s'},{lv:2,prereq:'Def. Formations I Lv.1',buff:'+4%',power:'1.2K',time:'21m 55s'},{lv:3,prereq:'Def. Formations I Lv.2',buff:'+4%',power:'1.2K',time:'21m 55s'}] },
+      { id:'b_adef',  name:'Picket Lines I',          sub:'Archer Defense',      lv:3, bonus:'+4%/lv',   col:2, row:2, parents:['b_arc'],   desc:'Protects archer troops in sustained combat. Mid-level battle tree priority.', prereq:'Precision Targeting I Lv.1',
+        levels:[{lv:1,prereq:'Precision Targeting I Lv.1',buff:'+4%',power:'1.2K',time:'11m 42s'},{lv:2,prereq:'Picket Lines I Lv.1',buff:'+4%',power:'1.2K',time:'11m 42s'},{lv:3,prereq:'Picket Lines I Lv.2',buff:'+4%',power:'1.2K',time:'11m 42s'}] },
+      { id:'b_cdef',  name:'Bulwark Formations I',    sub:'Cavalry Defense',     lv:3, bonus:'+4%/lv',   col:4, row:2, parents:['b_cav'],   desc:'Cavalry defense — lowest return for most non-cavalry-specialist builds.', prereq:'Cavalry Charge I Lv.1',
+        levels:[{lv:1,prereq:'Cavalry Charge I Lv.1',buff:'+4%',power:'1.2K',time:'11m 42s'},{lv:2,prereq:'Bulwark Formations I Lv.1',buff:'+4%',power:'1.2K',time:'11m 42s'},{lv:3,prereq:'Bulwark Formations I Lv.2',buff:'+4%',power:'1.2K',time:'11m 42s'}] },
+      { id:'b_sdt',   name:'Spec. Defensive Training I', sub:'Troop HP',         lv:3, bonus:'+1.5%/lv', col:2, row:3, parents:['b_idef','b_adef','b_cdef'], desc:'Unlocks after all Tier-1 defenses. Troop HP — high value. Priority order: Lethality > Attack > Health > Defense.', prereq:'All Tier 1 Defense Lv.1', unlocks:'Lethality Training',
+        levels:[{lv:1,prereq:'All defense Lv.1',buff:'+1.5%',power:'1.1K',time:'19m'},{lv:2,prereq:'SDT I Lv.1',buff:'+1.5%',power:'1.1K',time:'19m'},{lv:3,prereq:'SDT I Lv.2',buff:'+1.5%',power:'1.1K',time:'19m'}] },
+      { id:'b_leth',  name:'Lethality Training',      sub:'All Troop Lethality', lv:5, bonus:'+2%/lv',   col:2, row:4, parents:['b_sdt'],   desc:'Highest combat ROI in the entire Battle tree. Lethality converts troop hits into actual kills. Top priority for big spenders and rally leaders.', prereq:'Spec. Defensive Training I Lv.1',
+        levels:[{lv:1,prereq:'SDT I Lv.1',buff:'+2%',power:'1.5K',time:'35m'},{lv:2,prereq:'Lethality Lv.1',buff:'+2%',power:'1.8K',time:'1h 10m'},{lv:3,prereq:'Lethality Lv.2',buff:'+2%',power:'2.0K',time:'2h'},{lv:4,prereq:'Lethality Lv.3',buff:'+2%',power:'2.2K',time:'4h'},{lv:5,prereq:'Lethality Lv.4',buff:'+2%',power:'2.5K',time:'8h'}] },
+    ]
+  },
+  growth: {
+    name:'Growth', icon:'📈', color:'#22c55e', phase:'Days 1–30 priority',
+    nodes:[
+      { id:'g_tool',  name:'Tool Enhancement',    sub:'Research Speed',     lv:10, bonus:'+5%/lv',  col:2, row:0, parents:[],              desc:'Increases research speed. The sooner you do this, the more it compounds across all future research. First priority for all player types.', prereq:'Academy Lv.1', unlocks:'Tooling Up, Command Tactics' },
+      { id:'g_build', name:'Tooling Up',           sub:'Construction Speed', lv:7,  bonus:'+5%/lv',  col:1, row:1, parents:['g_tool'],       desc:'Faster buildings = higher Town Center = better troop tiers sooner. Skip bottom levels (Lv.7) late-game when you\'re bottlenecked by True Gold.', prereq:'Tool Enhancement Lv.1', unlocks:'Camp Expansion, Regimental Expansion' },
+      { id:'g_cmd',   name:'Command Tactics',      sub:'March Queues',       lv:5,  bonus:'+1 queue', col:3, row:1, parents:['g_tool'],       desc:'Extra march queues — critical for F2P players who didn\'t buy the extra march slot. Also boosts gather efficiency significantly.', prereq:'Tool Enhancement Lv.1', unlocks:'Regimental Expansion' },
+      { id:'g_camp',  name:'Camp Expansion',        sub:'Training Batch',     lv:10, bonus:'+500/lv', col:0, row:2, parents:['g_build'],      desc:'Increases training batch size, not speed. Helpful if you log in infrequently. Hits diminishing returns quickly — lower priority mid/late game.', prereq:'Tooling Up Lv.1' },
+      { id:'g_reg',   name:'Regimental Expansion', sub:'March Capacity',     lv:10, bonus:'+10k/lv', col:2, row:2, parents:['g_build','g_cmd'], desc:'More troops per march = better rally contributions even as a joiner. Critical exception to "skip Battle tech" for F2P players. High priority.', prereq:'Tooling Up + Command Tactics Lv.1', unlocks:'Trainer Tools' },
+      { id:'g_train', name:'Trainer Tools',        sub:'Training Speed',     lv:10, bonus:'+5%/lv',  col:2, row:3, parents:['g_reg'],        desc:'Faster troop training keeps your army growing. High value for active PvP — rebuild armies faster after losses.', prereq:'Regimental Expansion Lv.1', unlocks:'Bandaging' },
+      { id:'g_band',  name:'Bandaging',             sub:'Healing Speed',      lv:10, bonus:'+5%/lv',  col:2, row:4, parents:['g_train'],      desc:'Critical for batch healing in Castle Battle events. Faster healing = back in action sooner after big fights.', prereq:'Trainer Tools Lv.1', unlocks:'Ward Expansion' },
+      { id:'g_ward',  name:'Ward Expansion',        sub:'Infirmary Capacity', lv:10, bonus:'+10k/lv', col:1, row:5, parents:['g_band'],       desc:'Insurance on violent servers — prevents catastrophic troop losses when attacked on tiles. Less important if your server has strong NAPs.', prereq:'Bandaging Lv.1' },
+    ]
+  },
+  economy: {
+    name:'Economy', icon:'🌾', color:'#f59e0b', phase:'Early→Gathering shift',
+    nodes:[
+      { id:'e_out',   name:'Resource Output I',    sub:'Town Production',    lv:3,  bonus:'+10%/lv', col:1, row:0, parents:[],              desc:'Pre-TC20 priority. Town building resource output. Highest return early game before gathering dominates.', prereq:'Academy Lv.3', unlocks:'Farm Efficiency, Lumber Efficiency' },
+      { id:'e_food',  name:'Farm Efficiency',      sub:'Food Production',    lv:10, bonus:'+5%/lv',  col:0, row:1, parents:['e_out'],        desc:'Output skill — high return pre-TC20. Diminishes once gathering becomes primary. Skip for big spenders and farm accounts.', prereq:'Resource Output I Lv.1' },
+      { id:'e_wood',  name:'Lumber Efficiency',    sub:'Wood Production',    lv:10, bonus:'+5%/lv',  col:2, row:1, parents:['e_out'],        desc:'Wood production — pair with Farm for early resource foundation. Lower priority once you hit the gathering phase.', prereq:'Resource Output I Lv.1', unlocks:'Wood Gathering I' },
+      { id:'e_wgath', name:'Wood Gathering I',     sub:'Wood Gathering Speed',lv:3, bonus:'+8–11%/lv',col:2, row:2, parents:['e_wood'],      desc:'Gathering speed for wood tiles. Post-TC20 priority shift — wilderness gathering becomes primary resource driver for growth.', prereq:'Academy Lv.5, Wood Output I Lv.1', unlocks:'Stone Output I',
+        levels:[{lv:1,prereq:'Academy Lv.5, Wood Output I Lv.1',buff:'+8%',power:'1.0K',time:'27s'},{lv:2,prereq:'Academy Lv.6, Wood Gathering I Lv.1',buff:'+8%',power:'1.0K',time:'40s'},{lv:3,prereq:'Academy Lv.7, Wood Gathering I Lv.2',buff:'+11%',power:'1.4K',time:'1m 48s'}] },
+      { id:'e_forage',name:'Foraging I',           sub:'General Gathering',  lv:3,  bonus:'+10%/lv', col:1, row:3, parents:['e_food','e_wood'], desc:'Post-TC20 must-have. Wilderness gathering becomes the primary resource driver. KvK prep requires mass gathering.', prereq:'Farm/Lumber Efficiency Lv.1', unlocks:'Gathering Mastery' },
+      { id:'e_gath',  name:'Gathering Mastery',    sub:'Gather Efficiency',  lv:10, bonus:'+5%/lv',  col:1, row:4, parents:['e_forage'],     desc:'Late-game essential. Maximize gather output for KvK preparation and resource donations to alliance tech.', prereq:'Foraging I Lv.1' },
+    ]
+  }
+};
+
+function renderIndivTech() {
+  const board = document.getElementById('it-board');
+  if (!board) return;
+  document.getElementById('it-detail').classList.remove('active');
+  board.style.display = '';
+
+  const treeData = INDIV_TECH_TREE[indivCurrentTab];
+  if (!treeData) return;
+  const nodes = treeData.nodes;
+
+  const CELL_W=165, CELL_H=195, NODE_W=145, NODE_H=130, PAD=40;
+  const maxCol = Math.max(...nodes.map(n=>n.col));
+  const maxRow = Math.max(...nodes.map(n=>n.row));
+  const totalW = (maxCol+1)*CELL_W + PAD*2;
+  const totalH = (maxRow+1)*CELL_H + PAD*2;
+
+  // SVG connector paths
+  const paths = [];
+  nodes.forEach(child => {
+    const cx = child.col*CELL_W + PAD + NODE_W/2;
+    const cy = child.row*CELL_H + PAD;
+    (child.parents||[]).forEach(pid => {
+      const p = nodes.find(x=>x.id===pid);
+      if (!p) return;
+      const px = p.col*CELL_W + PAD + NODE_W/2;
+      const py = p.row*CELL_H + PAD + NODE_H;
+      const midY = (py+cy)/2;
+      paths.push(`M${px},${py} L${px},${midY} L${cx},${midY} L${cx},${cy}`);
+    });
+  });
+
+  const nodeCards = nodes.map(n => {
+    const cur  = indivTechData[n.id]||0;
+    const done = cur >= n.lv;
+    const left = n.col*CELL_W + PAD;
+    const top  = n.row*CELL_H + PAD;
+    return `<div class="ttree-node${done?' tt-maxed':''}" style="left:${left}px;top:${top}px;width:${NODE_W}px" onclick="ttreeDetail('it','${n.id}',event)">
+      <div class="ttree-node-top">
+        <div class="ttree-icon-box" style="background:${treeData.color}20;font-size:18px">${treeData.icon}</div>
+        <div style="flex:1">
+          <span class="ttree-lv${done?' tt-done':''}">Lv.${n.lv}</span>
+          <span class="ttree-cat">${treeData.name}</span>
+        </div>
+      </div>
+      <div class="ttree-name">${n.name}</div>
+      <div class="ttree-sub">${n.sub}</div>
+      <div class="ttree-stats">
+        <div class="ttree-stat"><span class="ttree-stat-lbl">Buff</span><span class="ttree-stat-val" style="color:${treeData.color}">${n.bonus}</span></div>
+        <div class="ttree-stat"><span class="ttree-stat-lbl">Progress</span><span class="ttree-stat-val" style="color:${done?'#22c55e':'#dde8ff'}">${cur}/${n.lv}</span></div>
+      </div>
+      <div class="ttree-adj">
+        <button class="ttree-adj-btn" onclick="event.stopPropagation();itAdjust('${n.id}',${n.lv},-1)">−</button>
+        <span style="font-size:9px;color:#4a6090">${n.lv>1?Math.round(cur/n.lv*100)+'%':''}</span>
+        <button class="ttree-adj-btn tt-plus" onclick="event.stopPropagation();itAdjust('${n.id}',${n.lv},+1)">+</button>
+      </div>
+      <div class="ttree-popup">
+        <div class="ttree-popup-cat">${treeData.name}</div>
+        <div class="ttree-popup-name">${n.name}</div>
+        <div class="ttree-popup-sub">${n.sub}</div>
+        <div class="ttree-popup-grid">
+          <div class="ttree-popup-stat"><span class="ttree-popup-lbl">Buff</span><span class="ttree-popup-val" style="color:${treeData.color}">${n.bonus}</span></div>
+          <div class="ttree-popup-stat"><span class="ttree-popup-lbl">Progress</span><span class="ttree-popup-val">${cur} / ${n.lv}</span></div>
+        </div>
+        <div class="ttree-popup-desc">${n.desc}</div>
+        <div style="font-size:9px;color:#3a5080;margin-top:6px">Click for level details →</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  board.innerHTML = `<div style="position:relative;width:${totalW}px;height:${totalH}px;min-height:${totalH}px">
+    <svg class="ttree-svg" width="${totalW}" height="${totalH}">
+      ${paths.map(d=>`<path d="${d}" fill="none" stroke="#2a3d70" stroke-width="2" stroke-linecap="round"/>`).join('')}
+    </svg>
+    ${nodeCards}
+  </div>`;
 }
 
 // ============================================================
@@ -5964,7 +6264,7 @@ function renderSettings() {
 // ============================================================
 // DATA EXPORT / IMPORT
 // ============================================================
-const EXPORT_KEYS = ['roster','skillLevels','troops','ageData','calData','allianceData','kvkPlan','stockpileData','allianceTech','dailyState','researchData','reminderSettings'];
+const EXPORT_KEYS = ['roster','skillLevels','troops','ageData','calData','allianceData','kvkPlan','stockpileData','allianceTech','indivTech','dailyState','researchData','reminderSettings'];
 
 function exportAllData() {
   const dump = {};
@@ -6392,7 +6692,7 @@ renderTierList();
 
 // Fix nav click detection
 document.querySelectorAll('.nav-item').forEach((el, i) => {
-  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance','kvkplanner','stockpile','powerboard','swordland','alliancetech','daily','compare','research','settings'];
+  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance','kvkplanner','stockpile','powerboard','swordland','indivtech','alliancetech','daily','compare','research','settings'];
   el.addEventListener('click', () => goPage(pages[i]));
 });
 
@@ -6402,6 +6702,7 @@ slRebuildFormations();
 loadKvkPlan();
 loadStockpileData();
 loadAllianceTech();
+loadIndivTech();
 loadDailyState();
 loadResearchData();
 loadReminderSettings();
