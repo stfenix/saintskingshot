@@ -476,6 +476,8 @@ option { background: var(--surface2); }
 .export-btn { display:flex; align-items:center; gap:8px; padding:12px 16px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; color:var(--text); transition:all .15s; margin-bottom:8px; }
 .export-btn:hover { border-color:var(--accent); color:var(--accent); }
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 <div class="shell">
@@ -524,6 +526,7 @@ option { background: var(--surface2); }
     <div class="nav-item" onclick="goPage('stockpile')"><span class="icon">&#128230;</span>Stockpile Tracker</div>
     <div class="nav-item" onclick="goPage('powerboard')"><span class="icon">&#127942;</span>Power Board</div>
     <div class="nav-item" onclick="goPage('swordland')"><span class="icon">&#9876;&#65039;</span>Swordland Setup</div>
+    <div class="nav-item" onclick="goPage('alliancetech')"><span class="icon">&#128300;</span>Alliance Tech</div>
   </div>
   <div class="nav-section">
     <div class="nav-label">Tools</div>
@@ -531,6 +534,10 @@ option { background: var(--surface2); }
     <div class="nav-item" onclick="goPage('compare')"><span class="icon">&#9878;</span>Hero Compare</div>
     <div class="nav-item" onclick="goPage('research')"><span class="icon">&#127981;</span>Research Tracker</div>
     <div class="nav-item" onclick="goPage('settings')"><span class="icon">&#9881;</span>Settings</div>
+  </div>
+  <div style="padding:10px 12px;display:flex;align-items:center;gap:7px;border-top:1px solid var(--border);margin-top:auto">
+    <div id="sync-status" style="width:8px;height:8px;border-radius:50%;background:var(--muted);transition:background .4s;flex-shrink:0" title="Offline — local only"></div>
+    <span style="font-size:11px;color:var(--muted)" id="sync-label">local only</span>
   </div>
 </div>
 
@@ -1280,6 +1287,33 @@ option { background: var(--surface2); }
   </div>
 </div>
 
+<!-- ===== ALLIANCE TECH ===== -->
+<div class="page" id="page-alliancetech">
+  <div class="page-header">
+    <h2>Alliance Tech Tree</h2>
+    <p>Track your alliance's collective research progress and see what to prioritize next. R4/R5 can update levels.</p>
+  </div>
+  <div class="info-box" style="margin-bottom:16px">
+    Synced to cloud — changes are visible to all alliance members who use this tool. Priority ratings are tuned for a PvP-focused alliance.
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+    <button class="btn" onclick="renderAllianceTech()">&#8635; Refresh</button>
+    <select id="at-filter" onchange="renderAllianceTech()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 10px;font-size:13px">
+      <option value="">All Categories</option>
+      <option value="military">Military</option>
+      <option value="development">Development</option>
+      <option value="governance">Governance</option>
+    </select>
+    <select id="at-sort" onchange="renderAllianceTech()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 10px;font-size:13px">
+      <option value="priority">Sort: Priority</option>
+      <option value="progress">Sort: Progress</option>
+      <option value="name">Sort: Name</option>
+    </select>
+  </div>
+  <div id="at-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:16px"></div>
+  <div id="at-board"></div>
+</div>
+
 <!-- ===== DAILY CHECKLIST ===== -->
 <div class="page" id="page-daily">
   <div class="page-header">
@@ -1769,6 +1803,52 @@ option { background: var(--surface2); }
 </div><!-- end .shell -->
 
 <script>
+// ============================================================
+// FIREBASE — alliance data sync
+// ============================================================
+const FS_CONFIG = {
+  apiKey: "AIzaSyBicX8uiqZ0DKD__PMFze0XFAroQOUKmJY",
+  authDomain: "kingshot-19a71.firebaseapp.com",
+  projectId: "kingshot-19a71",
+  storageBucket: "kingshot-19a71.firebasestorage.app",
+  messagingSenderId: "686497995553",
+  appId: "1:686497995553:web:e952ae8a6977b63bdcbc60"
+};
+let db = null;
+(function initFirebase() {
+  try {
+    firebase.initializeApp(FS_CONFIG);
+    db = firebase.firestore();
+    setSyncStatus('synced');
+  } catch(e) { setSyncStatus('offline'); }
+})();
+
+function setSyncStatus(state) {
+  const dot = document.getElementById('sync-status');
+  const lbl = document.getElementById('sync-label');
+  const map = { synced:['var(--green)','synced'], syncing:['var(--accent)','syncing…'], offline:['var(--muted)','local only'] };
+  const [col, text] = map[state] || map.offline;
+  if (dot) dot.style.background = col;
+  if (lbl) lbl.textContent = text;
+  if (dot) dot.title = text;
+}
+
+async function fsGet(key) {
+  if (!db) return null;
+  try {
+    const snap = await db.collection('alliance').doc(key).get();
+    return snap.exists ? snap.data().value : null;
+  } catch(e) { return null; }
+}
+
+function fsSet(key, value) {
+  if (!db) return;
+  setSyncStatus('syncing');
+  db.collection('alliance').doc(key).set({ value })
+    .then(() => setSyncStatus('synced'))
+    .catch(() => setSyncStatus('offline'));
+}
+
 // ============================================================
 // COMPLETE HERO DATABASE (real data from NotebookLM sources)
 // ============================================================
@@ -2914,6 +2994,7 @@ function goPage(name) {
     tierlist:'tier', troops:'troop', guide:'guide', age:'kingdom',
     calendar:'calendar', alliance:'alliance hq', kvkplanner:'kvk',
     stockpile:'stockpile', powerboard:'power board', swordland:'swordland',
+    alliancetech:'alliance tech',
     daily:'daily', compare:'compare', research:'research', settings:'settings'
   };
   const label = PAGE_LABELS[name] || name;
@@ -2932,6 +3013,7 @@ function goPage(name) {
   if (name==='stockpile') renderStockpile();
   if (name==='powerboard') renderPowerBoard();
   if (name==='swordland') renderSwordland();
+  if (name==='alliancetech') renderAllianceTech();
   if (name==='daily') renderDaily();
   if (name==='compare') renderCompare();
   if (name==='research') renderResearch();
@@ -4647,10 +4729,17 @@ function slLoadRoster() {
     slRoster = saved || SL_DEFAULT_ROSTER.map(m => ({ ...m, team:'', role:'' }));
   } catch(e) { slRoster = SL_DEFAULT_ROSTER.map(m => ({ ...m, team:'', role:'' })); }
   if (!slRoster.length) slRoster = SL_DEFAULT_ROSTER.map(m => ({ ...m, team:'', role:'' }));
+  fsGet('slRoster').then(d => {
+    if (!d) return;
+    slRoster = d;
+    localStorage.setItem('slRoster', JSON.stringify(slRoster));
+    if (document.getElementById('page-swordland')?.classList.contains('active')) renderSwordland();
+  }).catch(() => {});
 }
 
 function slSaveRoster() {
   localStorage.setItem('slRoster', JSON.stringify(slRoster));
+  fsSet('slRoster', slRoster);
 }
 
 function slResetRoster() {
@@ -5001,6 +5090,12 @@ const KVK_STATUSES = ['✅ Ready','❌ Not Ready','⏳ Unknown'];
 
 function loadKvkPlan() {
   try { kvkPlan = Object.assign({ eventId:'kvk', eventDate:'', notes:'', assignments:{} }, JSON.parse(localStorage.getItem('kvkPlan')||'{}')); } catch(e) {}
+  fsGet('kvkPlan').then(d => {
+    if (!d) return;
+    kvkPlan = Object.assign({ eventId:'kvk', eventDate:'', notes:'', assignments:{} }, d);
+    localStorage.setItem('kvkPlan', JSON.stringify(kvkPlan));
+    if (document.getElementById('page-kvkplanner')?.classList.contains('active')) renderKvkPlanner();
+  }).catch(() => {});
 }
 
 function saveKvkPlan() {
@@ -5008,6 +5103,7 @@ function saveKvkPlan() {
   kvkPlan.eventDate = document.getElementById('kvk-event-date')?.value  || '';
   kvkPlan.notes     = document.getElementById('kvk-notes')?.value       || '';
   localStorage.setItem('kvkPlan', JSON.stringify(kvkPlan));
+  fsSet('kvkPlan', kvkPlan);
 }
 
 function clearKvkPlan() {
@@ -5107,12 +5203,19 @@ let stockpileData = {};
 
 function loadStockpileData() {
   try { stockpileData = JSON.parse(localStorage.getItem('stockpileData')||'{}'); } catch(e) {}
+  fsGet('stockpileData').then(d => {
+    if (!d) return;
+    stockpileData = d;
+    localStorage.setItem('stockpileData', JSON.stringify(stockpileData));
+    if (document.getElementById('page-stockpile')?.classList.contains('active')) renderStockpile();
+  }).catch(() => {});
 }
 
 function saveStockpile(idx, field, val) {
   if (!stockpileData[idx]) stockpileData[idx] = {};
   stockpileData[idx][field] = parseInt(val) || 0;
   localStorage.setItem('stockpileData', JSON.stringify(stockpileData));
+  fsSet('stockpileData', stockpileData);
   renderStockpileReadiness(idx);
 }
 
@@ -5393,6 +5496,138 @@ function renderPowerBoard() {
 }
 
 // ============================================================
+// ALLIANCE TECH TREE
+// ============================================================
+const ALLIANCE_TECH_TREE = [
+  { id:'military', name:'Military', icon:'⚔️', color:'var(--sp)',
+    nodes:[
+      { id:'at_atk',   name:'Alliance ATK',       maxLv:10, bonus:'+0.5% all troop ATK/lv',  priority:5, desc:'Boosts every member\'s troop attack in alliance events' },
+      { id:'at_def',   name:'Alliance DEF',       maxLv:10, bonus:'+0.5% all troop DEF/lv',  priority:4, desc:'Reduces damage taken by all members\' troops' },
+      { id:'at_hp',    name:'Alliance HP',        maxLv:10, bonus:'+0.5% all troop HP/lv',   priority:4, desc:'More troop survivability across the board' },
+      { id:'at_rally', name:'Rally Capacity',     maxLv:5,  bonus:'+50k troop slots/lv',      priority:5, desc:'Larger rallies — critical for taking high-level targets' },
+      { id:'at_march', name:'March Speed',        maxLv:10, bonus:'+2% march speed/lv',      priority:3, desc:'Faster march arrival in events' },
+      { id:'at_leth',  name:'Lethality',          maxLv:5,  bonus:'+1% troop lethality/lv',  priority:4, desc:'Increases kill percentage in battle' },
+    ]
+  },
+  { id:'development', name:'Development', icon:'🏗️', color:'var(--a)',
+    nodes:[
+      { id:'at_train', name:'Training Speed',     maxLv:10, bonus:'+3% training speed/lv',   priority:4, desc:'Rebuild armies faster after battles — high priority for active PvP' },
+      { id:'at_const', name:'Construction Speed', maxLv:10, bonus:'+2% construction/lv',     priority:2, desc:'Faster building upgrades for all members' },
+      { id:'at_res',   name:'Research Speed',     maxLv:10, bonus:'+2% research speed/lv',   priority:2, desc:'Faster personal research for all members' },
+      { id:'at_load',  name:'Load Capacity',      maxLv:5,  bonus:'+10% gather load/lv',     priority:1, desc:'More resources per gather trip' },
+    ]
+  },
+  { id:'governance', name:'Governance', icon:'🏰', color:'var(--b)',
+    nodes:[
+      { id:'at_size',  name:'Member Capacity',    maxLv:5,  bonus:'+5 member slots/lv',      priority:5, desc:'Unlock more alliance member slots — do this first' },
+      { id:'at_reinf', name:'Reinforcement Cap',  maxLv:10, bonus:'+5k troop limit/lv',      priority:3, desc:'More troops can reinforce alliance buildings and flag' },
+      { id:'at_gift',  name:'Alliance Gift Level',maxLv:5,  bonus:'+1 gift tier/lv',         priority:3, desc:'Better chest rewards from alliance activity gifts' },
+      { id:'at_help',  name:'Help Boost',         maxLv:5,  bonus:'+2% speed per help/lv',   priority:2, desc:'Each alliance help reduces more time from builds/research' },
+    ]
+  }
+];
+
+let allianceTechData = {}; // { nodeId: currentLevel }
+
+function loadAllianceTech() {
+  try { allianceTechData = JSON.parse(localStorage.getItem('allianceTech')||'{}'); } catch(e) {}
+  fsGet('allianceTech').then(d => {
+    if (!d) return;
+    allianceTechData = d;
+    localStorage.setItem('allianceTech', JSON.stringify(allianceTechData));
+    if (document.getElementById('page-alliancetech')?.classList.contains('active')) renderAllianceTech();
+  }).catch(() => {});
+}
+
+function saveAllianceTech(nodeId, level) {
+  allianceTechData[nodeId] = level;
+  localStorage.setItem('allianceTech', JSON.stringify(allianceTechData));
+  fsSet('allianceTech', allianceTechData);
+}
+
+function renderAllianceTech() {
+  const filter = document.getElementById('at-filter')?.value || '';
+  const sort   = document.getElementById('at-sort')?.value   || 'priority';
+
+  // Stats
+  let totalNodes = 0, totalLevels = 0, maxLevels = 0;
+  ALLIANCE_TECH_TREE.forEach(cat => cat.nodes.forEach(n => {
+    totalNodes++;
+    totalLevels += (allianceTechData[n.id] || 0);
+    maxLevels   += n.maxLv;
+  }));
+  const pct = maxLevels ? Math.round(totalLevels / maxLevels * 100) : 0;
+  const statsEl = document.getElementById('at-stats');
+  if (statsEl) statsEl.innerHTML = [
+    { label:'Total Nodes',    val: totalNodes },
+    { label:'Levels Unlocked',val: `${totalLevels} / ${maxLevels}` },
+    { label:'Completion',     val: `${pct}%` },
+  ].map(s => `<div style="text-align:center;padding:10px;background:var(--surface2);border-radius:6px;border:1px solid var(--border)">
+    <div style="font-size:20px;font-weight:800;color:var(--accent)">${s.val}</div>
+    <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">${s.label}</div>
+  </div>`).join('');
+
+  // Build flat node list
+  let nodes = [];
+  ALLIANCE_TECH_TREE.forEach(cat => {
+    if (filter && cat.id !== filter) return;
+    cat.nodes.forEach(n => nodes.push({ ...n, catId: cat.id, catName: cat.name, catColor: cat.color, catIcon: cat.icon }));
+  });
+
+  // Sort
+  if (sort === 'priority') nodes.sort((a,b) => b.priority - a.priority);
+  else if (sort === 'progress') nodes.sort((a,b) => {
+    const pA = (allianceTechData[a.id]||0) / a.maxLv;
+    const pB = (allianceTechData[b.id]||0) / b.maxLv;
+    return pA - pB;
+  });
+  else nodes.sort((a,b) => a.name.localeCompare(b.name));
+
+  const stars = p => '★'.repeat(p) + '☆'.repeat(5-p);
+  const priCol = p => p >= 5 ? 'var(--sp)' : p >= 4 ? 'var(--accent)' : p >= 3 ? 'var(--b)' : 'var(--muted)';
+
+  const board = document.getElementById('at-board');
+  if (!board) return;
+  board.innerHTML = nodes.map(n => {
+    const cur = allianceTechData[n.id] || 0;
+    const pct  = Math.round(cur / n.maxLv * 100);
+    const done = cur >= n.maxLv;
+    return `<div class="card" style="margin-bottom:10px;border-left:3px solid ${n.catColor};opacity:${done?'0.7':'1'}">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <div style="flex:1;min-width:180px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+            <span style="font-size:11px;background:var(--surface3);color:var(--muted);padding:1px 6px;border-radius:4px">${n.catIcon} ${n.catName}</span>
+            ${done ? '<span style="font-size:11px;color:var(--green);font-weight:700">✓ MAXED</span>' : ''}
+          </div>
+          <div style="font-weight:700;font-size:15px;color:var(--text);margin-bottom:2px">${n.name}</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:4px">${n.desc}</div>
+          <div style="font-size:11px;color:${n.catColor}">${n.bonus}</div>
+        </div>
+        <div style="min-width:160px;text-align:right">
+          <div style="color:${priCol(n.priority)};font-size:13px;letter-spacing:1px;margin-bottom:6px">${stars(n.priority)}</div>
+          <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end">
+            <button onclick="atAdjust('${n.id}',${n.maxLv},-1)" style="width:28px;height:28px;border-radius:50%;background:var(--surface3);border:1px solid var(--border);color:var(--text);cursor:pointer;font-size:16px;line-height:1">−</button>
+            <span style="min-width:60px;text-align:center;font-weight:700;font-size:15px;color:var(--text)">Lv ${cur} / ${n.maxLv}</span>
+            <button onclick="atAdjust('${n.id}',${n.maxLv},+1)" style="width:28px;height:28px;border-radius:50%;background:var(--surface3);border:1px solid var(--border);color:var(--accent);cursor:pointer;font-size:16px;line-height:1">+</button>
+          </div>
+          <div style="margin-top:6px;background:var(--surface3);border-radius:4px;height:4px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:${done?'var(--green)':n.catColor};transition:width .3s"></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('') || '<div class="no-data" style="padding:32px">No nodes match the current filter.</div>';
+}
+
+function atAdjust(nodeId, maxLv, delta) {
+  const cur = allianceTechData[nodeId] || 0;
+  const next = Math.max(0, Math.min(maxLv, cur + delta));
+  if (next === cur) return;
+  saveAllianceTech(nodeId, next);
+  renderAllianceTech();
+}
+
+// ============================================================
 // RESEARCH TRACKER
 // ============================================================
 const RESEARCH_TREES = [
@@ -5636,7 +5871,7 @@ function renderSettings() {
 // ============================================================
 // DATA EXPORT / IMPORT
 // ============================================================
-const EXPORT_KEYS = ['roster','skillLevels','troops','ageData','calData','allianceData','kvkPlan','stockpileData','dailyState','researchData','reminderSettings'];
+const EXPORT_KEYS = ['roster','skillLevels','troops','ageData','calData','allianceData','kvkPlan','stockpileData','allianceTech','dailyState','researchData','reminderSettings'];
 
 function exportAllData() {
   const dump = {};
@@ -5681,7 +5916,7 @@ function clearDataSection(section) {
   const labels = { roster:'roster', alliance:'alliance data', all:'ALL data' };
   if (!confirm(`Delete ${labels[section]||section}? This cannot be undone.`)) return;
   if (section === 'roster') { localStorage.removeItem('roster'); localStorage.removeItem('skillLevels'); loadRoster(); buildRosterPage(); updateSidebar(); }
-  else if (section === 'alliance') { localStorage.removeItem('allianceData'); loadAllianceData(); }
+  else if (section === 'alliance') { ['allianceData','kvkPlan','stockpileData','slRoster','allianceTech'].forEach(k => localStorage.removeItem(k)); loadAllianceData(); loadKvkPlan(); loadStockpileData(); slLoadRoster(); loadAllianceTech(); }
   else if (section === 'all') { EXPORT_KEYS.forEach(k => localStorage.removeItem(k)); location.reload(); }
 }
 
@@ -5841,6 +6076,15 @@ function loadAllianceData() {
     const d = JSON.parse(localStorage.getItem('allianceData')||'{}');
     allianceData = Object.assign({ name:'', tag:'', kingdom:'', rules:'', schedule:'', members:[] }, d);
   } catch(e) {}
+  fsGet('allianceData').then(d => {
+    if (!d) return;
+    allianceData = Object.assign({ name:'', tag:'', kingdom:'', rules:'', schedule:'', members:[] }, d);
+    localStorage.setItem('allianceData', JSON.stringify(allianceData));
+    const active = document.querySelector('.page.active')?.id;
+    if (active === 'page-alliance') renderAlliance();
+    if (active === 'page-powerboard') renderPowerBoard();
+    if (active === 'page-kvkplanner') renderKvkPlanner();
+  }).catch(() => {});
 }
 
 function saveAllianceData() {
@@ -5850,6 +6094,7 @@ function saveAllianceData() {
   allianceData.rules    = document.getElementById('ally-rules')?.value || allianceData.rules;
   allianceData.schedule = document.getElementById('ally-schedule')?.value || allianceData.schedule;
   localStorage.setItem('allianceData', JSON.stringify(allianceData));
+  fsSet('allianceData', allianceData);
 }
 
 function renderAlliance() {
@@ -6047,7 +6292,7 @@ renderTierList();
 
 // Fix nav click detection
 document.querySelectorAll('.nav-item').forEach((el, i) => {
-  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance','kvkplanner','stockpile','powerboard','swordland','daily','compare','research','settings'];
+  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance','kvkplanner','stockpile','powerboard','swordland','alliancetech','daily','compare','research','settings'];
   el.addEventListener('click', () => goPage(pages[i]));
 });
 
@@ -6056,6 +6301,7 @@ slLoadRoster();
 slRebuildFormations();
 loadKvkPlan();
 loadStockpileData();
+loadAllianceTech();
 loadDailyState();
 loadResearchData();
 loadReminderSettings();
