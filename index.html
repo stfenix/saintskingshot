@@ -5050,17 +5050,47 @@ function renderAge() {
 }
 
 // ============================================================
-// API HELPER — routes through allorigins.win to bypass CORS
+// API HELPER — direct browser fetch with proxy fallbacks
 // ============================================================
 const KINGSHOT_API = 'https://kingshot.net/api';
 
 async function ksFetch(path) {
   const target = KINGSHOT_API + path;
-  const proxy  = `https://api.allorigins.win/get?url=${encodeURIComponent(target)}`;
-  const res = await fetch(proxy);
-  if (!res.ok) throw new Error(`Proxy HTTP ${res.status}`);
-  const wrapper = await res.json();
-  return JSON.parse(wrapper.contents);
+
+  // 1. Try direct browser fetch — works when kingshot.net sends CORS headers
+  try {
+    const res = await fetch(target, { headers: { Accept: 'application/json' } });
+    // A non-network 4xx/5xx means the API reached us but rejected the request
+    if (res.status === 400 || res.status === 404) throw new Error('NOT_FOUND');
+    if (res.ok) return res.json();
+  } catch(e) {
+    if (e.message === 'NOT_FOUND') throw e;
+    // Falls through to proxies on CORS / network errors
+  }
+
+  // 2. Try corsproxy.io
+  try {
+    const res = await fetch(`https://corsproxy.io/?url=${encodeURIComponent(target)}`);
+    if (res.ok) { const t = await res.text(); return JSON.parse(t); }
+  } catch(_) {}
+
+  // 3. Try allorigins.win
+  try {
+    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
+    if (res.ok) { const w = await res.json(); return JSON.parse(w.contents); }
+  } catch(_) {}
+
+  // 4. Try thingproxy
+  try {
+    const res = await fetch(`https://thingproxy.freeboard.io/fetch/${target}`);
+    if (res.ok) return res.json();
+  } catch(_) {}
+
+  throw new Error('API_UNAVAILABLE');
+}
+
+function ksApiUnavailableHtml() {
+  return `<span class="api-status api-err">✗ API unavailable — enter data manually</span>`;
 }
 
 // ============================================================
@@ -6968,7 +6998,10 @@ function escHtml(str) {
 
 async function lookupMember(idx) {
   const m = allianceData.members[idx];
-  if (!m?.playerId) { alert('Enter a Player ID first'); return; }
+  if (!m?.playerId) { return; }
+  const btn = document.querySelector(`[onclick="lookupMember(${idx})"]`);
+  const origText = btn?.textContent;
+  if (btn) btn.textContent = '⏳';
   try {
     const json = await ksFetch(`/player-info?playerId=${encodeURIComponent(m.playerId)}`);
     if (json.status === 'success' && json.data) {
@@ -6980,10 +7013,10 @@ async function lookupMember(idx) {
       saveAllianceData();
       renderMemberTable();
     } else {
-      alert('Player not found. Check the Player ID.');
+      if (btn) { btn.textContent = '✗'; setTimeout(() => { if(btn) btn.textContent = origText; }, 2000); }
     }
   } catch(e) {
-    alert('API error — check your connection and try again.');
+    if (btn) { btn.title = 'API unavailable — enter data manually'; btn.textContent = '✗'; setTimeout(() => { if(btn) btn.textContent = origText; }, 3000); }
   }
 }
 
@@ -7009,7 +7042,7 @@ async function fetchKingdomInfo() {
       infoEl.textContent = 'Kingdom not found in database. Try entering the date manually in Kingdom Age tracker.';
     }
   } catch(e) {
-    infoEl.textContent = 'API error — check connection.';
+    infoEl.innerHTML = ksApiUnavailableHtml() + ' Enter your kingdom open date manually in the Kingdom Age tracker.';
   }
 }
 
@@ -7040,8 +7073,8 @@ async function fetchGiftCodes() {
       listEl.innerHTML = '<div class="no-data" style="padding:12px">Failed to load codes</div>';
     }
   } catch(e) {
-    statusEl.innerHTML = '<span class="api-status api-err">✗ offline</span>';
-    listEl.innerHTML = '<div class="no-data" style="padding:12px">Could not reach API</div>';
+    statusEl.innerHTML = ksApiUnavailableHtml();
+    listEl.innerHTML = '<div class="no-data" style="padding:12px">kingshot.net API is currently unavailable — gift codes cannot be fetched automatically.</div>';
   }
 }
 
@@ -7081,8 +7114,8 @@ async function fetchKvkHistory() {
       listEl.innerHTML = '<div class="no-data" style="padding:12px">Failed to load KvK history</div>';
     }
   } catch(e) {
-    statusEl.innerHTML = '<span class="api-status api-err">✗ offline</span>';
-    listEl.innerHTML = '<div class="no-data" style="padding:12px">Could not reach API</div>';
+    statusEl.innerHTML = ksApiUnavailableHtml();
+    listEl.innerHTML = '<div class="no-data" style="padding:12px">kingshot.net API is currently unavailable — KvK history cannot be fetched automatically.</div>';
   }
 }
 
