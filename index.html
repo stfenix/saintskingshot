@@ -5056,34 +5056,37 @@ const KINGSHOT_API = 'https://kingshot.net/api';
 
 async function ksFetch(path) {
   const target = KINGSHOT_API + path;
+  const sig = () => AbortSignal.timeout ? AbortSignal.timeout(8000) : undefined;
 
   // 1. Try direct browser fetch — works when kingshot.net sends CORS headers
   try {
-    const res = await fetch(target, { headers: { Accept: 'application/json' } });
-    // A non-network 4xx/5xx means the API reached us but rejected the request
+    const res = await fetch(target, { signal: sig(), headers: { Accept: 'application/json' } });
     if (res.status === 400 || res.status === 404) throw new Error('NOT_FOUND');
     if (res.ok) return res.json();
   } catch(e) {
     if (e.message === 'NOT_FOUND') throw e;
-    // Falls through to proxies on CORS / network errors
   }
 
-  // 2. Try corsproxy.io
-  try {
-    const res = await fetch(`https://corsproxy.io/?url=${encodeURIComponent(target)}`);
-    if (res.ok) { const t = await res.text(); return JSON.parse(t); }
-  } catch(_) {}
+  // 2. Race all proxies in parallel — return whichever responds first
+  const tryProxy = async fn => {
+    const r = await fn();
+    if (!r.ok) throw new Error('not ok');
+    return r;
+  };
 
-  // 3. Try allorigins.win
   try {
-    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
-    if (res.ok) { const w = await res.json(); return JSON.parse(w.contents); }
-  } catch(_) {}
-
-  // 4. Try thingproxy
-  try {
-    const res = await fetch(`https://thingproxy.freeboard.io/fetch/${target}`);
-    if (res.ok) return res.json();
+    return await Promise.any([
+      tryProxy(() => fetch(`https://corsproxy.io/?url=${encodeURIComponent(target)}`, { signal: sig() }))
+        .then(r => r.text()).then(t => JSON.parse(t)),
+      tryProxy(() => fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`, { signal: sig() }))
+        .then(r => r.json()).then(w => JSON.parse(w.contents)),
+      tryProxy(() => fetch(`https://thingproxy.freeboard.io/fetch/${target}`, { signal: sig() }))
+        .then(r => r.json()),
+      tryProxy(() => fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(target)}`, { signal: sig() }))
+        .then(r => r.json()),
+      tryProxy(() => fetch(`https://proxy.cors.sh/${target}`, { signal: sig(), headers: { 'x-cors-api-key': 'temp_' } }))
+        .then(r => r.json()),
+    ]);
   } catch(_) {}
 
   throw new Error('API_UNAVAILABLE');
