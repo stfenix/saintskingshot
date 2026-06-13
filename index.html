@@ -5056,11 +5056,11 @@ const KINGSHOT_API = 'https://kingshot.net/api';
 
 async function ksFetch(path) {
   const target = KINGSHOT_API + path;
-  const sig = () => AbortSignal.timeout ? AbortSignal.timeout(8000) : undefined;
+  const sig = () => AbortSignal.timeout ? AbortSignal.timeout(15000) : undefined;
 
   // 1. Try direct browser fetch — works when kingshot.net sends CORS headers
   try {
-    const res = await fetch(target, { signal: sig(), headers: { Accept: 'application/json' } });
+    const res = await fetch(target, { signal: AbortSignal.timeout ? AbortSignal.timeout(15000) : undefined, headers: { Accept: 'application/json' } });
     if (res.status === 400 || res.status === 404) throw new Error('NOT_FOUND');
     if (res.ok) return res.json();
   } catch(e) {
