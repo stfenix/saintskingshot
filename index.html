@@ -5113,7 +5113,7 @@ function renderAge() {
 // ============================================================
 // API HELPER — routed through Cloudflare Worker for CORS
 // ============================================================
-const KINGSHOT_API = 'https://kingshotwork.phillip-5aa.workers.dev';
+const KINGSHOT_API = 'https://ksapi.phillip-5aa.workers.dev';
 
 async function ksFetch(path) {
   const url = KINGSHOT_API + path;
@@ -5121,7 +5121,9 @@ async function ksFetch(path) {
   const res = await fetch(url, { signal: sig, headers: { Accept: 'application/json' } });
   if (res.status === 400 || res.status === 404) throw new Error('NOT_FOUND');
   if (!res.ok) throw new Error('API_UNAVAILABLE');
-  return res.json();
+  const text = await res.text();
+  try { return JSON.parse(text); }
+  catch(_) { throw new Error('API_UNAVAILABLE'); }
 }
 
 function ksApiUnavailableHtml() {
