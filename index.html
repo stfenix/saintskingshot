@@ -1582,6 +1582,48 @@ option { background: var(--surface2); }
       </div>
     </div>
   </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">🐻 Terror Hunt (Bear Battle) — Damage Mechanics</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Bear is composed of <strong style="color:var(--text)">5,000 special infantry troops</strong> with 10 Defense and 83.33 Health each. Battles last <strong style="color:var(--text)">10 turns</strong> (unlike normal battles). Your troops don't die, so damage stays constant per round.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:12px">
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">Key Mechanics</div>
+          <div style="line-height:2">
+            <div>• Archers deal <strong style="color:var(--text)">+10% extra damage</strong> vs Bear (Ranged Strike vs infantry)</div>
+            <div>• Bear Trap level bonus adds <strong style="color:var(--text)">+5% Attack per level</strong> to all troop types (+25% at Lv 5)</div>
+            <div>• Since troops don't die, <strong style="color:var(--text)">SkillMod stays 1</strong> unless chance-based hero skills are active</div>
+            <div>• Score = <strong style="color:var(--text)">ceil(total 10-round damage)</strong></div>
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">Damage Formula</div>
+          <div style="font-family:monospace;font-size:11px;line-height:2;color:var(--text)">
+            <div>attack_per_troop = base_attack × (1 + bonus) × lethality / 100</div>
+            <div>army = √(your_troops × bear_troops)</div>
+            <div>bear_defense = Health × Defense / 100 = 8.333</div>
+            <div>round_dmg = army × attack_per_troop / bear_defense / 100</div>
+            <div style="color:var(--accent)">total_score = ceil(round_dmg × 10)</div>
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">T6 Example (Bear Lv 5, 6000 each)</div>
+          <div style="line-height:2">
+            <div>army = √(6000 × 5000) = <strong style="color:var(--text)">5,477</strong></div>
+            <div>Infantry: 5477 × 30.375 / 8.333 / 100 = <strong style="color:var(--text)">199.6</strong></div>
+            <div>Cavalry: 5477 × 91.25 / 8.333 / 100 = <strong style="color:var(--text)">599.8</strong></div>
+            <div>Archer: 5477 × 121.75 / 8.333 / 100 × 1.10 = <strong style="color:var(--text)">880.2</strong></div>
+            <div>Total 10 rounds: <strong style="color:var(--s)">16,797 score</strong></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:10px 14px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent)">
+        <div style="font-weight:700;color:var(--text);margin-bottom:6px">Troop Ratio Tip</div>
+        <div>Army size uses <strong style="color:var(--text)">square root</strong> of troop count — stacking only Archers gives <strong>diminishing returns</strong>. Mix in Cavalry for solid damage. Recommended: ~1% Infantry (minimum), rest split Archer-heavy with meaningful Cavalry.</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ===== TRAINING EFFICIENCY CALCULATOR ===== -->
