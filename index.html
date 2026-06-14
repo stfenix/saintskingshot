@@ -65,7 +65,43 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 @media(max-width:900px) { .g2,.g3,.g4 { grid-template-columns: 1fr 1fr; } }
-@media(max-width:600px) { .shell { grid-template-columns: 1fr; } .sidebar { position: static; height: auto; } }
+
+/* ── MOBILE HEADER ── */
+.mob-header {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; height: 52px;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  align-items: center; padding: 0 14px; gap: 12px; z-index: 900;
+}
+.mob-header-title { font-size: 15px; font-weight: 800; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
+.hamburger { background: none; border: 1px solid var(--border); color: var(--text); font-size: 18px; width: 36px; height: 36px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.hamburger:hover { border-color: var(--accent); color: var(--accent); }
+.nav-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 950; }
+.nav-backdrop.active { display: block; }
+
+/* ── MOBILE LAYOUT ── */
+@media(max-width:768px) {
+  .mob-header { display: flex; }
+  .shell { display: block; }
+  .main { padding-top: 52px; }
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 280px; height: 100vh;
+    transform: translateX(-100%); transition: transform .25s ease;
+    z-index: 1000; overflow-y: auto;
+  }
+  .sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,.6); }
+  .page { padding: 12px; }
+  .g2, .g3, .g4 { grid-template-columns: 1fr; }
+  .g2 { grid-template-columns: 1fr 1fr; }
+  .modal { width: calc(100vw - 24px) !important; max-width: 100% !important; }
+  .build-grid { grid-template-columns: 1fr !important; }
+  .hero-roster-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+  .page table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+  .page h2 { font-size: 17px; }
+  .cal-week-grid { grid-template-columns: repeat(4,1fr) !important; }
+  .age-hero { grid-template-columns: 1fr 1fr !important; }
+  .ttree-bg { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
 
 /* BADGES */
 .tier-badge { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: .5px; }
@@ -541,6 +577,13 @@ option { background: var(--surface2); }
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
+<!-- MOBILE HEADER (hidden on desktop) -->
+<div class="mob-header">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
+  <span class="mob-header-title">&#9876; Kingshot</span>
+</div>
+<div class="nav-backdrop" onclick="closeSidebar()"></div>
+
 <div class="shell">
 
 <!-- SIDEBAR -->
@@ -3354,7 +3397,17 @@ function getStars(id) { return (roster[id]||{}).stars || 1; }
 // ============================================================
 // NAVIGATION
 // ============================================================
+function toggleSidebar() {
+  document.querySelector('.sidebar').classList.toggle('open');
+  document.querySelector('.nav-backdrop').classList.toggle('active');
+}
+function closeSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.querySelector('.nav-backdrop').classList.remove('active');
+}
+
 function goPage(name) {
+  closeSidebar();
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
