@@ -3508,7 +3508,7 @@ function troopContextHtml(ev) {
   ${warnHtml}`
 }
 
-function getOwned() { return HEROES.filter(h => roster[h.id]); }
+function getOwned() { return HEROES.filter(h => roster[h.id] && roster[h.id].owned !== false); }
 function getStars(id) { return (roster[id]||{}).stars || 1; }
 
 // ============================================================
@@ -3598,7 +3598,7 @@ const GEAR_SLOTS = [
 ];
 
 function heroRosterCard(h) {
-  const owned = !!roster[h.id];
+  const owned = !!(roster[h.id] && roster[h.id].owned !== false);
   const stars = getStars(h.id);
   const starHtml = [1,2,3,4,5].map(i =>
     `<span class="star ${i <= stars ? 'lit' : ''}" onclick="setStar('${h.id}',${i},event)">&#9733;</span>`
@@ -3656,6 +3656,7 @@ function heroRosterCard(h) {
 
 function defaultRosterEntry() {
   return {
+    owned: true,
     stars: 1,
     level: 1,
     manualPower: 0,
@@ -3666,7 +3667,8 @@ function defaultRosterEntry() {
 
 function toggleHero(id) {
   if (roster[id]) {
-    delete roster[id];
+    // Toggle owned flag — preserves all stats
+    roster[id].owned = !roster[id].owned;
   } else {
     roster[id] = defaultRosterEntry();
   }
@@ -7090,18 +7092,37 @@ function renderCalendarGrid() {
   });
 
   const todayDow = dow;
+
+  // Load kingdom start date to overlay server-age milestones
+  let kingdomStart = null;
+  try {
+    const ad = JSON.parse(localStorage.getItem('ageData') || '{}');
+    if (ad.startDate) kingdomStart = new Date(ad.startDate);
+  } catch(_) {}
+
   const grid = document.getElementById('cal-week-grid');
   grid.innerHTML = DAY_NAMES.map((name, i) => {
     const d = new Date(weekStart);
     d.setDate(weekStart.getDate() + i);
     const isToday = i === todayDow;
+
+    // Kingdom age milestones for this calendar day
+    let agePills = '';
+    if (kingdomStart) {
+      const kDay = Math.floor((d - kingdomStart) / 86400000) + 1;
+      const ageEvs = AGE_EVENTS.filter(e => e.day === kDay);
+      agePills = ageEvs.map(e =>
+        `<span class="cal-event-pill" style="background:#a855f715;color:#c084fc;border:1px solid #a855f740">${e.icon} ${e.name} <span style="opacity:.6">(Day ${kDay})</span></span>`
+      ).join('');
+    }
+
     const pills = dayEvents[i].map(ev =>
       `<span class="cal-event-pill ${ev.cls}">${ev.icon ? ev.icon+' ' : ''}${ev.label}</span>`
     ).join('');
     return `<div class="cal-day ${isToday?'today':''}">
       <div class="cal-day-name">${name}</div>
       <div class="cal-day-num">${d.getDate()} ${MONTH_NAMES[d.getMonth()]}</div>
-      ${pills || '<span style="font-size:10px;color:var(--border)">—</span>'}
+      ${agePills}${pills || (!agePills ? '<span style="font-size:10px;color:var(--border)">—</span>' : '')}
     </div>`;
   }).join('');
 
