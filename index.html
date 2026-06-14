@@ -1626,6 +1626,42 @@ option { background: var(--surface2); }
   </div>
 
   <div class="card" style="margin-top:12px">
+    <div class="card-title">🏹 Archer Hero Replacement Thresholds (Expedition Stats)</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Star level alone doesn't determine when to switch heroes. Use these <strong style="color:var(--text)">Archer Attack/Defense % thresholds</strong> to know when a newer generation hero becomes stronger than your current one. Applies to expedition stats only.</div>
+      <div style="margin-bottom:8px;padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--muted);font-size:11px">
+        ⚠️ Stats aren't everything — <strong style="color:var(--text)">Marlin</strong> (Gen 2) is still preferred over <strong style="color:var(--text)">Jaeger</strong> (Gen 3) for Attack Rallies because Marlin's widget is attack-focused while Jaeger's widget is Garrison-oriented.
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:12px;border-collapse:collapse;min-width:400px">
+          <thead><tr style="color:var(--muted);text-align:left">
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Your Current Hero</th>
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Replace When Archer ATK/DEF Reaches</th>
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Replace With</th>
+          </tr></thead>
+          <tbody>
+            ${[
+              ['Olive', '90.07%', 'Diana'],
+              ['Diana', '110.08%', 'Quinn / Yeonwoo / Amane'],
+              ['Quinn / Yeonwoo / Amane', '140.11%', 'Saul'],
+              ['Saul', '200.16%', 'Marlin'],
+              ['Marlin', '240.19%', 'Jaeger'],
+            ].map(([cur, threshold, next], i) => `
+            <tr style="border-bottom:1px solid var(--border)20;background:${i%2?'var(--surface2)':'transparent'}">
+              <td style="padding:8px 12px;color:var(--text);font-weight:600">${cur}</td>
+              <td style="padding:8px 12px;color:var(--accent);font-weight:700">${threshold}</td>
+              <td style="padding:8px 12px;color:var(--s)">${next}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted)">
+        Part 1 of 3 — Infantry and Cavalry hero replacement thresholds to follow.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
     <div class="card-title">🐾 Pets — Priority &amp; Refinement Guide</div>
     <div style="font-size:12px;color:var(--muted);line-height:1.8">
       <div style="margin-bottom:10px">Pets provide significant stat boosts through both upgrades and refinement. Priority differs between F2P (growth-focused) and spenders (battle-focused).</div>
