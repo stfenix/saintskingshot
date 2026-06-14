@@ -1626,6 +1626,78 @@ option { background: var(--surface2); }
   </div>
 
   <div class="card" style="margin-top:12px">
+    <div class="card-title">🐾 Pets — Priority &amp; Refinement Guide</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Pets provide significant stat boosts through both upgrades and refinement. Priority differs between F2P (growth-focused) and spenders (battle-focused).</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--s);margin-bottom:6px">F2P Priority (Growth Focus)</div>
+          <div style="line-height:2;counter-reset:petf2p">
+            ${[['Gray Wolf','Construction/research speed buff'],['Bison',''],['Lion','Drops Forgehammers, Truegold & Charm items every 1–2 days — higher level = shorter cooldown'],['Cheetah','Upgrade before Lion unlocks; switch focus once Lion available'],['Mighty Bison',''],['Giant Rhino',''],['Grizzly Bear',''],['Moose',''],['Lynx','Level 20 only — enough for 40 stamina/day (4× Pet Adventures at 10 stamina each)']].map(([n,d],i)=>`<div><strong style="color:var(--text)">${i+1}. ${n}</strong>${d?` <span style="color:var(--muted);font-size:11px">— ${d}</span>`:''}</div>`).join('')}
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">Spender Priority (Battle Focus)</div>
+          <div style="line-height:2">
+            ${[['Mighty Bison','#1 — increases troops in rallies; more troops often wins fights even with lower stats'],['Giant Rhino',''],['Grizzly Bear',''],['Moose',''],['Bison',''],['Lion',''],['Cheetah',''],['Gray Wolf',''],['Lynx','Level 20 only']].map(([n,d],i)=>`<div><strong style="color:var(--text)">${i+1}. ${n}</strong>${d?` <span style="color:var(--muted);font-size:11px">— ${d}</span>`:''}</div>`).join('')}
+          </div>
+          <div style="margin-top:8px;padding:8px;background:var(--surface3);border-radius:6px;font-size:11px">
+            <strong style="color:var(--accent)">Legendary pets</strong> (Giant Rhino, Mighty Bison) give larger ATK &amp; DEF per food spent — higher value per upgrade even if skill isn't top tier.
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:10px">
+        <div style="font-weight:700;color:var(--text);margin-bottom:6px">Refinement (Taming Marks → Health &amp; Lethality boosts)</div>
+        <div style="margin-bottom:8px">Refinement boosts 6 stats: <strong style="color:var(--text)">Health &amp; Lethality for each troop type</strong>. Hit Refine → stats go up or down → Replace if power increases (green), Retry if it decreases (red). Use <strong style="color:var(--text)">Auto</strong> to automate this.</div>
+        <div style="margin-bottom:8px">Stats pass through rarity thresholds: <span style="color:#9ca3af">Gray</span> → <span style="color:#4ade80">Green</span> → <span style="color:#60a5fa">Blue</span> → <span style="color:#a855f7">Purple</span> → <span style="color:var(--accent)">Gold</span>. Once a stat reaches a new rarity it <strong style="color:var(--text)">cannot drop back</strong>, but higher rarities are harder to improve.</div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;font-size:11px;border-collapse:collapse;min-width:460px">
+            <thead><tr style="color:var(--muted);text-align:left">
+              <th style="padding:5px 8px;border-bottom:1px solid var(--border)">Pet</th>
+              <th style="padding:5px 8px;border-bottom:1px solid var(--border);color:#9ca3af">Gray</th>
+              <th style="padding:5px 8px;border-bottom:1px solid var(--border);color:#4ade80">Green</th>
+              <th style="padding:5px 8px;border-bottom:1px solid var(--border);color:#60a5fa">Blue</th>
+              <th style="padding:5px 8px;border-bottom:1px solid var(--border);color:#a855f7">Purple</th>
+              <th style="padding:5px 8px;border-bottom:1px solid var(--border);color:var(--accent)">Gold</th>
+            </tr></thead>
+            <tbody>
+              ${[['Gray Wolf','1.01%','2.01%','3.35%','4.69%','6.7%'],
+                 ['Lynx, Bison','2.01%','4.02%','6.7%','9.39%','13.41%'],
+                 ['Cheetah, Moose','3.02%','6.03%','10.06%','14.08%','20.11%'],
+                 ['Lion, Grizzly Bear','4.36%','8.72%','14.53%','20.34%','29.05%'],
+                 ['Giant Rhino, Mighty Bison','6.7%','13.41%','22.35%','31.28%','44.69%']
+              ].map(([pet,...vals])=>`<tr style="border-bottom:1px solid var(--border)20">
+                <td style="padding:5px 8px;color:var(--text)">${pet}</td>
+                ${vals.map(v=>`<td style="padding:5px 8px">${v}</td>`).join('')}
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid #4ade80">
+          <div style="color:#4ade80;font-weight:700;margin-bottom:4px">Gray &amp; Green rarity</div>
+          <div>Use <strong style="color:var(--text)">Common Taming Marks</strong> — easier to get positive results early on.</div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid #60a5fa">
+          <div style="color:#60a5fa;font-weight:700;margin-bottom:4px">Blue rarity and above</div>
+          <div>Switch to <strong style="color:var(--text)">Advanced Taming Marks</strong> for better odds of positive stats.</div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid #a855f7">
+          <div style="color:#a855f7;font-weight:700;margin-bottom:4px">Purple → Gold</div>
+          <div>Extremely hard. If stuck at Purple, consider refining other pets instead of chasing Gold.</div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent)">
+          <div style="color:var(--accent);font-weight:700;margin-bottom:4px">Refine rarer pets first</div>
+          <div>Giant Rhino &amp; Mighty Bison give better overall stat boosts — prioritize their refinement.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
     <div class="card-title">🔬 Academy Research Strategy</div>
     <div style="font-size:12px;color:var(--muted);line-height:1.8">
       <div style="margin-bottom:10px">Research priorities differ significantly based on your role. <strong style="color:var(--text)">Joiners</strong> (F2P / low spenders) should focus on growth and troop capacity. <strong style="color:var(--text)">Rally leaders</strong> (spenders) should eventually max the Battle Tree since their stats affect the entire rally.</div>
