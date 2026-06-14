@@ -867,12 +867,129 @@ option { background: var(--surface2); }
       </div>
     </div>
     <div class="card">
-      <div class="card-title">🔱 Hero Gear Ascension &amp; Imbuement</div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.8">
-        <div><strong style="color:var(--text)">Ascension</strong> — Requires Enhancement Lv 100 + Mastery Lv 10. Max enhancement stays 100 after ascension.</div>
-        <div style="margin-top:4px"><strong style="color:var(--text)">Imbuement</strong> — Activates after Mythic Gear becomes Legendary. Unlocks at enhancement levels 20 / 40 / 60 / 80 / 100.</div>
-        <div style="margin-top:4px"><strong style="color:var(--accent)">Mithril</strong> — Material for Imbuement. Worth 8,000 pts in Arsenal Type 2 — ONLY use during the event.</div>
-        <div style="margin-top:4px">Reforged Mythic Gear can be used as Ascension/Imbuement material.</div>
+      <div class="card-title">🔱 Hero Gear — Level Caps &amp; Priority</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:10px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;margin-bottom:10px">
+          <div style="background:var(--surface3);border-radius:6px;padding:6px 10px"><span style="color:#9ca3af">⬜ Grey</span> — max Lv 20</div>
+          <div style="background:var(--surface3);border-radius:6px;padding:6px 10px"><span style="color:#4ade80">🟩 Green</span> — max Lv 40</div>
+          <div style="background:var(--surface3);border-radius:6px;padding:6px 10px"><span style="color:#60a5fa">🟦 Blue</span> — max Lv 60</div>
+          <div style="background:var(--surface3);border-radius:6px;padding:6px 10px"><span style="color:#a855f7">🟪 Purple</span> — max Lv 80</div>
+          <div style="background:var(--surface3);border-radius:6px;padding:6px 10px"><span style="color:var(--accent)">🟨 Gold</span> — max Lv 100</div>
+          <div style="background:var(--surface3);border-radius:6px;padding:6px 10px"><span style="color:var(--red)">🟥 Red</span> — max Lv 200</div>
+        </div>
+        <div><strong style="color:var(--accent)">Expedition stats</strong> are what matter for world map fights. Focus on these over Conquest stats.</div>
+        <div style="margin-top:6px"><strong style="color:var(--text)">Helmet &amp; Boots</strong> → Lethality bonus (15% at Lv 0 → 50% at Lv 100 Gold)</div>
+        <div><strong style="color:var(--text)">Chest &amp; Gloves</strong> → Health bonus (15% at Lv 0 → 50% at Lv 100 Gold)</div>
+        <div style="margin-top:8px;padding:8px;background:var(--surface3);border-radius:6px;border-left:3px solid var(--accent)">
+          <div style="color:var(--text);font-weight:600;margin-bottom:4px">Priority Order</div>
+          <div>1. Infantry Gloves &amp; Chest (Health)</div>
+          <div>2. Archer Helmet &amp; Boots (Lethality)</div>
+          <div>3. Cavalry Helmet &amp; Boots (Lethality)</div>
+          <div>4. Infantry Helmet &amp; Boots · Archer Health · Cavalry Health</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-title">⚒️ Mastery Forging (Gold &amp; Red gear — unlocks at TC Lv 20, gear Lv 20+)</div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;font-size:12px;border-collapse:collapse">
+        <thead><tr style="color:var(--muted);text-align:left">
+          <th style="padding:6px 10px;border-bottom:1px solid var(--border)">Mastery Lv</th>
+          <th style="padding:6px 10px;border-bottom:1px solid var(--border)">Forgehammers</th>
+          <th style="padding:6px 10px;border-bottom:1px solid var(--border)">Bonus %</th>
+          <th style="padding:6px 10px;border-bottom:1px solid var(--border)">Stat Multiplier</th>
+          <th style="padding:6px 10px;border-bottom:1px solid var(--border)">Notes</th>
+        </tr></thead>
+        <tbody>
+          ${[['1','10','10%','×1.1',''],['2','20','20%','×1.2',''],['3','30','30%','×1.3',''],['4','40','40%','×1.4',''],['5','50','50%','×1.5',''],
+             ['6','60','60%','×1.6',''],['7','70','70%','×1.7',''],['8','80','80%','×1.8',''],['9','90','90%','×1.9',''],
+             ['10','100','100%','×2.0','Required for Ascension'],['11–14','...','...','...','50 Mythic Gear per step'],
+             ['15','650 total','—','—','Required to reach +200 on Red gear']].map(([lv,fh,b,m,n])=>`
+          <tr style="border-bottom:1px solid var(--border)20">
+            <td style="padding:6px 10px;color:var(--accent);font-weight:600">${lv}</td>
+            <td style="padding:6px 10px">${fh}</td>
+            <td style="padding:6px 10px;color:var(--green)">${b}</td>
+            <td style="padding:6px 10px">${m}</td>
+            <td style="padding:6px 10px;color:var(--muted)">${n}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-title">🔴 Gear Ascension &amp; Imbuement (Gold → Red, Lv 100–200)</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:10px">
+      <div><strong style="color:var(--text)">Requirements:</strong> Gold gear at Lv 100 + Mastery Lv 10</div>
+      <div><strong style="color:var(--accent)">Mithril</strong> — needed at each imbuement step (+120=10, +140=20, +160=30, +180=40, +200=50 = <strong>150 total per piece</strong>)</div>
+      <div>Source: Arena Shop (10,000 tokens, limit 3/week) or packs</div>
+      <div style="margin-top:6px;color:var(--red)">⚠️ Skip Conquest imbuements — go +119→+140 to jump between Expedition bonuses. Mastery Lv 15 needed for +200.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;font-size:12px">
+      ${[
+        ['Infantry Helmet &amp; Chest','inf',[['+20','Expedition','Infantry Attack +20%'],['+40','Conquest','Hero Health +7.5%'],['+60','Expedition','Infantry Defense +30%'],['+80','Conquest','Hero Attack +15%'],['+100','Expedition','Infantry Attack +50%']]],
+        ['Infantry Gloves &amp; Boots','inf',[['+20','Expedition','Infantry Defense +20%'],['+40','Conquest','Hero Health +7.5%'],['+60','Expedition','Infantry Attack +30%'],['+80','Conquest','Hero Defense +15%'],['+100','Expedition','Infantry Defense +50%']]],
+        ['Archer Helmet &amp; Chest','arc',[['+20','Expedition','Archer Attack +20%'],['+40','Conquest','Hero Health +7.5%'],['+60','Expedition','Archer Defense +30%'],['+80','Conquest','Hero Attack +15%'],['+100','Expedition','Archer Attack +50%']]],
+        ['Archer Gloves &amp; Boots','arc',[['+20','Expedition','Archer Defense +20%'],['+40','Conquest','Hero Health +7.5%'],['+60','Expedition','Archer Attack +30%'],['+80','Conquest','Hero Attack +15%'],['+100','Expedition','Archer Defense +50%']]],
+        ['Cavalry Helmet &amp; Chest','cav',[['+20','Expedition','Cavalry Attack +20%'],['+40','Conquest','Hero Health +7.5%'],['+60','Expedition','Cavalry Defense +30%'],['+80','Conquest','Hero Attack +15%'],['+100','Expedition','Cavalry Attack +50%']]],
+        ['Cavalry Gloves &amp; Boots','cav',[['+20','Expedition','Cavalry Defense +20%'],['+40','Conquest','Hero Health +7.5%'],['+60','Expedition','Cavalry Attack +30%'],['+80','Conquest','Hero Attack +15%'],['+100','Expedition','Cavalry Defense +50%']]],
+      ].map(([name,type,steps])=>`
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border)">
+          <div style="font-weight:600;color:var(--text);margin-bottom:6px;font-size:11px">${name}</div>
+          ${steps.map(([lv,cat,stat])=>`
+            <div style="display:flex;gap:6px;align-items:baseline;padding:2px 0">
+              <span style="color:var(--red);font-weight:700;min-width:34px">${lv}</span>
+              <span style="font-size:10px;padding:1px 5px;border-radius:3px;background:${cat==='Expedition'?'#f0a50020':'#4d9fff20'};color:${cat==='Expedition'?'var(--accent)':'var(--blue)'}">${cat}</span>
+              <span style="color:var(--text)">${stat}</span>
+            </div>`).join('')}
+        </div>`).join('')}
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-title">📋 Ascended Gear Leveling Pathways</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Focus Infantry gear to Round 4 before pivoting to Archer/Cavalry. Skip Conquest imbuements.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;font-size:12px">
+      ${[
+        ['Round 1','#f0a500',[['Infantry Gloves','+39'],['Infantry Chest','+19'],['Archer Helmet','+39'],['Archer Boots','+19'],['Cavalry Helmet','+39'],['Cavalry Boots','+19']]],
+        ['Round 2','#f0a500',[['Infantry Boots','+20'],['Infantry Helmet','+19'],['Archer Chest','+20'],['Archer Gloves','+19'],['Cavalry Chest','+20'],['Cavalry Gloves','+19']]],
+        ['Round 3','#60a5fa',[['Infantry Chest','+79'],['Infantry Gloves','+100'],['Archer Boots','+79'],['Archer Helmet','+100'],['Cavalry Boots','+79'],['Cavalry Helmet','+100']]],
+        ['Round 4','#60a5fa',[['Infantry Chest','+99'],['Archer Boots','+99'],['Cavalry Boots','+99'],['',''],['',''],['','']]],
+        ['Round 5','#a855f7',[['Infantry Helmet','+60'],['Archer Gloves','+60'],['Cavalry Gloves','+60'],['',''],['',''],['','']]],
+        ['Round 6','#a855f7',[['Infantry Boots','+100'],['Archer Chest','+100'],['Cavalry Chest','+100'],['',''],['',''],['','']]],
+        ['Round 7','#ff4f4f',[['Infantry Chest','+100'],['Archer Boots','+100'],['Cavalry Boots','+100'],['',''],['',''],['','']]],
+      ].map(([rnd,col,items])=>`
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border)">
+          <div style="font-weight:700;color:${col};margin-bottom:8px">${rnd}</div>
+          ${items.filter(([p])=>p).map(([piece,lv])=>`
+            <div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid var(--border)30">
+              <span>${piece}</span><span style="color:var(--red);font-weight:600">${lv}</span>
+            </div>`).join('')}
+        </div>`).join('')}
+    </div>
+    <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;font-size:12px">
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border)">
+        <div style="font-weight:600;color:var(--text);margin-bottom:6px">1 Piece (Gold→Red)</div>
+        <div>XP: <strong>502,000</strong></div>
+        <div>Mithril: <strong>150</strong></div>
+        <div>Mythic Pieces: <strong>50</strong></div>
+        <div>Forgehammers: <strong>650</strong></div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border)">
+        <div style="font-weight:600;color:var(--text);margin-bottom:6px">1 Set (4 Pieces)</div>
+        <div>XP: <strong>2,008,000</strong></div>
+        <div>Mithril: <strong>600</strong></div>
+        <div>Mythic Pieces: <strong>200</strong></div>
+        <div>Forgehammers: <strong>2,600</strong></div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border)">
+        <div style="font-weight:600;color:var(--text);margin-bottom:6px">3 Sets (12 Pieces)</div>
+        <div>XP: <strong>6,024,000</strong></div>
+        <div>Mithril: <strong>1,800</strong></div>
+        <div>Mythic Pieces: <strong>600</strong></div>
+        <div>Forgehammers: <strong>7,800</strong></div>
       </div>
     </div>
   </div>
@@ -3391,7 +3508,7 @@ function troopContextHtml(ev) {
   ${warnHtml}`
 }
 
-function getOwned() { return HEROES.filter(h => roster[h.id]); }
+function getOwned() { return HEROES.filter(h => roster[h.id] && roster[h.id].owned !== false); }
 function getStars(id) { return (roster[id]||{}).stars || 1; }
 
 // ============================================================
@@ -3481,7 +3598,7 @@ const GEAR_SLOTS = [
 ];
 
 function heroRosterCard(h) {
-  const owned = !!roster[h.id];
+  const owned = !!(roster[h.id] && roster[h.id].owned !== false);
   const stars = getStars(h.id);
   const starHtml = [1,2,3,4,5].map(i =>
     `<span class="star ${i <= stars ? 'lit' : ''}" onclick="setStar('${h.id}',${i},event)">&#9733;</span>`
@@ -3539,6 +3656,7 @@ function heroRosterCard(h) {
 
 function defaultRosterEntry() {
   return {
+    owned: true,
     stars: 1,
     level: 1,
     manualPower: 0,
@@ -3549,7 +3667,8 @@ function defaultRosterEntry() {
 
 function toggleHero(id) {
   if (roster[id]) {
-    delete roster[id];
+    // Toggle owned flag — preserves all stats
+    roster[id].owned = !roster[id].owned;
   } else {
     roster[id] = defaultRosterEntry();
   }
@@ -3677,7 +3796,7 @@ function renderModalContent(id) {
               <select onchange="setGear('${id}','${s.key}','rarity',this.value)">
                 ${RARITIES.map(rar => `<option value="${rar}" ${g.rarity===rar?'selected':''} style="color:${RARITY_COLORS[rar]}">${rarityDot(rar)} ${rar}</option>`).join('')}
               </select>
-              <input type="number" class="level-input" min="0" max="30" value="${g.level}"
+              <input type="number" class="level-input" min="0" max="200" value="${g.level}"
                 placeholder="Lv" oninput="setGear('${id}','${s.key}','level',parseInt(this.value)||0)">
             </div>
           </div>`;
@@ -5128,6 +5247,72 @@ async function ksFetch(path) {
 
 function ksApiUnavailableHtml() {
   return `<span class="api-status api-err">✗ API unavailable — enter data manually</span>`;
+}
+
+// ============================================================
+// CENTURYGAME PLAYER API — direct fetch (has CORS headers)
+// ============================================================
+const KS_PLAYER_API = 'https://kingshot-giftcode.centurygame.com/api/player';
+const KS_ENCRYPT_KEY = 'mN4!pQs6JrYwV9';
+
+function md5(s) {
+  s = unescape(encodeURIComponent(s));
+  function add(a,b){var l=(a&0xFFFF)+(b&0xFFFF);return((a>>16)+(b>>16)+(l>>16)<<16)|(l&0xFFFF)}
+  function rl(n,c){return(n<<c)|(n>>>(32-c))}
+  function cm(q,a,b,x,s,t){return add(rl(add(add(a,q),add(x,t)),s),b)}
+  function ff(a,b,c,d,x,s,t){return cm((b&c)|(~b&d),a,b,x,s,t)}
+  function gg(a,b,c,d,x,s,t){return cm((b&d)|(c&~d),a,b,x,s,t)}
+  function hh(a,b,c,d,x,s,t){return cm(b^c^d,a,b,x,s,t)}
+  function ii(a,b,c,d,x,s,t){return cm(c^(b|~d),a,b,x,s,t)}
+  var nblk=((s.length+8)>>6)+1, x=new Array(nblk*16).fill(0), i;
+  for(i=0;i<s.length;i++)x[i>>2]|=s.charCodeAt(i)<<(i%4*8);
+  x[i>>2]|=0x80<<(i%4*8); x[nblk*16-2]=s.length*8;
+  var a=1732584193,b=-271733879,c=-1732584194,d=271733878,oa,ob,oc,od;
+  for(i=0;i<x.length;i+=16){
+    oa=a;ob=b;oc=c;od=d;
+    a=ff(a,b,c,d,x[i],7,-680876936);d=ff(d,a,b,c,x[i+1],12,-389564586);c=ff(c,d,a,b,x[i+2],17,606105819);b=ff(b,c,d,a,x[i+3],22,-1044525330);
+    a=ff(a,b,c,d,x[i+4],7,-176418897);d=ff(d,a,b,c,x[i+5],12,1200080426);c=ff(c,d,a,b,x[i+6],17,-1473231341);b=ff(b,c,d,a,x[i+7],22,-45705983);
+    a=ff(a,b,c,d,x[i+8],7,1770035416);d=ff(d,a,b,c,x[i+9],12,-1958414417);c=ff(c,d,a,b,x[i+10],17,-42063);b=ff(b,c,d,a,x[i+11],22,-1990404162);
+    a=ff(a,b,c,d,x[i+12],7,1804603682);d=ff(d,a,b,c,x[i+13],12,-40341101);c=ff(c,d,a,b,x[i+14],17,-1502002290);b=ff(b,c,d,a,x[i+15],22,1236535329);
+    a=gg(a,b,c,d,x[i+1],5,-165796510);d=gg(d,a,b,c,x[i+6],9,-1069501632);c=gg(c,d,a,b,x[i+11],14,643717713);b=gg(b,c,d,a,x[i],20,-373897302);
+    a=gg(a,b,c,d,x[i+5],5,-701558691);d=gg(d,a,b,c,x[i+10],9,38016083);c=gg(c,d,a,b,x[i+15],14,-660478335);b=gg(b,c,d,a,x[i+4],20,-405537848);
+    a=gg(a,b,c,d,x[i+9],5,568446438);d=gg(d,a,b,c,x[i+14],9,-1019803690);c=gg(c,d,a,b,x[i+3],14,-187363961);b=gg(b,c,d,a,x[i+8],20,1163531501);
+    a=gg(a,b,c,d,x[i+13],5,-1444681467);d=gg(d,a,b,c,x[i+2],9,-51403784);c=gg(c,d,a,b,x[i+7],14,1735328473);b=gg(b,c,d,a,x[i+12],20,-1926607734);
+    a=hh(a,b,c,d,x[i+5],4,-378558);d=hh(d,a,b,c,x[i+8],11,-2022574463);c=hh(c,d,a,b,x[i+11],16,1839030562);b=hh(b,c,d,a,x[i+14],23,-35309556);
+    a=hh(a,b,c,d,x[i+1],4,-1530992060);d=hh(d,a,b,c,x[i+4],11,1272893353);c=hh(c,d,a,b,x[i+7],16,-155497632);b=hh(b,c,d,a,x[i+10],23,-1094730640);
+    a=hh(a,b,c,d,x[i+13],4,681279174);d=hh(d,a,b,c,x[i],11,-358537222);c=hh(c,d,a,b,x[i+3],16,-722521979);b=hh(b,c,d,a,x[i+6],23,76029189);
+    a=hh(a,b,c,d,x[i+9],4,-640364487);d=hh(d,a,b,c,x[i+12],11,-421815835);c=hh(c,d,a,b,x[i+15],16,530742520);b=hh(b,c,d,a,x[i+2],23,-995338651);
+    a=ii(a,b,c,d,x[i],6,-198630844);d=ii(d,a,b,c,x[i+7],10,1126891415);c=ii(c,d,a,b,x[i+14],15,-1416354905);b=ii(b,c,d,a,x[i+5],21,-57434055);
+    a=ii(a,b,c,d,x[i+12],6,1700485571);d=ii(d,a,b,c,x[i+3],10,-1894986606);c=ii(c,d,a,b,x[i+10],15,-1051523);b=ii(b,c,d,a,x[i+1],21,-2054922799);
+    a=ii(a,b,c,d,x[i+8],6,1873313359);d=ii(d,a,b,c,x[i+15],10,-30611744);c=ii(c,d,a,b,x[i+6],15,-1560198380);b=ii(b,c,d,a,x[i+13],21,1309151649);
+    a=ii(a,b,c,d,x[i+4],6,-145523070);d=ii(d,a,b,c,x[i+11],10,-1120210379);c=ii(c,d,a,b,x[i+2],15,718787259);b=ii(b,c,d,a,x[i+9],21,-343485551);
+    a=add(a,oa);b=add(b,ob);c=add(c,oc);d=add(d,od);
+  }
+  var hex='';
+  for(i=0;i<4;i++){var w=[a,b,c,d][i];for(var j=0;j<4;j++)hex+=('0'+((w>>(j*8))&0xFF).toString(16)).slice(-2);}
+  return hex;
+}
+
+function ksSignParams(params) {
+  const str = Object.keys(params).sort().map(k => `${k}=${params[k]}`).join('&') + KS_ENCRYPT_KEY;
+  return md5(str);
+}
+
+async function fetchPlayerInfo(fid) {
+  const time = Date.now().toString();
+  const params = { fid: String(fid), time };
+  const sign = ksSignParams(params);
+  const body = new URLSearchParams({ ...params, sign });
+  const res = await fetch(KS_PLAYER_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString(),
+    signal: AbortSignal.timeout ? AbortSignal.timeout(15000) : undefined,
+  });
+  if (!res.ok) throw new Error('API_UNAVAILABLE');
+  const json = await res.json();
+  if (json.code !== 0) throw new Error('NOT_FOUND');
+  return json.data; // { fid, nickname, kid, stove_lv, avatar_image, total_recharge_amount }
 }
 
 // ============================================================
@@ -6907,18 +7092,37 @@ function renderCalendarGrid() {
   });
 
   const todayDow = dow;
+
+  // Load kingdom start date to overlay server-age milestones
+  let kingdomStart = null;
+  try {
+    const ad = JSON.parse(localStorage.getItem('ageData') || '{}');
+    if (ad.startDate) kingdomStart = new Date(ad.startDate);
+  } catch(_) {}
+
   const grid = document.getElementById('cal-week-grid');
   grid.innerHTML = DAY_NAMES.map((name, i) => {
     const d = new Date(weekStart);
     d.setDate(weekStart.getDate() + i);
     const isToday = i === todayDow;
+
+    // Kingdom age milestones for this calendar day
+    let agePills = '';
+    if (kingdomStart) {
+      const kDay = Math.floor((d - kingdomStart) / 86400000) + 1;
+      const ageEvs = AGE_EVENTS.filter(e => e.day === kDay);
+      agePills = ageEvs.map(e =>
+        `<span class="cal-event-pill" style="background:#a855f715;color:#c084fc;border:1px solid #a855f740">${e.icon} ${e.name} <span style="opacity:.6">(Day ${kDay})</span></span>`
+      ).join('');
+    }
+
     const pills = dayEvents[i].map(ev =>
       `<span class="cal-event-pill ${ev.cls}">${ev.icon ? ev.icon+' ' : ''}${ev.label}</span>`
     ).join('');
     return `<div class="cal-day ${isToday?'today':''}">
       <div class="cal-day-name">${name}</div>
       <div class="cal-day-num">${d.getDate()} ${MONTH_NAMES[d.getMonth()]}</div>
-      ${pills || '<span style="font-size:10px;color:var(--border)">—</span>'}
+      ${agePills}${pills || (!agePills ? '<span style="font-size:10px;color:var(--border)">—</span>' : '')}
     </div>`;
   }).join('');
 
@@ -7040,20 +7244,18 @@ async function lookupMember(idx) {
   const origText = btn?.textContent;
   if (btn) btn.textContent = '⏳';
   try {
-    const json = await ksFetch(`/player-info?playerId=${encodeURIComponent(m.playerId)}`);
-    if (json.status === 'success' && json.data) {
-      const d = json.data;
-      m.name    = m.name || d.name;
-      m.level   = d.levelRendered || d.level;
-      m.kingdom = d.kingdom;
-      m.avatar  = d.profilePhoto || '';
-      saveAllianceData();
-      renderMemberTable();
-    } else {
-      if (btn) { btn.textContent = '✗'; setTimeout(() => { if(btn) btn.textContent = origText; }, 2000); }
-    }
+    const d = await fetchPlayerInfo(m.playerId);
+    m.name    = m.name || d.nickname;
+    m.kingdom = d.kid;
+    m.level   = d.stove_lv;
+    m.avatar  = d.avatar_image || '';
+    m.spender = d.total_recharge_amount > 0;
+    saveAllianceData();
+    renderMemberTable();
+    if (btn) btn.textContent = '✓';
+    setTimeout(() => { if(btn) btn.textContent = origText; }, 2000);
   } catch(e) {
-    if (btn) { btn.title = 'API unavailable — enter data manually'; btn.textContent = '✗'; setTimeout(() => { if(btn) btn.textContent = origText; }, 3000); }
+    if (btn) { btn.textContent = '✗'; setTimeout(() => { if(btn) btn.textContent = origText; }, 3000); }
   }
 }
 
