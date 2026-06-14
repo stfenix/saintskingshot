@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <rect width="192" height="192" rx="32" fill="#0b0d12"/>
+  <rect width="192" height="192" rx="32" fill="url(#grad)"/>
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a2030"/>
+      <stop offset="100%" style="stop-color:#0b0d12"/>
+    </linearGradient>
+  </defs>
+  <!-- Crown -->
+  <path d="M56 130 L56 108 L76 122 L96 90 L116 122 L136 108 L136 130 Z" fill="#f0a500" opacity="0.15" stroke="#f0a500" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Sword blade -->
+  <line x1="96" y1="44" x2="96" y2="118" stroke="#f0a500" stroke-width="5" stroke-linecap="round"/>
+  <!-- Sword guard -->
+  <line x1="76" y1="100" x2="116" y2="100" stroke="#e05c1a" stroke-width="5" stroke-linecap="round"/>
+  <!-- Sword pommel -->
+  <circle cx="96" cy="128" r="7" fill="#e05c1a"/>
+  <!-- Tip diamond -->
+  <polygon points="96,44 100,54 96,58 92,54" fill="#ffe066"/>
+</svg>

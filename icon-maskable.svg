@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Full bleed background for maskable (safe zone is center 80%) -->
+  <rect width="512" height="512" fill="#0b0d12"/>
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a2030"/>
+      <stop offset="100%" style="stop-color:#0b0d12"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#grad)"/>
+  <!-- Content inside safe zone (102px inset all sides) -->
+  <!-- Crown -->
+  <path d="M180 370 L180 318 L220 344 L256 280 L292 344 L332 318 L332 370 Z" fill="#f0a500" opacity="0.15" stroke="#f0a500" stroke-width="5" stroke-linejoin="round"/>
+  <!-- Sword blade -->
+  <line x1="256" y1="148" x2="256" y2="316" stroke="#f0a500" stroke-width="11" stroke-linecap="round"/>
+  <!-- Sword guard -->
+  <line x1="214" y1="278" x2="298" y2="278" stroke="#e05c1a" stroke-width="11" stroke-linecap="round"/>
+  <!-- Sword pommel -->
+  <circle cx="256" cy="342" r="16" fill="#e05c1a"/>
+  <!-- Tip -->
+  <polygon points="256,148 266,172 256,182 246,172" fill="#ffe066"/>
+</svg>
