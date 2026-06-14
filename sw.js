@@ -16,34 +16,21 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  const url = e.request.url;
+  // Only intercept same-origin GET requests — let the browser handle all
+  // cross-origin requests (Firebase, API proxies, CDNs) natively so CORS works correctly
+  const url = new URL(e.request.url);
+  if (e.request.method !== 'GET' || url.origin !== self.location.origin) return;
 
-  // Always go network-first for Firebase, API calls, and non-GET requests
-  if (
-    e.request.method !== 'GET' ||
-    url.includes('firestore.googleapis.com') ||
-    url.includes('firebase') ||
-    url.includes('kingshot.net') ||
-    url.includes('corsproxy') ||
-    url.includes('allorigins') ||
-    url.includes('thingproxy') ||
-    url.includes('codetabs') ||
-    url.includes('cors.sh')
-  ) {
-    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
-    return;
-  }
-
-  // Cache-first for app shell and static assets
+  // Cache-first for app shell; update cache in background on each hit
   e.respondWith(
     caches.match(e.request).then(cached => {
       const network = fetch(e.request).then(res => {
-        if (res.ok) {
+        if (res && res.ok) {
           const clone = res.clone();
           caches.open(CACHE).then(c => c.put(e.request, clone));
         }
         return res;
-      });
+      }).catch(() => cached);
       return cached || network;
     })
   );
