@@ -1656,7 +1656,43 @@ option { background: var(--surface2); }
         </table>
       </div>
       <div style="margin-top:10px;font-size:11px;color:var(--muted)">
-        Part 1 of 3 — Infantry and Cavalry hero replacement thresholds to follow.
+        Part 1 of 3 — see Infantry thresholds below.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">🗡️ Infantry Hero Replacement Thresholds (Expedition Stats)</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Use these <strong style="color:var(--text)">Infantry Attack/Defense % thresholds</strong> to know when the next generation hero surpasses your current one. Expedition stats only.</div>
+      <div style="margin-bottom:8px;padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--muted);font-size:11px">
+        ⚠️ Widget matters — <strong style="color:var(--text)">Amadeus</strong> (Attack Widget) is still better for leading Attack Rallies over <strong style="color:var(--text)">Eric</strong> (Garrison Widget), even when Eric's stats are higher.
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:12px;border-collapse:collapse;min-width:400px">
+          <thead><tr style="color:var(--muted);text-align:left">
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Your Current Hero</th>
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Replace When Infantry ATK/DEF Reaches</th>
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Replace With</th>
+          </tr></thead>
+          <tbody>
+            ${[
+              ['Seth &amp; Forrest', '90.07%', 'Howard'],
+              ['Howard', '140.11%', 'Helga'],
+              ['Helga', '200.16%', 'Zoe'],
+              ['Zoe', '240.19%', 'Amadeus'],
+              ['Amadeus', '260.20%', 'Eric'],
+            ].map(([cur, threshold, next], i) => `
+            <tr style="border-bottom:1px solid var(--border)20;background:${i%2?'var(--surface2)':'transparent'}">
+              <td style="padding:8px 12px;color:var(--text);font-weight:600">${cur}</td>
+              <td style="padding:8px 12px;color:var(--accent);font-weight:700">${threshold}</td>
+              <td style="padding:8px 12px;color:var(--s)">${next}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted)">
+        Part 2 of 3 — Cavalry thresholds to follow.
       </div>
     </div>
   </div>
