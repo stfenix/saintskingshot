@@ -7093,55 +7093,71 @@ function renderCalendarGrid() {
 
   const todayDow = dow;
 
-  // Load kingdom start date to overlay server-age milestones
+  // Kingdom open day-of-week shifts the weekly event schedule
+  // (KingShot's weekly reset starts on the same weekday the kingdom opened)
   let kingdomStart = null;
+  let weekShift = 0;
   try {
     const ad = JSON.parse(localStorage.getItem('ageData') || '{}');
-    if (ad.startDate) kingdomStart = new Date(ad.startDate);
+    if (ad.startDate) {
+      kingdomStart = new Date(ad.startDate + 'T12:00:00'); // noon to avoid timezone date-shift
+      weekShift = (kingdomStart.getDay() + 6) % 7; // convert JS Sun=0 → Mon=0
+    }
   } catch(_) {}
+
+  // Shift event day indices to match the kingdom's weekly cycle
+  const shiftDay = d => (d + weekShift) % 7;
+  const shiftedDayEvents = Array.from({length:7}, () => []);
+  CAL_FIXED.always.forEach(ev => shiftedDayEvents[shiftDay(ev.day)].push(ev));
+  (calArsenalType===1 ? CAL_FIXED.type1 : CAL_FIXED.type2).forEach(ev => shiftedDayEvents[shiftDay(ev.day)].push(ev));
+  CAL_SPECIALS.forEach(s => {
+    if (calActiveSpecials.has(s.id)) {
+      s.days.forEach(d => shiftedDayEvents[shiftDay(d)].push({ label: s.label, cls: s.cls, icon:'', day:d }));
+    }
+  });
 
   const grid = document.getElementById('cal-week-grid');
   grid.innerHTML = DAY_NAMES.map((name, i) => {
     const d = new Date(weekStart);
     d.setDate(weekStart.getDate() + i);
     const isToday = i === todayDow;
-
-    // Kingdom age milestones for this calendar day
-    let agePills = '';
-    if (kingdomStart) {
-      const kDay = Math.floor((d - kingdomStart) / 86400000) + 1;
-      const ageEvs = AGE_EVENTS.filter(e => e.day === kDay);
-      agePills = ageEvs.map(e =>
-        `<span class="cal-event-pill" style="background:#a855f715;color:#c084fc;border:1px solid #a855f740">${e.icon} ${e.name} <span style="opacity:.6">(Day ${kDay})</span></span>`
-      ).join('');
-    }
-
-    const pills = dayEvents[i].map(ev =>
+    const pills = shiftedDayEvents[i].map(ev =>
       `<span class="cal-event-pill ${ev.cls}">${ev.icon ? ev.icon+' ' : ''}${ev.label}</span>`
     ).join('');
     return `<div class="cal-day ${isToday?'today':''}">
       <div class="cal-day-name">${name}</div>
       <div class="cal-day-num">${d.getDate()} ${MONTH_NAMES[d.getMonth()]}</div>
-      ${agePills}${pills || (!agePills ? '<span style="font-size:10px;color:var(--border)">—</span>' : '')}
+      ${pills || '<span style="font-size:10px;color:var(--border)">—</span>'}
     </div>`;
   }).join('');
 
-  // Upcoming events card
+  // Upcoming events card (next 14 days)
   const upcoming = [];
   for (let i = 0; i < 14; i++) {
     const d = new Date(weekStart);
     d.setDate(weekStart.getDate() + i);
     const di = i % 7;
-    dayEvents[di].forEach(ev => {
+    shiftedDayEvents[di].forEach(ev => {
       if (i >= todayDow) upcoming.push({ ...ev, date: d, daysFrom: i - todayDow });
     });
+    // Kingdom age milestones
+    if (kingdomStart && i >= todayDow) {
+      const kDay = Math.floor((d - kingdomStart) / 86400000) + 1;
+      AGE_EVENTS.filter(e => e.day === kDay).forEach(e => {
+        upcoming.push({ label: `${e.name} (Kingdom Day ${kDay})`, cls:'', icon: e.icon,
+          date: d, daysFrom: i - todayDow, _age: true });
+      });
+    }
   }
   const ucEl = document.getElementById('cal-upcoming');
-  ucEl.innerHTML = upcoming.slice(0, 6).map(ev => {
+  ucEl.innerHTML = upcoming.slice(0, 8).map(ev => {
     const label = ev.daysFrom === 0 ? 'Today' : ev.daysFrom === 1 ? 'Tomorrow' : `In ${ev.daysFrom} days`;
     const col = ev.daysFrom === 0 ? 'var(--accent)' : ev.daysFrom <= 2 ? 'var(--sp)' : 'var(--muted)';
+    const pillStyle = ev._age
+      ? 'background:#a855f715;color:#c084fc;border:1px solid #a855f740'
+      : '';
     return `<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface2);border-radius:6px;margin-bottom:6px;border:1px solid var(--border)">
-      <span class="cal-event-pill ${ev.cls}" style="margin:0;flex-shrink:0">${ev.icon||''} ${ev.label}</span>
+      <span class="cal-event-pill ${ev.cls||''}" style="margin:0;flex-shrink:0;${pillStyle}">${ev.icon||''} ${ev.label}</span>
       <span style="font-size:12px;color:${col};font-weight:700;margin-left:auto">${label}</span>
     </div>`;
   }).join('') || '<div class="no-data" style="padding:12px">No upcoming events found</div>';
