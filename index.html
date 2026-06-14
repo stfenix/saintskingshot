@@ -1626,6 +1626,63 @@ option { background: var(--surface2); }
   </div>
 
   <div class="card" style="margin-top:12px">
+    <div class="card-title">🦸 Hero Lineup Guide — Solo, Rally &amp; Garrison</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-bottom:12px">
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent)">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:4px">Why Mythic (Gold) Heroes?</div>
+          <div>Mythics get <strong style="color:var(--text)">3 expedition skills</strong> vs 2 for Epics. More importantly, they have <strong style="color:var(--text)">Widgets</strong> — multiplicative stat boosts that scale with your stats, unlike additive normal skills. Always use Mythics for Swordland / Castle Battle.</div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--s)">
+          <div style="font-weight:700;color:var(--s);margin-bottom:4px">Attack vs Defense Widgets</div>
+          <div>
+            <strong style="color:var(--text)">Rally lineup:</strong> use heroes with Attack/Rally widgets<br>
+            <strong style="color:var(--text)">Garrison lineup:</strong> use heroes with Defender widgets<br>
+            Check the widget type before launching any march.
+          </div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--red)">
+          <div style="font-weight:700;color:var(--red);margin-bottom:4px">Widgets don't work in Solo attacks</div>
+          <div>Solo PvP / Alliance Championship: ignore widgets, pick <strong style="color:var(--text)">raw stats</strong>. Example: Jaeger &gt; Marlin solo (higher stats), but Marlin &gt; Jaeger in rallies (attack widget).</div>
+        </div>
+      </div>
+
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:12px;border-collapse:collapse;min-width:560px">
+          <thead><tr style="color:var(--muted);text-align:left">
+            <th style="padding:7px 10px;border-bottom:1px solid var(--border)">Gen</th>
+            <th style="padding:7px 10px;border-bottom:1px solid var(--border)">Solo Attack (PvP / Champ)</th>
+            <th style="padding:7px 10px;border-bottom:1px solid var(--border)">Rally Attack</th>
+            <th style="padding:7px 10px;border-bottom:1px solid var(--border)">Garrison</th>
+          </tr></thead>
+          <tbody>
+            ${[
+              ['Gen 1','Amadeus, Jabel, Saul','Amadeus, Jabel, Saul','Amadeus, Jabel, Saul'],
+              ['Gen 2','—','Amadeus, Hilde, Marlin','Zoe, Hilde, Saul'],
+              ['Gen 3','Amadeus, Petra, Jaeger','Amadeus, Petra, Marlin','Eric, Hilde, Jaeger'],
+              ['Gen 4','Alcar, Margot, Rosa','Amadeus, Petra, Rosa','Alcar, Margot, Jaeger'],
+              ['Gen 5','Long Fei, Thrud, Vivian','Long Fei, Thrud, Rosa','Alcar, Margot, Vivian'],
+              ['Gen 6','Triton, Sophia, Yang','Triton, Thrud, Yang','Triton, Sophia, Vivian'],
+            ].map(([gen,...cols],i)=>`
+            <tr style="border-bottom:1px solid var(--border)20;background:${i%2?'var(--surface2)':'transparent'}">
+              <td style="padding:7px 10px;color:var(--accent);font-weight:700;white-space:nowrap">${gen}</td>
+              ${cols.map(c=>`<td style="padding:7px 10px;color:var(--text)">${c}</td>`).join('')}
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px">
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;font-size:11px">
+          <strong style="color:var(--text)">Gen 5 note:</strong> Long Fei replaces Amadeus for solo/rally — stat gap is large enough to override Amadeus's widget. But for <strong style="color:var(--accent)">Bear Hunt</strong>, keep Amadeus as leader: he has 3 damage skills vs Long Fei's 1.
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;font-size:11px">
+          <strong style="color:var(--text)">Gen 5 Garrison:</strong> Alcar outperforms Long Fei due to skills — especially with the 6:4:0 formation popular since Gen 4.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
     <div class="card-title">⚔️ Troop Formations — Best Setups for Every Event</div>
     <div style="font-size:12px;color:var(--muted);line-height:1.8">
       <div style="margin-bottom:10px">Troop composition is as important as hero selection. Infantry attack first, then Cavalry, then Archers — so Infantry protect your damage dealers long enough for them to work. Always send <strong style="color:var(--text)">at least 5–10% of each troop type</strong> so no hero slot's bonus goes to waste.</div>
