@@ -1626,6 +1626,50 @@ option { background: var(--surface2); }
   </div>
 
   <div class="card" style="margin-top:12px">
+    <div class="card-title">📊 Hero Tier Lists — Rally, Garrison, Joiner &amp; Bear Hunt</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Heroes serve different roles — a single tier list is misleading. Use the role-specific lists below. <strong style="color:var(--text)">Widget expedition skills</strong> are multiplicative (scales with stats), making heroes with the right widget type far stronger than those without.</div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:12px">
+        ${[
+          ['⚔️ Rally (Attack) Heroes', 'var(--red)',
+            [['S','Amadeus, Petra, Marlin, Rosa, Thrud'],['A','Helga'],['B','Jabel, Saul, Zoe, Hilde, Eric, Jaeger, Alcar, Margot, Vivian, Long Fei'],['C','Quinn, Howard, Chenko, Gordon'],['D','Yeonwoo, Amane, Fahd']],
+            'Attack widget gives a multiplicative stat boost — always check hero widget before launching rally. Amadeus stays top-tier for 5+ gens. Defender heroes in B: usable early on but not ideal.'],
+          ['🛡️ Garrison (Defender) Heroes', 'var(--b)',
+            [['S','Jabel, Zoe, Hilde, Eric, Jaeger, Alcar, Margot, Vivian, Long Fei'],['A','Saul'],['B','Amadeus, Petra, Marlin, Rosa, Helga, Thrud'],['C','Quinn, Howard, Chenko, Gordon'],['D','Yeonwoo, Amane, Fahd']],
+            'Opposite of the attack list. S tier = defender widget. Saul in A (one skill is construction speed, not battle). Attack heroes work in B as alternatives.'],
+        ].map(([title, color, tiers, note]) => `
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;margin-bottom:8px;color:${color}">${title}</div>
+          ${tiers.map(([tier, heroes]) => `<div style="display:flex;gap:8px;margin-bottom:4px;align-items:baseline">
+            <span style="min-width:18px;font-weight:700;color:${{'S':'var(--accent)','A':'var(--s)','B':'var(--text)','C':'var(--muted)','D':'var(--red)'}[tier]}">${tier}</span>
+            <span style="color:var(--muted);font-size:11px">${heroes}</span>
+          </div>`).join('')}
+          <div style="margin-top:8px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px">${note}</div>
+        </div>`).join('')}
+
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;margin-bottom:8px;color:var(--sp)">🤝 Joiner Heroes</div>
+          ${[['S','Saul, Hilde'],['A','Gordon, Chenko, Amane, Yeonwoo, Amadeus, Margot, Vivian, Thrud'],['B','Marlin, Petra, Jaeger, Jabel, Helga, Rosa, Alcar, Quinn, Howard, Eric, Fahd']].map(([tier, heroes]) => `<div style="display:flex;gap:8px;margin-bottom:4px;align-items:baseline">
+            <span style="min-width:18px;font-weight:700;color:${{'S':'var(--accent)','A':'var(--s)','B':'var(--text)'}[tier]}">${tier}</span>
+            <span style="color:var(--muted);font-size:11px">${heroes}</span>
+          </div>`).join('')}
+          <div style="margin-top:8px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px">S tier = can stack 4× for big SkillMod boost (4× Saul or 4× Hilde outperforms 4× Gordon). A tier good solo, not stackable. B tier = chance-based or low 20% boost — use max 1 per rally.</div>
+        </div>
+
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;margin-bottom:8px;color:var(--accent)">🐻 Bear Hunt Joiner Heroes</div>
+          ${[['S','Chenko, Amadeus, Yeonwoo, Amane, Margot, Vivian'],['A','Hilde'],['B','Marlin, Petra, Rosa, Thrud']].map(([tier, heroes]) => `<div style="display:flex;gap:8px;margin-bottom:4px;align-items:baseline">
+            <span style="min-width:18px;font-weight:700;color:${{'S':'var(--accent)','A':'var(--s)','B':'var(--text)'}[tier]}">${tier}</span>
+            <span style="color:var(--muted);font-size:11px">${heroes}</span>
+          </div>`).join('')}
+          <div style="margin-top:8px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px">Bear doesn't deal damage, so only ATK/Lethality boosts matter. S tier gives 25% guaranteed boost. Hilde gives 15% (A tier). B tier chance-based — use max 1. Jabel/Saul/Helga/Eric/Alcar excluded (defense skills = useless vs Bear).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
     <div class="card-title">🦸 Hero Lineup Guide — Solo, Rally &amp; Garrison</div>
     <div style="font-size:12px;color:var(--muted);line-height:1.8">
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-bottom:12px">
