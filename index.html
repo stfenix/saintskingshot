@@ -867,12 +867,129 @@ option { background: var(--surface2); }
       </div>
     </div>
     <div class="card">
-      <div class="card-title">🔱 Hero Gear Ascension &amp; Imbuement</div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.8">
-        <div><strong style="color:var(--text)">Ascension</strong> — Requires Enhancement Lv 100 + Mastery Lv 10. Max enhancement stays 100 after ascension.</div>
-        <div style="margin-top:4px"><strong style="color:var(--text)">Imbuement</strong> — Activates after Mythic Gear becomes Legendary. Unlocks at enhancement levels 20 / 40 / 60 / 80 / 100.</div>
-        <div style="margin-top:4px"><strong style="color:var(--accent)">Mithril</strong> — Material for Imbuement. Worth 8,000 pts in Arsenal Type 2 — ONLY use during the event.</div>
-        <div style="margin-top:4px">Reforged Mythic Gear can be used as Ascension/Imbuement material.</div>
+      <div class="card-title">🔱 Hero Gear — Level Caps &amp; Priority</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:10px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;margin-bottom:10px">
+          <div style="background:var(--surface3);border-radius:6px;padding:6px 10px"><span style="color:#9ca3af">⬜ Grey</span> — max Lv 20</div>
+          <div style="background:var(--surface3);border-radius:6px;padding:6px 10px"><span style="color:#4ade80">🟩 Green</span> — max Lv 40</div>
+          <div style="background:var(--surface3);border-radius:6px;padding:6px 10px"><span style="color:#60a5fa">🟦 Blue</span> — max Lv 60</div>
+          <div style="background:var(--surface3);border-radius:6px;padding:6px 10px"><span style="color:#a855f7">🟪 Purple</span> — max Lv 80</div>
+          <div style="background:var(--surface3);border-radius:6px;padding:6px 10px"><span style="color:var(--accent)">🟨 Gold</span> — max Lv 100</div>
+          <div style="background:var(--surface3);border-radius:6px;padding:6px 10px"><span style="color:var(--red)">🟥 Red</span> — max Lv 200</div>
+        </div>
+        <div><strong style="color:var(--accent)">Expedition stats</strong> are what matter for world map fights. Focus on these over Conquest stats.</div>
+        <div style="margin-top:6px"><strong style="color:var(--text)">Helmet &amp; Boots</strong> → Lethality bonus (15% at Lv 0 → 50% at Lv 100 Gold)</div>
+        <div><strong style="color:var(--text)">Chest &amp; Gloves</strong> → Health bonus (15% at Lv 0 → 50% at Lv 100 Gold)</div>
+        <div style="margin-top:8px;padding:8px;background:var(--surface3);border-radius:6px;border-left:3px solid var(--accent)">
+          <div style="color:var(--text);font-weight:600;margin-bottom:4px">Priority Order</div>
+          <div>1. Infantry Gloves &amp; Chest (Health)</div>
+          <div>2. Archer Helmet &amp; Boots (Lethality)</div>
+          <div>3. Cavalry Helmet &amp; Boots (Lethality)</div>
+          <div>4. Infantry Helmet &amp; Boots · Archer Health · Cavalry Health</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-title">⚒️ Mastery Forging (Gold &amp; Red gear — unlocks at TC Lv 20, gear Lv 20+)</div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;font-size:12px;border-collapse:collapse">
+        <thead><tr style="color:var(--muted);text-align:left">
+          <th style="padding:6px 10px;border-bottom:1px solid var(--border)">Mastery Lv</th>
+          <th style="padding:6px 10px;border-bottom:1px solid var(--border)">Forgehammers</th>
+          <th style="padding:6px 10px;border-bottom:1px solid var(--border)">Bonus %</th>
+          <th style="padding:6px 10px;border-bottom:1px solid var(--border)">Stat Multiplier</th>
+          <th style="padding:6px 10px;border-bottom:1px solid var(--border)">Notes</th>
+        </tr></thead>
+        <tbody>
+          ${[['1','10','10%','×1.1',''],['2','20','20%','×1.2',''],['3','30','30%','×1.3',''],['4','40','40%','×1.4',''],['5','50','50%','×1.5',''],
+             ['6','60','60%','×1.6',''],['7','70','70%','×1.7',''],['8','80','80%','×1.8',''],['9','90','90%','×1.9',''],
+             ['10','100','100%','×2.0','Required for Ascension'],['11–14','...','...','...','50 Mythic Gear per step'],
+             ['15','650 total','—','—','Required to reach +200 on Red gear']].map(([lv,fh,b,m,n])=>`
+          <tr style="border-bottom:1px solid var(--border)20">
+            <td style="padding:6px 10px;color:var(--accent);font-weight:600">${lv}</td>
+            <td style="padding:6px 10px">${fh}</td>
+            <td style="padding:6px 10px;color:var(--green)">${b}</td>
+            <td style="padding:6px 10px">${m}</td>
+            <td style="padding:6px 10px;color:var(--muted)">${n}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-title">🔴 Gear Ascension &amp; Imbuement (Gold → Red, Lv 100–200)</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:10px">
+      <div><strong style="color:var(--text)">Requirements:</strong> Gold gear at Lv 100 + Mastery Lv 10</div>
+      <div><strong style="color:var(--accent)">Mithril</strong> — needed at each imbuement step (+120=10, +140=20, +160=30, +180=40, +200=50 = <strong>150 total per piece</strong>)</div>
+      <div>Source: Arena Shop (10,000 tokens, limit 3/week) or packs</div>
+      <div style="margin-top:6px;color:var(--red)">⚠️ Skip Conquest imbuements — go +119→+140 to jump between Expedition bonuses. Mastery Lv 15 needed for +200.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;font-size:12px">
+      ${[
+        ['Infantry Helmet &amp; Chest','inf',[['+20','Expedition','Infantry Attack +20%'],['+40','Conquest','Hero Health +7.5%'],['+60','Expedition','Infantry Defense +30%'],['+80','Conquest','Hero Attack +15%'],['+100','Expedition','Infantry Attack +50%']]],
+        ['Infantry Gloves &amp; Boots','inf',[['+20','Expedition','Infantry Defense +20%'],['+40','Conquest','Hero Health +7.5%'],['+60','Expedition','Infantry Attack +30%'],['+80','Conquest','Hero Defense +15%'],['+100','Expedition','Infantry Defense +50%']]],
+        ['Archer Helmet &amp; Chest','arc',[['+20','Expedition','Archer Attack +20%'],['+40','Conquest','Hero Health +7.5%'],['+60','Expedition','Archer Defense +30%'],['+80','Conquest','Hero Attack +15%'],['+100','Expedition','Archer Attack +50%']]],
+        ['Archer Gloves &amp; Boots','arc',[['+20','Expedition','Archer Defense +20%'],['+40','Conquest','Hero Health +7.5%'],['+60','Expedition','Archer Attack +30%'],['+80','Conquest','Hero Attack +15%'],['+100','Expedition','Archer Defense +50%']]],
+        ['Cavalry Helmet &amp; Chest','cav',[['+20','Expedition','Cavalry Attack +20%'],['+40','Conquest','Hero Health +7.5%'],['+60','Expedition','Cavalry Defense +30%'],['+80','Conquest','Hero Attack +15%'],['+100','Expedition','Cavalry Attack +50%']]],
+        ['Cavalry Gloves &amp; Boots','cav',[['+20','Expedition','Cavalry Defense +20%'],['+40','Conquest','Hero Health +7.5%'],['+60','Expedition','Cavalry Attack +30%'],['+80','Conquest','Hero Attack +15%'],['+100','Expedition','Cavalry Defense +50%']]],
+      ].map(([name,type,steps])=>`
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border)">
+          <div style="font-weight:600;color:var(--text);margin-bottom:6px;font-size:11px">${name}</div>
+          ${steps.map(([lv,cat,stat])=>`
+            <div style="display:flex;gap:6px;align-items:baseline;padding:2px 0">
+              <span style="color:var(--red);font-weight:700;min-width:34px">${lv}</span>
+              <span style="font-size:10px;padding:1px 5px;border-radius:3px;background:${cat==='Expedition'?'#f0a50020':'#4d9fff20'};color:${cat==='Expedition'?'var(--accent)':'var(--blue)'}">${cat}</span>
+              <span style="color:var(--text)">${stat}</span>
+            </div>`).join('')}
+        </div>`).join('')}
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-title">📋 Ascended Gear Leveling Pathways</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Focus Infantry gear to Round 4 before pivoting to Archer/Cavalry. Skip Conquest imbuements.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;font-size:12px">
+      ${[
+        ['Round 1','#f0a500',[['Infantry Gloves','+39'],['Infantry Chest','+19'],['Archer Helmet','+39'],['Archer Boots','+19'],['Cavalry Helmet','+39'],['Cavalry Boots','+19']]],
+        ['Round 2','#f0a500',[['Infantry Boots','+20'],['Infantry Helmet','+19'],['Archer Chest','+20'],['Archer Gloves','+19'],['Cavalry Chest','+20'],['Cavalry Gloves','+19']]],
+        ['Round 3','#60a5fa',[['Infantry Chest','+79'],['Infantry Gloves','+100'],['Archer Boots','+79'],['Archer Helmet','+100'],['Cavalry Boots','+79'],['Cavalry Helmet','+100']]],
+        ['Round 4','#60a5fa',[['Infantry Chest','+99'],['Archer Boots','+99'],['Cavalry Boots','+99'],['',''],['',''],['','']]],
+        ['Round 5','#a855f7',[['Infantry Helmet','+60'],['Archer Gloves','+60'],['Cavalry Gloves','+60'],['',''],['',''],['','']]],
+        ['Round 6','#a855f7',[['Infantry Boots','+100'],['Archer Chest','+100'],['Cavalry Chest','+100'],['',''],['',''],['','']]],
+        ['Round 7','#ff4f4f',[['Infantry Chest','+100'],['Archer Boots','+100'],['Cavalry Boots','+100'],['',''],['',''],['','']]],
+      ].map(([rnd,col,items])=>`
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border)">
+          <div style="font-weight:700;color:${col};margin-bottom:8px">${rnd}</div>
+          ${items.filter(([p])=>p).map(([piece,lv])=>`
+            <div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid var(--border)30">
+              <span>${piece}</span><span style="color:var(--red);font-weight:600">${lv}</span>
+            </div>`).join('')}
+        </div>`).join('')}
+    </div>
+    <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;font-size:12px">
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border)">
+        <div style="font-weight:600;color:var(--text);margin-bottom:6px">1 Piece (Gold→Red)</div>
+        <div>XP: <strong>502,000</strong></div>
+        <div>Mithril: <strong>150</strong></div>
+        <div>Mythic Pieces: <strong>50</strong></div>
+        <div>Forgehammers: <strong>650</strong></div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border)">
+        <div style="font-weight:600;color:var(--text);margin-bottom:6px">1 Set (4 Pieces)</div>
+        <div>XP: <strong>2,008,000</strong></div>
+        <div>Mithril: <strong>600</strong></div>
+        <div>Mythic Pieces: <strong>200</strong></div>
+        <div>Forgehammers: <strong>2,600</strong></div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border)">
+        <div style="font-weight:600;color:var(--text);margin-bottom:6px">3 Sets (12 Pieces)</div>
+        <div>XP: <strong>6,024,000</strong></div>
+        <div>Mithril: <strong>1,800</strong></div>
+        <div>Mythic Pieces: <strong>600</strong></div>
+        <div>Forgehammers: <strong>7,800</strong></div>
       </div>
     </div>
   </div>
@@ -3677,7 +3794,7 @@ function renderModalContent(id) {
               <select onchange="setGear('${id}','${s.key}','rarity',this.value)">
                 ${RARITIES.map(rar => `<option value="${rar}" ${g.rarity===rar?'selected':''} style="color:${RARITY_COLORS[rar]}">${rarityDot(rar)} ${rar}</option>`).join('')}
               </select>
-              <input type="number" class="level-input" min="0" max="30" value="${g.level}"
+              <input type="number" class="level-input" min="0" max="200" value="${g.level}"
                 placeholder="Lv" oninput="setGear('${id}','${s.key}','level',parseInt(this.value)||0)">
             </div>
           </div>`;
