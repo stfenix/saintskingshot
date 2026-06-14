@@ -1582,6 +1582,510 @@ option { background: var(--surface2); }
       </div>
     </div>
   </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">🐻 Terror Hunt (Bear Battle) — Damage Mechanics</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Bear is composed of <strong style="color:var(--text)">5,000 special infantry troops</strong> with 10 Defense and 83.33 Health each. Battles last <strong style="color:var(--text)">10 turns</strong> (unlike normal battles). Your troops don't die, so damage stays constant per round.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:12px">
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">Key Mechanics</div>
+          <div style="line-height:2">
+            <div>• Archers deal <strong style="color:var(--text)">+10% extra damage</strong> vs Bear (Ranged Strike vs infantry)</div>
+            <div>• Bear Trap level bonus adds <strong style="color:var(--text)">+5% Attack per level</strong> to all troop types (+25% at Lv 5)</div>
+            <div>• Since troops don't die, <strong style="color:var(--text)">SkillMod stays 1</strong> unless chance-based hero skills are active</div>
+            <div>• Score = <strong style="color:var(--text)">ceil(total 10-round damage)</strong></div>
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">Damage Formula</div>
+          <div style="font-family:monospace;font-size:11px;line-height:2;color:var(--text)">
+            <div>attack_per_troop = base_attack × (1 + bonus) × lethality / 100</div>
+            <div>army = √(your_troops × bear_troops)</div>
+            <div>bear_defense = Health × Defense / 100 = 8.333</div>
+            <div>round_dmg = army × attack_per_troop / bear_defense / 100</div>
+            <div style="color:var(--accent)">total_score = ceil(round_dmg × 10)</div>
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">T6 Example (Bear Lv 5, 6000 each)</div>
+          <div style="line-height:2">
+            <div>army = √(6000 × 5000) = <strong style="color:var(--text)">5,477</strong></div>
+            <div>Infantry: 5477 × 30.375 / 8.333 / 100 = <strong style="color:var(--text)">199.6</strong></div>
+            <div>Cavalry: 5477 × 91.25 / 8.333 / 100 = <strong style="color:var(--text)">599.8</strong></div>
+            <div>Archer: 5477 × 121.75 / 8.333 / 100 × 1.10 = <strong style="color:var(--text)">880.2</strong></div>
+            <div>Total 10 rounds: <strong style="color:var(--s)">16,797 score</strong></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:10px 14px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent)">
+        <div style="font-weight:700;color:var(--text);margin-bottom:6px">Troop Ratio Tip</div>
+        <div>Army size uses <strong style="color:var(--text)">square root</strong> of troop count — stacking only Archers gives <strong>diminishing returns</strong>. Mix in Cavalry for solid damage. Recommended: ~1% Infantry (minimum), rest split Archer-heavy with meaningful Cavalry.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">📊 Hero Tier Lists — Rally, Garrison, Joiner &amp; Bear Hunt</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Heroes serve different roles — a single tier list is misleading. Use the role-specific lists below. <strong style="color:var(--text)">Widget expedition skills</strong> are multiplicative (scales with stats), making heroes with the right widget type far stronger than those without.</div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:12px">
+        ${[
+          ['⚔️ Rally (Attack) Heroes', 'var(--red)',
+            [['S','Amadeus, Petra, Marlin, Rosa, Thrud'],['A','Helga'],['B','Jabel, Saul, Zoe, Hilde, Eric, Jaeger, Alcar, Margot, Vivian, Long Fei'],['C','Quinn, Howard, Chenko, Gordon'],['D','Yeonwoo, Amane, Fahd']],
+            'Attack widget gives a multiplicative stat boost — always check hero widget before launching rally. Amadeus stays top-tier for 5+ gens. Defender heroes in B: usable early on but not ideal.'],
+          ['🛡️ Garrison (Defender) Heroes', 'var(--b)',
+            [['S','Jabel, Zoe, Hilde, Eric, Jaeger, Alcar, Margot, Vivian, Long Fei'],['A','Saul'],['B','Amadeus, Petra, Marlin, Rosa, Helga, Thrud'],['C','Quinn, Howard, Chenko, Gordon'],['D','Yeonwoo, Amane, Fahd']],
+            'Opposite of the attack list. S tier = defender widget. Saul in A (one skill is construction speed, not battle). Attack heroes work in B as alternatives.'],
+        ].map(([title, color, tiers, note]) => `
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;margin-bottom:8px;color:${color}">${title}</div>
+          ${tiers.map(([tier, heroes]) => `<div style="display:flex;gap:8px;margin-bottom:4px;align-items:baseline">
+            <span style="min-width:18px;font-weight:700;color:${{'S':'var(--accent)','A':'var(--s)','B':'var(--text)','C':'var(--muted)','D':'var(--red)'}[tier]}">${tier}</span>
+            <span style="color:var(--muted);font-size:11px">${heroes}</span>
+          </div>`).join('')}
+          <div style="margin-top:8px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px">${note}</div>
+        </div>`).join('')}
+
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;margin-bottom:8px;color:var(--sp)">🤝 Joiner Heroes</div>
+          ${[['S','Saul, Hilde'],['A','Gordon, Chenko, Amane, Yeonwoo, Amadeus, Margot, Vivian, Thrud'],['B','Marlin, Petra, Jaeger, Jabel, Helga, Rosa, Alcar, Quinn, Howard, Eric, Fahd']].map(([tier, heroes]) => `<div style="display:flex;gap:8px;margin-bottom:4px;align-items:baseline">
+            <span style="min-width:18px;font-weight:700;color:${{'S':'var(--accent)','A':'var(--s)','B':'var(--text)'}[tier]}">${tier}</span>
+            <span style="color:var(--muted);font-size:11px">${heroes}</span>
+          </div>`).join('')}
+          <div style="margin-top:8px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px">S tier = can stack 4× for big SkillMod boost (4× Saul or 4× Hilde outperforms 4× Gordon). A tier good solo, not stackable. B tier = chance-based or low 20% boost — use max 1 per rally.</div>
+        </div>
+
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;margin-bottom:8px;color:var(--accent)">🐻 Bear Hunt Joiner Heroes</div>
+          ${[['S','Chenko, Amadeus, Yeonwoo, Amane, Margot, Vivian'],['A','Hilde'],['B','Marlin, Petra, Rosa, Thrud']].map(([tier, heroes]) => `<div style="display:flex;gap:8px;margin-bottom:4px;align-items:baseline">
+            <span style="min-width:18px;font-weight:700;color:${{'S':'var(--accent)','A':'var(--s)','B':'var(--text)'}[tier]}">${tier}</span>
+            <span style="color:var(--muted);font-size:11px">${heroes}</span>
+          </div>`).join('')}
+          <div style="margin-top:8px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px">Bear doesn't deal damage, so only ATK/Lethality boosts matter. S tier gives 25% guaranteed boost. Hilde gives 15% (A tier). B tier chance-based — use max 1. Jabel/Saul/Helga/Eric/Alcar excluded (defense skills = useless vs Bear).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">🦸 Hero Lineup Guide — Solo, Rally &amp; Garrison</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-bottom:12px">
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent)">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:4px">Why Mythic (Gold) Heroes?</div>
+          <div>Mythics get <strong style="color:var(--text)">3 expedition skills</strong> vs 2 for Epics. More importantly, they have <strong style="color:var(--text)">Widgets</strong> — multiplicative stat boosts that scale with your stats, unlike additive normal skills. Always use Mythics for Swordland / Castle Battle.</div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--s)">
+          <div style="font-weight:700;color:var(--s);margin-bottom:4px">Attack vs Defense Widgets</div>
+          <div>
+            <strong style="color:var(--text)">Rally lineup:</strong> use heroes with Attack/Rally widgets<br>
+            <strong style="color:var(--text)">Garrison lineup:</strong> use heroes with Defender widgets<br>
+            Check the widget type before launching any march.
+          </div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--red)">
+          <div style="font-weight:700;color:var(--red);margin-bottom:4px">Widgets don't work in Solo attacks</div>
+          <div>Solo PvP / Alliance Championship: ignore widgets, pick <strong style="color:var(--text)">raw stats</strong>. Example: Jaeger &gt; Marlin solo (higher stats), but Marlin &gt; Jaeger in rallies (attack widget).</div>
+        </div>
+      </div>
+
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:12px;border-collapse:collapse;min-width:560px">
+          <thead><tr style="color:var(--muted);text-align:left">
+            <th style="padding:7px 10px;border-bottom:1px solid var(--border)">Gen</th>
+            <th style="padding:7px 10px;border-bottom:1px solid var(--border)">Solo Attack (PvP / Champ)</th>
+            <th style="padding:7px 10px;border-bottom:1px solid var(--border)">Rally Attack</th>
+            <th style="padding:7px 10px;border-bottom:1px solid var(--border)">Garrison</th>
+          </tr></thead>
+          <tbody>
+            ${[
+              ['Gen 1','Amadeus, Jabel, Saul','Amadeus, Jabel, Saul','Amadeus, Jabel, Saul'],
+              ['Gen 2','—','Amadeus, Hilde, Marlin','Zoe, Hilde, Saul'],
+              ['Gen 3','Amadeus, Petra, Jaeger','Amadeus, Petra, Marlin','Eric, Hilde, Jaeger'],
+              ['Gen 4','Alcar, Margot, Rosa','Amadeus, Petra, Rosa','Alcar, Margot, Jaeger'],
+              ['Gen 5','Long Fei, Thrud, Vivian','Long Fei, Thrud, Rosa','Alcar, Margot, Vivian'],
+              ['Gen 6','Triton, Sophia, Yang','Triton, Thrud, Yang','Triton, Sophia, Vivian'],
+            ].map(([gen,...cols],i)=>`
+            <tr style="border-bottom:1px solid var(--border)20;background:${i%2?'var(--surface2)':'transparent'}">
+              <td style="padding:7px 10px;color:var(--accent);font-weight:700;white-space:nowrap">${gen}</td>
+              ${cols.map(c=>`<td style="padding:7px 10px;color:var(--text)">${c}</td>`).join('')}
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px">
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;font-size:11px">
+          <strong style="color:var(--text)">Gen 5 note:</strong> Long Fei replaces Amadeus for solo/rally — stat gap is large enough to override Amadeus's widget. But for <strong style="color:var(--accent)">Bear Hunt</strong>, keep Amadeus as leader: he has 3 damage skills vs Long Fei's 1.
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;font-size:11px">
+          <strong style="color:var(--text)">Gen 5 Garrison:</strong> Alcar outperforms Long Fei due to skills — especially with the 6:4:0 formation popular since Gen 4.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">⚔️ Troop Formations — Best Setups for Every Event</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Troop composition is as important as hero selection. Infantry attack first, then Cavalry, then Archers — so Infantry protect your damage dealers long enough for them to work. Always send <strong style="color:var(--text)">at least 5–10% of each troop type</strong> so no hero slot's bonus goes to waste.</div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:12px">
+        ${[
+          ['🐻 Bear Hunt','10% Inf / 10% Cav / 80% Arc','Archer-heavy for max DPS; min inf/cav ensures all 3 hero bonuses apply'],
+          ['🏰 Alliance Championship','50% Inf / 20% Cav / 30% Arc','Standard balanced formation'],
+          ['⚔️ Swordland Showdown','50% Inf / 20% Cav / 30% Arc','Standard balanced formation'],
+          ['🗡️ PvP Battles','50% Inf / 20% Cav / 30% Arc','Scout enemy first; adjust counters if possible'],
+          ['🔥 Rallies (Terrors / Desert Trial / Cesare\'s Fury)','50% Inf / 20% Cav / 30% Arc','Standard balanced formation'],
+          ['🛡️ Defense / Garrison','60% Inf / 20% Cav / 20% Arc','Extra infantry to absorb more damage'],
+        ].map(([event, formation, note]) => `
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--text);margin-bottom:4px">${event}</div>
+          <div style="color:var(--accent);font-weight:700;font-size:13px;margin-bottom:4px">${formation}</div>
+          <div style="font-size:11px;color:var(--muted)">${note}</div>
+        </div>`).join('')}
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent)">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:4px">Battle Order</div>
+          <div>Infantry attack first → Cavalry → Archers. Infantry with weak stats means Cavalry and Archers die before they can deal damage.</div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--s)">
+          <div style="font-weight:700;color:var(--s);margin-bottom:4px">Counter System (PvP)</div>
+          <div>
+            Infantry &gt; Cavalry<br>
+            Cavalry &gt; Archers<br>
+            Archers &gt; Infantry<br>
+            Scout before adjusting formation.
+          </div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--red)">
+          <div style="font-weight:700;color:var(--red);margin-bottom:4px">Never go 100% one type</div>
+          <div>Bear Hunt players sending 100% Archers often score less than 80/10/10 because the Infantry and Cavalry hero bonuses go to waste.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">🏹 Archer Hero Replacement Thresholds (Expedition Stats)</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Star level alone doesn't determine when to switch heroes. Use these <strong style="color:var(--text)">Archer Attack/Defense % thresholds</strong> to know when a newer generation hero becomes stronger than your current one. Applies to expedition stats only.</div>
+      <div style="margin-bottom:8px;padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--muted);font-size:11px">
+        ⚠️ Stats aren't everything — <strong style="color:var(--text)">Marlin</strong> (Gen 2) is still preferred over <strong style="color:var(--text)">Jaeger</strong> (Gen 3) for Attack Rallies because Marlin's widget is attack-focused while Jaeger's widget is Garrison-oriented.
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:12px;border-collapse:collapse;min-width:400px">
+          <thead><tr style="color:var(--muted);text-align:left">
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Your Current Hero</th>
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Replace When Archer ATK/DEF Reaches</th>
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Replace With</th>
+          </tr></thead>
+          <tbody>
+            ${[
+              ['Olive', '90.07%', 'Diana'],
+              ['Diana', '110.08%', 'Quinn / Yeonwoo / Amane'],
+              ['Quinn / Yeonwoo / Amane', '140.11%', 'Saul'],
+              ['Saul', '200.16%', 'Marlin'],
+              ['Marlin', '240.19%', 'Jaeger'],
+            ].map(([cur, threshold, next], i) => `
+            <tr style="border-bottom:1px solid var(--border)20;background:${i%2?'var(--surface2)':'transparent'}">
+              <td style="padding:8px 12px;color:var(--text);font-weight:600">${cur}</td>
+              <td style="padding:8px 12px;color:var(--accent);font-weight:700">${threshold}</td>
+              <td style="padding:8px 12px;color:var(--s)">${next}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted)">
+        Part 1 of 3 — see Infantry thresholds below.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">🗡️ Infantry Hero Replacement Thresholds (Expedition Stats)</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Use these <strong style="color:var(--text)">Infantry Attack/Defense % thresholds</strong> to know when the next generation hero surpasses your current one. Expedition stats only.</div>
+      <div style="margin-bottom:8px;padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--muted);font-size:11px">
+        ⚠️ Widget matters — <strong style="color:var(--text)">Amadeus</strong> (Attack Widget) is still better for leading Attack Rallies over <strong style="color:var(--text)">Eric</strong> (Garrison Widget), even when Eric's stats are higher.
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:12px;border-collapse:collapse;min-width:400px">
+          <thead><tr style="color:var(--muted);text-align:left">
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Your Current Hero</th>
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Replace When Infantry ATK/DEF Reaches</th>
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Replace With</th>
+          </tr></thead>
+          <tbody>
+            ${[
+              ['Seth &amp; Forrest', '90.07%', 'Howard'],
+              ['Howard', '140.11%', 'Helga'],
+              ['Helga', '200.16%', 'Zoe'],
+              ['Zoe', '240.19%', 'Amadeus'],
+              ['Amadeus', '260.20%', 'Eric'],
+            ].map(([cur, threshold, next], i) => `
+            <tr style="border-bottom:1px solid var(--border)20;background:${i%2?'var(--surface2)':'transparent'}">
+              <td style="padding:8px 12px;color:var(--text);font-weight:600">${cur}</td>
+              <td style="padding:8px 12px;color:var(--accent);font-weight:700">${threshold}</td>
+              <td style="padding:8px 12px;color:var(--s)">${next}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted)">
+        Part 2 of 3 — see Cavalry thresholds below.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">🐴 Cavalry Hero Replacement Thresholds (Expedition Stats)</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Use these <strong style="color:var(--text)">Cavalry Attack/Defense % thresholds</strong> to know when the next generation hero surpasses your current one. Expedition stats only.</div>
+      <div style="margin-bottom:8px;padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--muted);font-size:11px">
+        ⚠️ Widget matters — <strong style="color:var(--text)">Hilde</strong> (Garrison Widget) is still preferred for Garrison defense over <strong style="color:var(--text)">Petra</strong> (Attack Widget), even when Petra's stats are higher. Use Petra for Attack Rallies.
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:12px;border-collapse:collapse;min-width:400px">
+          <thead><tr style="color:var(--muted);text-align:left">
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Your Current Hero</th>
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Replace When Cavalry ATK/DEF Reaches</th>
+            <th style="padding:8px 12px;border-bottom:1px solid var(--border)">Replace With</th>
+          </tr></thead>
+          <tbody>
+            ${[
+              ['Edwin', '90.07%', 'Chenko / Gordon / Fahd'],
+              ['Chenko / Gordon / Fahd', '140.11%', 'Jabel'],
+              ['Jabel', '200.16%', 'Hilde'],
+              ['Hilde', '240.19%', 'Petra'],
+            ].map(([cur, threshold, next], i) => `
+            <tr style="border-bottom:1px solid var(--border)20;background:${i%2?'var(--surface2)':'transparent'}">
+              <td style="padding:8px 12px;color:var(--text);font-weight:600">${cur}</td>
+              <td style="padding:8px 12px;color:var(--accent);font-weight:700">${threshold}</td>
+              <td style="padding:8px 12px;color:var(--s)">${next}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">🐾 Pets — Priority &amp; Refinement Guide</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Pets provide significant stat boosts through both upgrades and refinement. Priority differs between F2P (growth-focused) and spenders (battle-focused).</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--s);margin-bottom:6px">F2P Priority (Growth Focus)</div>
+          <div style="line-height:2;counter-reset:petf2p">
+            ${[['Gray Wolf','Construction/research speed buff'],['Bison',''],['Lion','Drops Forgehammers, Truegold & Charm items every 1–2 days — higher level = shorter cooldown'],['Cheetah','Upgrade before Lion unlocks; switch focus once Lion available'],['Mighty Bison',''],['Giant Rhino',''],['Grizzly Bear',''],['Moose',''],['Lynx','Level 20 only — enough for 40 stamina/day (4× Pet Adventures at 10 stamina each)']].map(([n,d],i)=>`<div><strong style="color:var(--text)">${i+1}. ${n}</strong>${d?` <span style="color:var(--muted);font-size:11px">— ${d}</span>`:''}</div>`).join('')}
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">Spender Priority (Battle Focus)</div>
+          <div style="line-height:2">
+            ${[['Mighty Bison','#1 — increases troops in rallies; more troops often wins fights even with lower stats'],['Giant Rhino',''],['Grizzly Bear',''],['Moose',''],['Bison',''],['Lion',''],['Cheetah',''],['Gray Wolf',''],['Lynx','Level 20 only']].map(([n,d],i)=>`<div><strong style="color:var(--text)">${i+1}. ${n}</strong>${d?` <span style="color:var(--muted);font-size:11px">— ${d}</span>`:''}</div>`).join('')}
+          </div>
+          <div style="margin-top:8px;padding:8px;background:var(--surface3);border-radius:6px;font-size:11px">
+            <strong style="color:var(--accent)">Legendary pets</strong> (Giant Rhino, Mighty Bison) give larger ATK &amp; DEF per food spent — higher value per upgrade even if skill isn't top tier.
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:10px">
+        <div style="font-weight:700;color:var(--text);margin-bottom:6px">Refinement (Taming Marks → Health &amp; Lethality boosts)</div>
+        <div style="margin-bottom:8px">Refinement boosts 6 stats: <strong style="color:var(--text)">Health &amp; Lethality for each troop type</strong>. Hit Refine → stats go up or down → Replace if power increases (green), Retry if it decreases (red). Use <strong style="color:var(--text)">Auto</strong> to automate this.</div>
+        <div style="margin-bottom:8px">Stats pass through rarity thresholds: <span style="color:#9ca3af">Gray</span> → <span style="color:#4ade80">Green</span> → <span style="color:#60a5fa">Blue</span> → <span style="color:#a855f7">Purple</span> → <span style="color:var(--accent)">Gold</span>. Once a stat reaches a new rarity it <strong style="color:var(--text)">cannot drop back</strong>, but higher rarities are harder to improve.</div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;font-size:11px;border-collapse:collapse;min-width:460px">
+            <thead><tr style="color:var(--muted);text-align:left">
+              <th style="padding:5px 8px;border-bottom:1px solid var(--border)">Pet</th>
+              <th style="padding:5px 8px;border-bottom:1px solid var(--border);color:#9ca3af">Gray</th>
+              <th style="padding:5px 8px;border-bottom:1px solid var(--border);color:#4ade80">Green</th>
+              <th style="padding:5px 8px;border-bottom:1px solid var(--border);color:#60a5fa">Blue</th>
+              <th style="padding:5px 8px;border-bottom:1px solid var(--border);color:#a855f7">Purple</th>
+              <th style="padding:5px 8px;border-bottom:1px solid var(--border);color:var(--accent)">Gold</th>
+            </tr></thead>
+            <tbody>
+              ${[['Gray Wolf','1.01%','2.01%','3.35%','4.69%','6.7%'],
+                 ['Lynx, Bison','2.01%','4.02%','6.7%','9.39%','13.41%'],
+                 ['Cheetah, Moose','3.02%','6.03%','10.06%','14.08%','20.11%'],
+                 ['Lion, Grizzly Bear','4.36%','8.72%','14.53%','20.34%','29.05%'],
+                 ['Giant Rhino, Mighty Bison','6.7%','13.41%','22.35%','31.28%','44.69%']
+              ].map(([pet,...vals])=>`<tr style="border-bottom:1px solid var(--border)20">
+                <td style="padding:5px 8px;color:var(--text)">${pet}</td>
+                ${vals.map(v=>`<td style="padding:5px 8px">${v}</td>`).join('')}
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid #4ade80">
+          <div style="color:#4ade80;font-weight:700;margin-bottom:4px">Gray &amp; Green rarity</div>
+          <div>Use <strong style="color:var(--text)">Common Taming Marks</strong> — easier to get positive results early on.</div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid #60a5fa">
+          <div style="color:#60a5fa;font-weight:700;margin-bottom:4px">Blue rarity and above</div>
+          <div>Switch to <strong style="color:var(--text)">Advanced Taming Marks</strong> for better odds of positive stats.</div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid #a855f7">
+          <div style="color:#a855f7;font-weight:700;margin-bottom:4px">Purple → Gold</div>
+          <div>Extremely hard. If stuck at Purple, consider refining other pets instead of chasing Gold.</div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent)">
+          <div style="color:var(--accent);font-weight:700;margin-bottom:4px">Refine rarer pets first</div>
+          <div>Giant Rhino &amp; Mighty Bison give better overall stat boosts — prioritize their refinement.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">🔬 Academy Research Strategy</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Research priorities differ significantly based on your role. <strong style="color:var(--text)">Joiners</strong> (F2P / low spenders) should focus on growth and troop capacity. <strong style="color:var(--text)">Rally leaders</strong> (spenders) should eventually max the Battle Tree since their stats affect the entire rally.</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--s);margin-bottom:8px">Joiner Priorities (F2P / Low Spend)</div>
+          <div style="margin-bottom:6px;color:var(--text);font-weight:600">Growth Tree ✓</div>
+          <div style="line-height:2;padding-left:4px">
+            <div>🥇 <strong style="color:var(--text)">Command Tactics</strong> — 3 extra march queues; max ASAP (~TC18)</div>
+            <div>🥈 <strong style="color:var(--text)">Tooling Up</strong> — building speed; worth to Tier 6</div>
+            <div>🥉 <strong style="color:var(--text)">Tool Enhancement</strong> — research speed; worth to Tier 5</div>
+            <div>4️⃣ <strong style="color:var(--text)">Trainer Tools</strong> — training speed; more points per speedup</div>
+            <div style="color:var(--red)">✗ Camp Expansion — no training speed, skip</div>
+            <div style="color:var(--red)">✗ Ward Expansion — low losses as joiner, skip early</div>
+            <div style="color:var(--red)">✗ Bandaging — skip early</div>
+          </div>
+          <div style="margin-top:8px;color:var(--text);font-weight:600">Economy Tree ✓</div>
+          <div style="padding-left:4px;line-height:2">
+            <div>Focus on <strong style="color:var(--text)">Gathering</strong> researches only</div>
+            <div style="color:var(--red)">✗ Resource Output — terrible returns, skip unless required to unlock next tier</div>
+          </div>
+          <div style="margin-top:8px;color:var(--text);font-weight:600">Battle Tree ✓</div>
+          <div style="padding-left:4px;line-height:2">
+            <div>🥇 <strong style="color:var(--text)">Regimental Expansion</strong> — more troops in rallies &amp; Bear Trap</div>
+            <div style="color:var(--red)">✗ Stat researches — rally uses leader's stats, not yours</div>
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px">Rally Leader Priorities (Spender)</div>
+          <div style="margin-bottom:6px;color:var(--text);font-weight:600">Growth Tree ✓</div>
+          <div style="line-height:2;padding-left:4px">
+            <div>🥇 <strong style="color:var(--text)">Command Tactics</strong> — still top priority</div>
+            <div>🥈 <strong style="color:var(--text)">Tool Enhancement</strong> — 4000+ days of Academy base time; every % matters</div>
+            <div>🥉 <strong style="color:var(--text)">Trainer Tools</strong> — troops are biggest power factor for leaders</div>
+            <div>4️⃣ <strong style="color:var(--text)">Ward Expansion</strong> — leaders take heavy losses; higher Infirmary cap prevents permanent troop loss</div>
+          </div>
+          <div style="margin-top:8px;color:var(--text);font-weight:600">Economy Tree</div>
+          <div style="padding-left:4px;line-height:2">
+            <div>Mostly ignore early. Gathering useful for KvK later.</div>
+            <div style="color:var(--red)">✗ Resource Output — still not worth it</div>
+          </div>
+          <div style="margin-top:8px;color:var(--text);font-weight:600">Battle Tree — Stat Priority Order</div>
+          <div style="padding-left:4px;line-height:1.9">
+            <div>1. <strong style="color:var(--text)">Infantry Health</strong></div>
+            <div>2. <strong style="color:var(--text)">Archer Lethality</strong></div>
+            <div>3. <strong style="color:var(--text)">Cavalry Lethality</strong></div>
+            <div>4. Infantry Defense</div>
+            <div>5. Archer Attack</div>
+            <div>6. Cavalry Attack</div>
+            <div>7–12. Archer Health · Archer Defense · Cavalry Health · Cavalry Defense · Infantry Lethality · Infantry Attack</div>
+            <div style="margin-top:4px;color:var(--muted)">Infantry soaks damage → Health &amp; Defense first. Archers &amp; Cavalry deal damage → Lethality &amp; Attack first. Infantry base ATK is low so that stat row gives poor value.</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px">
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--s)">
+          <div style="font-weight:700;color:var(--s);margin-bottom:4px">Regimental Expansion</div>
+          <div>Priority for <em>both</em> roles — more march/rally capacity directly increases Bear Trap damage and rally contribution.</div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent)">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:4px">All-troop researches first</div>
+          <div>Researches that boost all troop types are higher priority than type-specific ones at the same cost.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">⚔️ Troop Training vs. Promotion — When to Use Each</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px"><strong style="color:var(--text)">General rule:</strong> Always train your second-highest tier troops normally, and <strong style="color:var(--text)">save promotions for big events</strong> (HoG, KvK, Strongest Governor) — promoting during events gives more points than training with the same speedups.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:12px">
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">The Core Strategy</div>
+          <div style="line-height:2">
+            <div>• Once you unlock T<em>N</em>, train T<em>N-1</em> in the background</div>
+            <div>• <strong style="color:var(--text)">During HoG / KvK / Strongest Gov:</strong> promote T<em>N-1</em> → T<em>N</em> for maximum event points</div>
+            <div>• Between events: keep training camps running on T<em>N-1</em></div>
+            <div>• Example: Unlock T9 → train T8 constantly → promote to T9 during events</div>
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">Infirmary Risk</div>
+          <div style="line-height:2">
+            <div>• Infirmary has limited space — <strong style="color:var(--text)">lower-tier troops fill it first</strong></div>
+            <div>• If your Infirmary fills with T1–T6, your T9/T10 become <strong style="color:var(--red)">permanently lost</strong></div>
+            <div>• Keep low-tier troop counts minimal — promote them off during events</div>
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">Troop Load &amp; Gathering</div>
+          <div style="line-height:2">
+            <div>• Higher-tier troops carry <strong style="color:var(--text)">more resources per march</strong></div>
+            <div>• More T-max troops = faster farming and looting</div>
+            <div>• Extra reason to promote lows off and keep your army top-heavy</div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:10px 14px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent)">
+        <div style="font-weight:700;color:var(--text);margin-bottom:4px">Event Timing Tip</div>
+        <div>Start training T<em>max-1</em> troops <strong style="color:var(--text)">a few days before HoG</strong> so you have a stockpile ready to promote on day 1 of the event. Promoting T<em>max-1</em> consistently outscores both promoting T1s and simply training new troops for the same speedup cost.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">🏥 Batch Healing — Save Speedups with Alliance Assists</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Batch healing lets you instantly heal troops without spending speedups by splitting healing into small batches that your alliance can finish instantly with assists. Most useful during <strong style="color:var(--text)">All Out</strong> and <strong style="color:var(--text)">Castle Battle</strong> when your Infirmary fills up fast.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:12px">
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">How It Works</div>
+          <div style="line-height:2">
+            <div>1. Check your <strong style="color:var(--text)">Embassy</strong>: note <em>Ally Help Time</em> (seconds/assist) and <em>Ally Assists</em> (max assists)</div>
+            <div>2. Multiply: <strong style="color:var(--text)">assists × seconds = total free heal time</strong></div>
+            <div>3. Send a batch that takes just under that total — alliance assists finish it instantly</div>
+            <div>4. Repeat with small batches — don't heal everything at once</div>
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">Embassy Lv 25 Example</div>
+          <div style="line-height:2">
+            <div><strong style="color:var(--text)">Base:</strong> 22 assists × 73s = <strong style="color:var(--s)">1,606s (~26 min)</strong></div>
+            <div><strong style="color:var(--text)">With research</strong> (Cooperative Protocols + Treatise):</div>
+            <div>+15 assists, +150s per assist</div>
+            <div>37 assists × 223s = <strong style="color:var(--s)">8,251s (~2h 17m)</strong></div>
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:6px">Tips</div>
+          <div style="line-height:2">
+            <div>• Check how many members are <strong style="color:var(--text)">online</strong> — you need 37 active members to get all 37 assists</div>
+            <div>• <strong style="color:var(--text)">Start small</strong> (e.g. 40-min batch) and increase once you see assist volume</div>
+            <div>• Research <strong style="color:var(--text)">Cooperative Protocols &amp; Treatise</strong> in Alliance Tech for a massive multiplier</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ===== TRAINING EFFICIENCY CALCULATOR ===== -->
