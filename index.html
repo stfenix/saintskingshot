@@ -1626,6 +1626,75 @@ option { background: var(--surface2); }
   </div>
 
   <div class="card" style="margin-top:12px">
+    <div class="card-title">🔬 Academy Research Strategy</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">
+      <div style="margin-bottom:10px">Research priorities differ significantly based on your role. <strong style="color:var(--text)">Joiners</strong> (F2P / low spenders) should focus on growth and troop capacity. <strong style="color:var(--text)">Rally leaders</strong> (spenders) should eventually max the Battle Tree since their stats affect the entire rally.</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--s);margin-bottom:8px">Joiner Priorities (F2P / Low Spend)</div>
+          <div style="margin-bottom:6px;color:var(--text);font-weight:600">Growth Tree ✓</div>
+          <div style="line-height:2;padding-left:4px">
+            <div>🥇 <strong style="color:var(--text)">Command Tactics</strong> — 3 extra march queues; max ASAP (~TC18)</div>
+            <div>🥈 <strong style="color:var(--text)">Tooling Up</strong> — building speed; worth to Tier 6</div>
+            <div>🥉 <strong style="color:var(--text)">Tool Enhancement</strong> — research speed; worth to Tier 5</div>
+            <div>4️⃣ <strong style="color:var(--text)">Trainer Tools</strong> — training speed; more points per speedup</div>
+            <div style="color:var(--red)">✗ Camp Expansion — no training speed, skip</div>
+            <div style="color:var(--red)">✗ Ward Expansion — low losses as joiner, skip early</div>
+            <div style="color:var(--red)">✗ Bandaging — skip early</div>
+          </div>
+          <div style="margin-top:8px;color:var(--text);font-weight:600">Economy Tree ✓</div>
+          <div style="padding-left:4px;line-height:2">
+            <div>Focus on <strong style="color:var(--text)">Gathering</strong> researches only</div>
+            <div style="color:var(--red)">✗ Resource Output — terrible returns, skip unless required to unlock next tier</div>
+          </div>
+          <div style="margin-top:8px;color:var(--text);font-weight:600">Battle Tree ✓</div>
+          <div style="padding-left:4px;line-height:2">
+            <div>🥇 <strong style="color:var(--text)">Regimental Expansion</strong> — more troops in rallies &amp; Bear Trap</div>
+            <div style="color:var(--red)">✗ Stat researches — rally uses leader's stats, not yours</div>
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px">Rally Leader Priorities (Spender)</div>
+          <div style="margin-bottom:6px;color:var(--text);font-weight:600">Growth Tree ✓</div>
+          <div style="line-height:2;padding-left:4px">
+            <div>🥇 <strong style="color:var(--text)">Command Tactics</strong> — still top priority</div>
+            <div>🥈 <strong style="color:var(--text)">Tool Enhancement</strong> — 4000+ days of Academy base time; every % matters</div>
+            <div>🥉 <strong style="color:var(--text)">Trainer Tools</strong> — troops are biggest power factor for leaders</div>
+            <div>4️⃣ <strong style="color:var(--text)">Ward Expansion</strong> — leaders take heavy losses; higher Infirmary cap prevents permanent troop loss</div>
+          </div>
+          <div style="margin-top:8px;color:var(--text);font-weight:600">Economy Tree</div>
+          <div style="padding-left:4px;line-height:2">
+            <div>Mostly ignore early. Gathering useful for KvK later.</div>
+            <div style="color:var(--red)">✗ Resource Output — still not worth it</div>
+          </div>
+          <div style="margin-top:8px;color:var(--text);font-weight:600">Battle Tree — Stat Priority Order</div>
+          <div style="padding-left:4px;line-height:1.9">
+            <div>1. <strong style="color:var(--text)">Infantry Health</strong></div>
+            <div>2. <strong style="color:var(--text)">Archer Lethality</strong></div>
+            <div>3. <strong style="color:var(--text)">Cavalry Lethality</strong></div>
+            <div>4. Infantry Defense</div>
+            <div>5. Archer Attack</div>
+            <div>6. Cavalry Attack</div>
+            <div>7–12. Archer Health · Archer Defense · Cavalry Health · Cavalry Defense · Infantry Lethality · Infantry Attack</div>
+            <div style="margin-top:4px;color:var(--muted)">Infantry soaks damage → Health &amp; Defense first. Archers &amp; Cavalry deal damage → Lethality &amp; Attack first. Infantry base ATK is low so that stat row gives poor value.</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px">
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--s)">
+          <div style="font-weight:700;color:var(--s);margin-bottom:4px">Regimental Expansion</div>
+          <div>Priority for <em>both</em> roles — more march/rally capacity directly increases Bear Trap damage and rally contribution.</div>
+        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent)">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:4px">All-troop researches first</div>
+          <div>Researches that boost all troop types are higher priority than type-specific ones at the same cost.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
     <div class="card-title">⚔️ Troop Training vs. Promotion — When to Use Each</div>
     <div style="font-size:12px;color:var(--muted);line-height:1.8">
       <div style="margin-bottom:10px"><strong style="color:var(--text)">General rule:</strong> Always train your second-highest tier troops normally, and <strong style="color:var(--text)">save promotions for big events</strong> (HoG, KvK, Strongest Governor) — promoting during events gives more points than training with the same speedups.</div>
