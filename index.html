@@ -103,6 +103,16 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 }
 .home-task.done .ht-box { border-color: var(--s); background: #4ade8015; }
 
+.home-bear-slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 10px; }
+.home-bear-slot {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 12px; display: flex; flex-direction: column; gap: 3px;
+}
+.home-bear-slot .hb-role { font-size: 10px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); font-weight: 700; }
+.home-bear-slot .hb-hero { font-size: 13px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 6px; }
+.home-bear-slot .hb-note { font-size: 10px; color: var(--muted); line-height: 1.5; }
+.home-bear-slot.empty { border-style: dashed; opacity: .6; }
+
 /* ── GUIDE TOOLBAR ── */
 .guide-toolbar {
   position: sticky; top: 0; z-index: 50; background: var(--bg);
@@ -753,6 +763,14 @@ option { background: var(--surface2); }
       </div>
       <div id="home-daily-tasks"></div>
     </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+      <span>&#128059; Bear Hunt Lineup</span>
+      <button class="btn btn-outline btn-sm" onclick="openBuild('bear')">Full analysis &rarr;</button>
+    </div>
+    <div id="home-bear"></div>
   </div>
 
   <div class="card">
@@ -4273,11 +4291,73 @@ function renderHome() {
     : '<div style="font-size:12px;color:var(--muted)">Nothing scheduled this week</div>';
 
   renderHomeDaily();
+  renderHomeBear();
 
   // Roster tile count
   const ownedCount = HEROES.filter(h => roster[h.id] && roster[h.id].owned !== false).length;
   const rosterTile = document.getElementById('home-tile-roster');
   if (rosterTile) rosterTile.textContent = ownedCount + ' hero' + (ownedCount===1?'':'es') + ' owned';
+}
+
+function openBuild(evId) {
+  currentEvent = evId;
+  goPage('builds');
+}
+
+function renderHomeBear() {
+  const el = document.getElementById('home-bear');
+  if (!el) return;
+  const ev = EVENTS.find(e => e.id === 'bear');
+  const owned = getOwned();
+
+  if (!owned.length) {
+    el.innerHTML = `<div style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span>Add the heroes you own to see your best Bear Hunt lineup here.</span>
+      <button class="btn btn-sm" onclick="goPage('roster')" style="margin-left:auto">Set up roster &rarr;</button>
+    </div>`;
+    return;
+  }
+
+  const CLASS_COLOR = { Infantry:'var(--inf)', Cavalry:'var(--cav)', Archer:'var(--arc)' };
+  const usedIds = [];
+  const slots = ev.roles.map(role => {
+    const hero = getBestForRole(role.priority, usedIds)[0] || null;
+    if (hero) usedIds.push(hero.id);
+    return { role, hero };
+  });
+
+  const slotHtml = slots.map(s => {
+    if (!s.hero) return `<div class="home-bear-slot empty">
+      <span class="hb-role">${s.role.label}</span>
+      <span class="hb-hero" style="color:var(--muted)">—</span>
+      <span class="hb-note">No hero available</span>
+    </div>`;
+    const tier = s.hero.tiers.bearHunt || '—';
+    return `<div class="home-bear-slot">
+      <span class="hb-role">${s.role.label}</span>
+      <span class="hb-hero"><span style="width:7px;height:7px;border-radius:50%;background:${CLASS_COLOR[s.hero.class]||'var(--muted)'};flex-shrink:0"></span>${s.hero.name}<span class="tier-badge t-${tier}" style="margin-left:auto;font-size:9px;padding:1px 5px">${tier}</span></span>
+      <span class="hb-note">${(() => { const n = s.hero.keyNote || s.role.note || ''; return escHtml(n.length > 70 ? n.slice(0, 70).replace(/\s+\S*$/, '') + '…' : n); })()}</span>
+    </div>`;
+  }).join('');
+
+  // Archer ratio check from the army widget
+  let armyHtml = '';
+  if (troopsEntered()) {
+    const total = armyTotal();
+    const arcCount = classTotal('arc');
+    const arcPct = total > 0 ? Math.round(arcCount/total*100) : 0;
+    const ok = arcPct >= 80;
+    const warn = arcPct >= 60;
+    armyHtml = `<div style="display:flex;align-items:center;gap:10px;font-size:12px;padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid ${ok?'var(--s)':warn?'var(--accent)':'var(--red)'}">
+      <span>${ok?'✅':'⚠️'}</span>
+      <span style="color:var(--text)"><strong>${arcPct}% Archers</strong> (${fmtCount(arcCount)} of ${fmtCount(total)})</span>
+      <span style="color:var(--muted);margin-left:auto">${ok ? 'At the 80% Bear optimum' : 'Target 10/10/80 — Inf & Cav add hero bonuses only'}</span>
+    </div>`;
+  } else {
+    armyHtml = `<div style="font-size:11px;color:var(--muted)">Formation: <strong style="color:var(--text)">10% Infantry / 10% Cavalry / 80% Archers</strong> — enter your army in the sidebar for a personal ratio check.</div>`;
+  }
+
+  el.innerHTML = `<div class="home-bear-slots">${slotHtml}</div>${armyHtml}`;
 }
 
 function renderHomeDaily() {
