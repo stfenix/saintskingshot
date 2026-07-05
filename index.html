@@ -66,6 +66,65 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 @media(max-width:900px) { .g2,.g3,.g4 { grid-template-columns: 1fr 1fr; } }
 
+/* ── TODAY DASHBOARD ── */
+.home-kstrip {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;
+  margin-bottom: 16px;
+}
+.home-kstat {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 16px; display: flex; flex-direction: column; gap: 2px;
+}
+.home-kstat .hk-val { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1.2; }
+.home-kstat .hk-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 700; }
+.home-kstat .hk-sub { font-size: 11px; color: var(--muted); }
+.home-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.home-tile {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px; cursor: pointer; display: flex; flex-direction: column; gap: 3px;
+  transition: border-color .15s, transform .15s;
+}
+.home-tile:hover { border-color: var(--accent); transform: translateY(-2px); }
+.home-tile .ht-icon { font-size: 20px; }
+.home-tile .ht-label { font-size: 13px; font-weight: 700; color: var(--text); }
+.home-tile .ht-sub { font-size: 11px; color: var(--muted); }
+.home-task {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px;
+  background: var(--surface2); border: 1px solid var(--border); margin-bottom: 6px;
+  cursor: pointer; transition: opacity .15s, border-color .15s; font-size: 13px;
+}
+.home-task:hover { border-color: var(--accent); }
+.home-task.done { opacity: .45; }
+.home-task.done .ht-text { text-decoration: line-through; }
+.home-task .ht-box {
+  width: 18px; height: 18px; border-radius: 5px; border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center; font-size: 11px;
+  color: var(--s); flex-shrink: 0;
+}
+.home-task.done .ht-box { border-color: var(--s); background: #4ade8015; }
+
+/* ── GUIDE TOOLBAR ── */
+.guide-toolbar {
+  position: sticky; top: 0; z-index: 50; background: var(--bg);
+  padding: 8px 0 10px; margin-bottom: 12px; border-bottom: 1px solid var(--border);
+}
+.guide-toolbar input {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text); border-radius: 8px; padding: 9px 14px; font-size: 13px; margin-bottom: 8px;
+}
+.guide-toolbar input:focus { outline: none; border-color: var(--accent); }
+.guide-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.guide-chip {
+  font-size: 11px; padding: 4px 10px; border-radius: 999px; cursor: pointer;
+  background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
+  white-space: nowrap; transition: border-color .15s, color .15s;
+}
+.guide-chip:hover { border-color: var(--accent); color: var(--accent); }
+@media(max-width:768px) {
+  .guide-chips { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+  .guide-toolbar { top: 52px; }
+}
+
 /* ── MOBILE HEADER ── */
 .mob-header {
   display: none;
@@ -101,6 +160,8 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   .cal-week-grid { grid-template-columns: repeat(4,1fr) !important; }
   .age-hero { grid-template-columns: 1fr 1fr !important; }
   .ttree-bg { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  #page-home .g2 { grid-template-columns: 1fr; }
+  .home-kstrip { grid-template-columns: 1fr 1fr; }
 }
 
 /* BADGES */
@@ -580,7 +641,7 @@ option { background: var(--surface2); }
 <!-- MOBILE HEADER (hidden on desktop) -->
 <div class="mob-header">
   <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
-  <span class="mob-header-title">&#9876; Kingshot</span>
+  <span class="mob-header-title" onclick="goPage('home')" style="cursor:pointer">&#9876; Kingshot</span>
 </div>
 <div class="nav-backdrop" onclick="closeSidebar()"></div>
 
@@ -588,7 +649,7 @@ option { background: var(--surface2); }
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <div class="logo">
+  <div class="logo" onclick="goPage('home')" style="cursor:pointer">
     <h1>&#9876; Kingshot</h1>
     <p>Min-Max Optimizer</p>
   </div>
@@ -606,8 +667,12 @@ option { background: var(--surface2); }
   </div>
 
   <div class="nav-section">
+    <div class="nav-label">Home</div>
+    <div class="nav-item active" onclick="goPage('home')"><span class="icon">&#127968;</span>Today</div>
+  </div>
+  <div class="nav-section">
     <div class="nav-label">Setup</div>
-    <div class="nav-item active" onclick="goPage('roster')"><span class="icon">&#128100;</span>My Roster</div>
+    <div class="nav-item" onclick="goPage('roster')"><span class="icon">&#128100;</span>My Roster</div>
   </div>
   <div class="nav-section">
     <div class="nav-label">Optimizer</div>
@@ -650,8 +715,63 @@ option { background: var(--surface2); }
 <!-- MAIN -->
 <div class="main">
 
+<!-- ===== TODAY (DASHBOARD) ===== -->
+<div class="page active" id="page-home">
+  <div class="page-header">
+    <h2 id="home-greeting">Today</h2>
+    <p id="home-date"></p>
+  </div>
+
+  <!-- Kingdom status strip -->
+  <div id="home-kingdom-strip"></div>
+
+  <div class="g2" style="align-items:start;margin-bottom:16px">
+    <div class="card">
+      <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+        <span>&#128197; Happening Today</span>
+        <button class="btn btn-outline btn-sm" onclick="goPage('calendar')">Full calendar &rarr;</button>
+      </div>
+      <div id="home-today-events"></div>
+      <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px">
+        <div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Coming Up</div>
+        <div id="home-upcoming"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+        <span>&#9989; Daily Checklist</span>
+        <button class="btn btn-outline btn-sm" onclick="goPage('daily')">All tasks &rarr;</button>
+      </div>
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px">
+          <span id="home-daily-label">0 / 0 done</span>
+          <span id="home-daily-pct" style="font-weight:700;color:var(--accent)">0%</span>
+        </div>
+        <div style="height:8px;background:var(--surface2);border-radius:4px;overflow:hidden">
+          <div id="home-daily-bar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--s));border-radius:4px;transition:width .3s"></div>
+        </div>
+      </div>
+      <div id="home-daily-tasks"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">&#9889; Quick Access</div>
+    <div class="home-tiles">
+      <div class="home-tile" onclick="goPage('builds')"><span class="ht-icon">&#9889;</span><span class="ht-label">Event Builds</span><span class="ht-sub">Best lineup per event</span></div>
+      <div class="home-tile" onclick="goPage('roster')"><span class="ht-icon">&#128100;</span><span class="ht-label">My Roster</span><span class="ht-sub" id="home-tile-roster">— heroes</span></div>
+      <div class="home-tile" onclick="goPage('calendar')"><span class="ht-icon">&#128197;</span><span class="ht-label">Calendar</span><span class="ht-sub">Weekly events</span></div>
+      <div class="home-tile" onclick="goPage('guide')"><span class="ht-icon">&#128218;</span><span class="ht-label">Game Guide</span><span class="ht-sub">Strategy reference</span></div>
+      <div class="home-tile" onclick="goPage('troops')"><span class="ht-icon">&#128106;</span><span class="ht-label">Troop Calc</span><span class="ht-sub">Formation ratios</span></div>
+      <div class="home-tile" onclick="goPage('traincalc')"><span class="ht-icon">&#9201;</span><span class="ht-label">Training Calc</span><span class="ht-sub">Points per hour</span></div>
+      <div class="home-tile" onclick="goPage('alliance')"><span class="ht-icon">&#127756;</span><span class="ht-label">Alliance HQ</span><span class="ht-sub">Members &amp; lookup</span></div>
+      <div class="home-tile" onclick="goPage('powerup')"><span class="ht-icon">&#128200;</span><span class="ht-label">Power Up</span><span class="ht-sub">Next best upgrade</span></div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== ROSTER ===== -->
-<div class="page active" id="page-roster">
+<div class="page" id="page-roster">
   <div class="page-header">
     <h2>My Roster</h2>
     <p>Click heroes you own to add them. Set star levels to improve build recommendations.</p>
@@ -837,6 +957,16 @@ option { background: var(--surface2); }
     <p>Quick reference for key game systems, milestones, and mechanics. Based on official Kingshot help center data.</p>
   </div>
 
+  <div class="guide-toolbar">
+    <input id="guide-search" type="search" placeholder="&#128269; Search the guide — try &quot;bear&quot;, &quot;research&quot;, &quot;gear&quot;..." oninput="filterGuide(this.value)">
+    <div class="guide-chips" id="guide-chips"></div>
+  </div>
+</div>
+
+<script>
+// Guide cards use template-literal syntax (tables/lists built from data arrays),
+// so they must be rendered through a real template literal, not static HTML.
+document.getElementById('page-guide').insertAdjacentHTML('beforeend', `
   <div class="card" style="margin-bottom:12px">
     <div class="card-title">🏰 Town Center Unlock Milestones</div>
     <div class="scrollable">
@@ -2086,7 +2216,8 @@ option { background: var(--surface2); }
       </div>
     </div>
   </div>
-</div>
+`);
+</script>
 
 <!-- ===== TRAINING EFFICIENCY CALCULATOR ===== -->
 <div class="page" id="page-traincalc">
@@ -4033,7 +4164,7 @@ function goPage(name) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   const PAGE_LABELS = {
-    roster:'roster', builds:'event', powerup:'power up', skills:'skill',
+    home:'today', roster:'roster', builds:'event', powerup:'power up', skills:'skill',
     tierlist:'tier', troops:'troop', guide:'guide', age:'kingdom',
     calendar:'calendar', alliance:'alliance hq', kvkplanner:'kvk',
     stockpile:'stockpile', powerboard:'power board', swordland:'swordland',
@@ -4044,6 +4175,8 @@ function goPage(name) {
   document.querySelectorAll('.nav-item').forEach(n => {
     if (n.textContent.toLowerCase().includes(label)) n.classList.add('active');
   });
+  if (name==='home') renderHome();
+  if (name==='guide') initGuideToolbar();
   if (name==='builds') renderBuilds();
   if (name==='powerup') renderPowerUp();
   if (name==='skills') renderSkills();
@@ -4064,6 +4197,149 @@ function goPage(name) {
   if (name==='research') renderResearch();
   if (name==='settings') renderSettings();
   updateSidebar();
+}
+
+// ============================================================
+// TODAY DASHBOARD
+// ============================================================
+function renderHome() {
+  const now = new Date();
+  const DAY_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONTH_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('home-date').textContent =
+    `${DAY_FULL[now.getDay()]}, ${now.getDate()} ${MONTH_FULL[now.getMonth()]} ${now.getFullYear()}`;
+
+  // Kingdom status strip
+  const stripEl = document.getElementById('home-kingdom-strip');
+  const kingdomStart = getKingdomStart();
+  if (kingdomStart) {
+    const t0 = new Date(now); t0.setHours(0,0,0,0);
+    const s0 = new Date(kingdomStart); s0.setHours(0,0,0,0);
+    const dayNum = Math.floor((t0 - s0) / 86400000) + 1;
+    const phase = AGE_PHASES.find(p => dayNum >= p.start && dayNum <= p.end) || AGE_PHASES[AGE_PHASES.length-1];
+    const nextEv = AGE_EVENTS.filter(e => e.day > dayNum).sort((a,b)=>a.day-b.day)[0];
+    let ad = {}; try { ad = JSON.parse(localStorage.getItem('ageData')||'{}'); } catch(_) {}
+    stripEl.innerHTML = `<div class="home-kstrip">
+      <div class="home-kstat">
+        <span class="hk-label">Kingdom Day</span>
+        <span class="hk-val" style="color:var(--accent)">${Math.max(dayNum,1)}</span>
+        <span class="hk-sub">${ad.kingdomNum ? 'Kingdom #'+escHtml(String(ad.kingdomNum)) : 'Week '+Math.max(Math.ceil(dayNum/7),1)}</span>
+      </div>
+      <div class="home-kstat">
+        <span class="hk-label">Phase</span>
+        <span class="hk-val" style="font-size:17px">${phase.icon} ${phase.name}</span>
+        <span class="hk-sub">Days ${phase.start}–${phase.end===9999?'∞':phase.end}</span>
+      </div>
+      <div class="home-kstat" style="cursor:pointer" onclick="goPage('age')">
+        <span class="hk-label">Next Milestone</span>
+        <span class="hk-val" style="font-size:17px">${nextEv ? nextEv.icon+' '+nextEv.name : '🏆 All passed'}</span>
+        <span class="hk-sub">${nextEv ? 'In '+(nextEv.day-dayNum)+' day'+((nextEv.day-dayNum)===1?'':'s') : 'Legacy phase'}</span>
+      </div>
+    </div>`;
+  } else {
+    stripEl.innerHTML = `<div class="card" style="margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <span style="font-size:13px;color:var(--muted)">Set your kingdom open date to unlock day tracking, phase info, and an accurate event calendar.</span>
+      <button class="btn btn-sm" onclick="goPage('age')" style="margin-left:auto">Set it up &rarr;</button>
+    </div>`;
+  }
+
+  // Today's + upcoming events
+  const dow = (now.getDay() + 6) % 7; // 0=Mon
+  const shifted = getShiftedDayEvents();
+  const todayEvs = shifted[dow];
+  document.getElementById('home-today-events').innerHTML = todayEvs.length
+    ? todayEvs.map(ev => `<span class="cal-event-pill ${ev.cls}" style="margin:2px 4px 2px 0">${ev.icon ? ev.icon+' ' : ''}${ev.label}</span>`).join('')
+    : '<div style="font-size:12px;color:var(--muted);padding:4px 0">No scheduled events today — good day to farm &amp; build.</div>';
+
+  const upcoming = [];
+  for (let i = 1; i <= 7 && upcoming.length < 4; i++) {
+    const d = new Date(now); d.setDate(now.getDate() + i);
+    const di = (dow + i) % 7;
+    shifted[di].slice(0, 2).forEach(ev => { if (upcoming.length < 4) upcoming.push({ ...ev, daysFrom: i }); });
+    if (kingdomStart) {
+      const s0 = new Date(kingdomStart); s0.setHours(0,0,0,0);
+      const d0 = new Date(d); d0.setHours(0,0,0,0);
+      const kDay = Math.floor((d0 - s0) / 86400000) + 1;
+      AGE_EVENTS.filter(e => e.day === kDay).forEach(e => {
+        if (upcoming.length < 4) upcoming.push({ label: e.name, icon: e.icon, cls:'', daysFrom: i, _age: true });
+      });
+    }
+  }
+  document.getElementById('home-upcoming').innerHTML = upcoming.length
+    ? upcoming.map(ev => `<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px">
+        <span class="cal-event-pill ${ev.cls||''}" style="margin:0;${ev._age?'background:#a855f715;color:#c084fc;border:1px solid #a855f740':''}">${ev.icon||''} ${ev.label}</span>
+        <span style="margin-left:auto;color:var(--muted);font-weight:700">${ev.daysFrom===1?'Tomorrow':'In '+ev.daysFrom+' days'}</span>
+      </div>`).join('')
+    : '<div style="font-size:12px;color:var(--muted)">Nothing scheduled this week</div>';
+
+  renderHomeDaily();
+
+  // Roster tile count
+  const ownedCount = HEROES.filter(h => roster[h.id] && roster[h.id].owned !== false).length;
+  const rosterTile = document.getElementById('home-tile-roster');
+  if (rosterTile) rosterTile.textContent = ownedCount + ' hero' + (ownedCount===1?'':'es') + ' owned';
+}
+
+function renderHomeDaily() {
+  loadDailyState(); // re-check date rollover
+  const all = DAILY_TASKS.length + (dailyState.custom||[]).length;
+  const done = dailyState.done.length;
+  const pct = all ? Math.round(done/all*100) : 0;
+  document.getElementById('home-daily-label').textContent = `${done} / ${all} done`;
+  document.getElementById('home-daily-pct').textContent = pct + '%';
+  document.getElementById('home-daily-bar').style.width = pct + '%';
+
+  // Show remaining high-priority tasks first, then medium; cap at 6
+  const remaining = DAILY_TASKS.filter(t => !dailyState.done.includes(t.id));
+  const show = [...remaining.filter(t=>t.pri==='high'), ...remaining.filter(t=>t.pri==='med')].slice(0, 6);
+  const el = document.getElementById('home-daily-tasks');
+  el.innerHTML = show.length
+    ? show.map(t => `<div class="home-task" onclick="homeToggleTask('${t.id}')">
+        <span class="ht-box"></span>
+        <span>${t.icon}</span>
+        <span class="ht-text">${escHtml(t.label)}</span>
+      </div>`).join('')
+    : `<div style="text-align:center;padding:14px;font-size:13px;color:var(--s)">🎉 All key tasks done — nice work, Governor!</div>`;
+}
+
+function homeToggleTask(id) {
+  toggleDailyTask(id);
+  renderHomeDaily();
+}
+
+// ============================================================
+// GUIDE TOOLBAR (search + jump chips)
+// ============================================================
+let guideToolbarBuilt = false;
+function initGuideToolbar() {
+  if (guideToolbarBuilt) return;
+  guideToolbarBuilt = true;
+  const cards = document.querySelectorAll('#page-guide .card');
+  const chipsEl = document.getElementById('guide-chips');
+  if (!chipsEl) return;
+  chipsEl.innerHTML = '';
+  cards.forEach((card, i) => {
+    const title = card.querySelector('.card-title');
+    if (!title) return;
+    card.id = card.id || 'gcard-' + i;
+    const chip = document.createElement('span');
+    chip.className = 'guide-chip';
+    chip.textContent = title.textContent.replace(/\s*—.*$/, '').trim();
+    chip.onclick = () => card.scrollIntoView({ behavior:'smooth', block:'start' });
+    chipsEl.appendChild(chip);
+  });
+}
+
+function filterGuide(q) {
+  q = q.trim().toLowerCase();
+  document.querySelectorAll('#page-guide .card').forEach(card => {
+    card.style.display = (!q || card.textContent.toLowerCase().includes(q)) ? '' : 'none';
+  });
+  // Hide grid wrappers whose cards are all hidden
+  document.querySelectorAll('#page-guide .g2').forEach(g => {
+    const anyVisible = [...g.querySelectorAll('.card')].some(c => c.style.display !== 'none');
+    g.style.display = anyVisible ? '' : 'none';
+  });
 }
 
 // ============================================================
@@ -7574,6 +7850,32 @@ function renderCalendar() {
   renderCalendarGrid();
 }
 
+// Kingdom open day-of-week shifts the weekly event schedule
+// (KingShot's weekly reset starts on the same weekday the kingdom opened)
+function getKingdomStart() {
+  try {
+    const ad = JSON.parse(localStorage.getItem('ageData') || '{}');
+    if (ad.startDate) return new Date(ad.startDate + 'T12:00:00'); // noon to avoid timezone date-shift
+  } catch(_) {}
+  return null;
+}
+
+// Weekly events, shifted so index 0 = Monday in real-world time
+function getShiftedDayEvents() {
+  const kingdomStart = getKingdomStart();
+  const weekShift = kingdomStart ? (kingdomStart.getDay() + 6) % 7 : 0; // JS Sun=0 → Mon=0
+  const shiftDay = d => (d + weekShift) % 7;
+  const shifted = Array.from({length:7}, () => []);
+  CAL_FIXED.always.forEach(ev => shifted[shiftDay(ev.day)].push(ev));
+  (calArsenalType===1 ? CAL_FIXED.type1 : CAL_FIXED.type2).forEach(ev => shifted[shiftDay(ev.day)].push(ev));
+  CAL_SPECIALS.forEach(s => {
+    if (calActiveSpecials.has(s.id)) {
+      s.days.forEach(d => shifted[shiftDay(d)].push({ label: s.label, cls: s.cls, icon:'', day:d }));
+    }
+  });
+  return shifted;
+}
+
 function renderCalendarGrid() {
   const today = new Date();
   // Mon-based week
@@ -7584,41 +7886,9 @@ function renderCalendarGrid() {
   const DAY_NAMES = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-  // Build events per day
-  const dayEvents = Array.from({length:7}, () => []);
-
-  CAL_FIXED.always.forEach(ev => dayEvents[ev.day].push(ev));
-  (calArsenalType===1 ? CAL_FIXED.type1 : CAL_FIXED.type2).forEach(ev => dayEvents[ev.day].push(ev));
-  CAL_SPECIALS.forEach(s => {
-    if (calActiveSpecials.has(s.id)) {
-      s.days.forEach(d => dayEvents[d].push({ label: s.label, cls: s.cls, icon:'', day:d }));
-    }
-  });
-
   const todayDow = dow;
-
-  // Kingdom open day-of-week shifts the weekly event schedule
-  // (KingShot's weekly reset starts on the same weekday the kingdom opened)
-  let kingdomStart = null;
-  let weekShift = 0;
-  try {
-    const ad = JSON.parse(localStorage.getItem('ageData') || '{}');
-    if (ad.startDate) {
-      kingdomStart = new Date(ad.startDate + 'T12:00:00'); // noon to avoid timezone date-shift
-      weekShift = (kingdomStart.getDay() + 6) % 7; // convert JS Sun=0 → Mon=0
-    }
-  } catch(_) {}
-
-  // Shift event day indices to match the kingdom's weekly cycle
-  const shiftDay = d => (d + weekShift) % 7;
-  const shiftedDayEvents = Array.from({length:7}, () => []);
-  CAL_FIXED.always.forEach(ev => shiftedDayEvents[shiftDay(ev.day)].push(ev));
-  (calArsenalType===1 ? CAL_FIXED.type1 : CAL_FIXED.type2).forEach(ev => shiftedDayEvents[shiftDay(ev.day)].push(ev));
-  CAL_SPECIALS.forEach(s => {
-    if (calActiveSpecials.has(s.id)) {
-      s.days.forEach(d => shiftedDayEvents[shiftDay(d)].push({ label: s.label, cls: s.cls, icon:'', day:d }));
-    }
-  });
+  const kingdomStart = getKingdomStart();
+  const shiftedDayEvents = getShiftedDayEvents();
 
   const grid = document.getElementById('cal-week-grid');
   grid.innerHTML = DAY_NAMES.map((name, i) => {
@@ -7894,7 +8164,7 @@ renderTierList();
 
 // Fix nav click detection
 document.querySelectorAll('.nav-item').forEach((el, i) => {
-  const pages = ['roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance','kvkplanner','stockpile','powerboard','swordland','alliancetech','indivtech','traincalc','daily','compare','research','settings'];
+  const pages = ['home','roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance','kvkplanner','stockpile','powerboard','swordland','alliancetech','indivtech','traincalc','daily','compare','research','settings'];
   el.addEventListener('click', () => goPage(pages[i]));
 });
 
@@ -7910,6 +8180,7 @@ loadResearchData();
 loadReminderSettings();
 scheduleReminderCheck();
 populateCompareSelects();
+renderHome();
 </script>
 <script>
 if ('serviceWorker' in navigator) {
