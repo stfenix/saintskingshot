@@ -1,4 +1,4 @@
-const CACHE = 'kingshot-v4';
+const CACHE = 'kingshot-v5';
 const PRECACHE = ['/', '/index.html'];
 
 self.addEventListener('install', e => {

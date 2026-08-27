@@ -1594,6 +1594,43 @@ document.getElementById('page-guide').insertAdjacentHTML('beforeend', `
   </div>
 
   <div class="card" style="margin-top:12px">
+    <div class="card-title">🛡️ Alliance Championship — 2-1 Lane Strategy</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">6 alliances · 3 lanes · 5 rounds over ~3 days. Unlocks at TC 10. Battles are auto-resolved solo marches — hero widgets do NOT apply.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:12px">
+      <div style="background:var(--surface2);border-radius:8px;padding:12px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:6px">How It Works</div>
+        <div style="font-size:12px;line-height:1.9;color:var(--muted)">
+          <div>• <strong style="color:var(--text)">Registration (2 days):</strong> each member registers one march into 1 of 3 lanes</div>
+          <div>• Only the <strong style="color:var(--text)">top 20 strongest marches per lane</strong> count toward lane power</div>
+          <div>• <strong style="color:var(--text)">Matchmaking (1 day)</strong> → 5 battle rounds with ~11h prep between rounds to re-arrange lanes</div>
+          <div>• Battles auto-resolve: units attack the <strong style="color:var(--text)">lowest-power enemy first</strong></div>
+          <div>• A winning march exits after defeating <strong style="color:var(--text)">2 enemies</strong> — one player can never carry a whole lane</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px">
+        <div style="font-weight:700;color:var(--s);margin-bottom:6px">The 2-1 Lane Strategy</div>
+        <div style="font-size:12px;line-height:1.9;color:var(--muted)">
+          <div>Win the round by winning <strong style="color:var(--text)">2 of 3 lanes</strong> — so stack, don't spread:</div>
+          <div>• <strong style="color:var(--text)">2 priority lanes:</strong> your 20 strongest per lane, best solo heroes, 50/20/30 troops</div>
+          <div>• <strong style="color:var(--text)">1 sacrifice lane:</strong> low-power members only — accept the loss</div>
+          <div style="margin-top:4px">A well-led alliance beats a stronger one this way: concentrated lanes beat evenly-spread power.</div>
+          <div style="margin-top:4px"><strong style="color:var(--text)">Counter-pick between rounds:</strong> your weakest lane vs their strongest, your strongest vs their 2nd strongest.</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:6px">March Setup &amp; Rewards</div>
+        <div style="font-size:12px;line-height:1.9;color:var(--muted)">
+          <div>• <strong style="color:var(--text)">Widgets don't apply</strong> — pick raw-stat solo heroes (Gen 3: Amadeus·Petra·Jaeger, Gen 4: Alcar·Margot·Rosa, Gen 5: Long Fei·Thrud·Vivian)</div>
+          <div>• Troops: <strong style="color:var(--text)">50% Inf / 20% Cav / 30% Arc</strong> baseline</div>
+          <div>• Activate <strong style="color:var(--text)">pet skills + city buffs before registering</strong> — they persist all event</div>
+          <div>• Rewards: battle (per knockout), round (win/loss), season ranking, + Championship Shop</div>
+          <div>• <strong style="color:var(--text)">Shop priority:</strong> Widgets → hero-exclusive gear</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
     <div class="card-title">⚔️ Hero Lineups by Generation</div>
     <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Widgets only apply in Rally/Garrison — not solo attacks. Solo = use raw stat leaders instead.</div>
     <div class="scrollable">
@@ -3889,20 +3926,20 @@ const EVENTS = [
   // ALLIANCE CHAMPIONSHIP — ALLIANCE PVP
   // ============================================================
   { id:'allychamp', name:'Alliance Championship', icon:'🛡', kind:'combat',
-    desc:'Alliance vs alliance PvP — pure team coordination. Best heroes + matched troops + alliance synergy.',
-    troopPreset:'match-leader',
+    desc:'6 alliances, 3 lanes, 5 rounds of auto-resolved SOLO march battles. Widgets do NOT apply — pick raw-stat heroes, one per class.',
+    troopPreset:{inf:50,cav:20,arc:30},
     roles:[
-      { key:'rally', label:'Rally Lead', count:1, priority:'rallyLeader', note:'Top offensive widget hero.' },
-      { key:'joiner1', label:'Joiner #1', count:1, priority:'rallyJoiner', note:'Chenko + Vivian top priority.' },
-      { key:'joiner2', label:'Joiner #2', count:1, priority:'rallyJoiner', note:'Stack non-chance buffs.' },
-      { key:'joiner3', label:'Joiner #3', count:1, priority:'rallyJoiner', note:'Margot for reliable cavalry stacking.' },
+      { key:'inf', label:'Infantry Hero', count:1, priority:'arena', cls:'Infantry', note:'Raw stats only — widgets don\'t work in solo battles. Gen 5+: Long Fei > Amadeus.' },
+      { key:'cav', label:'Cavalry Hero', count:1, priority:'arena', cls:'Cavalry', note:'Highest-stat cavalry (Petra Gen 3, Margot Gen 4, Thrud Gen 5).' },
+      { key:'arc', label:'Archer Hero', count:1, priority:'arena', cls:'Archer', note:'Highest-stat archer (Jaeger over Marlin solo — better raw stats).' },
     ],
     tips:[
-      'Coordinate rallies on Discord/in-app — solo rallies in Alliance Champ get crushed',
-      'Designated tank player garrisons the alliance flag/HQ — needs full defensive widget stack',
-      'Score scales with kills AND captures — don\'t just rally, hold objectives too',
-      'Save Action Points for the final hours — last-minute scoring decides the winner',
-      'Match alliance roles: 2-3 dedicated rally leaders, 1-2 garrisons, rest as joiners',
+      '🎯 2-1 lane strategy wins: stack your strongest players into 2 lanes, sacrifice the 3rd with low-power members — 2 lane wins take the round',
+      '⚖️ Only the top 20 strongest marches per lane count toward lane power — 21st+ adds nothing, spread extras to other lanes',
+      '🐾 Activate pet skills + city buffs BEFORE registering — buffs at registration persist for the entire event',
+      '🤖 Battles auto-resolve: units target the LOWEST-power enemy first, and a winner exits after beating 2 enemies — power sorting inside the lane matters',
+      '🕵️ Counter-pick after matchmaking: your weakest lane vs their strongest, your strongest vs their 2nd — leadership placement beats raw power',
+      '🛒 Shop priority: Widgets first (permanent progression), then hero-exclusive gear items',
     ]
   },
 
@@ -4884,8 +4921,8 @@ function getBestForRole(roleKey, exclude=[]) {
   });
 }
 
-function getIdealHero(roleKey, excludeIds=[]) {
-  return HEROES.filter(h => !excludeIds.includes(h.id)).sort((a,b) => {
+function getIdealHero(roleKey, excludeIds=[], cls=null) {
+  return HEROES.filter(h => !excludeIds.includes(h.id) && (!cls || h.class === cls)).sort((a,b) => {
     const as = TIER_SCORE[a.tiers[roleKey]] || 0;
     const bs = TIER_SCORE[b.tiers[roleKey]] || 0;
     return bs - as;
@@ -4908,10 +4945,11 @@ function buildEvent(ev) {
   const usedIds = [];
 
   ev.roles.forEach(role => {
-    const candidates = getBestForRole(role.priority, usedIds);
+    let candidates = getBestForRole(role.priority, usedIds);
+    if (role.cls) candidates = candidates.filter(h => h.class === role.cls);
     const hero = candidates[0] || null;
     if (hero) usedIds.push(hero.id);
-    const ideal = getIdealHero(role.priority, usedIds.filter(id => id !== (hero||{}).id));
+    const ideal = getIdealHero(role.priority, usedIds.filter(id => id !== (hero||{}).id), role.cls || null);
     slots.push({ role, hero, ideal });
   });
 
@@ -5177,7 +5215,13 @@ function generateDynamicTips(ev, slots) {
     }
 
     const leaderH = slots[0]?.hero;
-    const offensiveEvents = ['rally','kvk','sanctuary','allout','swordland','cesares','allychamp','outposts','flamedragon','alliancebrawl','triallianceclash'];
+    // allychamp excluded: solo marches use a fixed 50/20/30 split, not leader-matched troops
+    const offensiveEvents = ['rally','kvk','sanctuary','allout','swordland','cesares','outposts','flamedragon','alliancebrawl','triallianceclash'];
+    if (ev.id === 'allychamp') {
+      const infPct = total > 0 ? Math.round(classTotal('inf')/total*100) : 0;
+      const icon = infPct >= 45 ? '✅' : infPct >= 30 ? '⚠️' : '❌';
+      tips.push(`${icon} <strong>Infantry front line:</strong> ${fmtCount(classTotal('inf'))} (${infPct}% of ${fmtCount(total)}). Championship marches auto-battle — target ~50% Infantry so your damage dealers survive the exchange (50/20/30 baseline).`);
+    }
     if (leaderH && offensiveEvents.includes(ev.id)) {
       const cls = leaderH.class === 'Infantry' ? 'inf' : leaderH.class === 'Cavalry' ? 'cav' : 'arc';
       const matchCount = classTotal(cls);
