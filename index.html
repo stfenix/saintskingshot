@@ -2414,6 +2414,11 @@ document.getElementById('page-guide').insertAdjacentHTML('beforeend', `
         <label class="tf-label">Target kingdom (optional)
           <input id="tf-dst" type="number" min="1" placeholder="e.g. 1750" oninput="tfSave()"></label>
       </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <button class="btn btn-outline btn-sm" onclick="tfLookupKingdoms()">🔍 Look up kingdoms</button>
+        <span style="font-size:10px;color:var(--muted)">Pulls each kingdom's age + the target's KvK record. Power Cap &amp; transfer groups live only inside the game's transfer panel — no API publishes them.</span>
+      </div>
+      <div id="tf-kingdom-info" style="display:none;font-size:12px;color:var(--muted);background:var(--surface2);border-radius:6px;padding:10px 12px;border:1px solid var(--border);margin-bottom:10px;line-height:1.8"></div>
       <div style="font-size:11px;color:var(--muted);padding:8px 10px;background:var(--surface2);border-radius:6px" id="tf-nontroop-line">
         Non-troop power appears here once total &amp; troop power are set — context only, <strong>not</strong> the Transfer Score.
       </div>
@@ -8643,6 +8648,59 @@ function renderTransferResult() {
       <div><div style="color:var(--text);font-weight:600">${r.label}</div>
       <div style="color:var(--muted);font-size:11px">${r.note}</div></div>
     </div>`).join('');
+}
+
+// Auto-pull what the community API actually has for the entered kingdoms:
+// open date / age for both, and the target's recent KvK record. Power Cap
+// and transfer groups exist only inside the in-game transfer panel.
+async function tfLookupKingdoms() {
+  const src = parseInt(transferData.src) || null;
+  const dst = parseInt(transferData.dst) || null;
+  const el = document.getElementById('tf-kingdom-info');
+  el.style.display = '';
+  if (!src && !dst) { el.textContent = 'Enter a source and/or target kingdom number first.'; return; }
+  el.innerHTML = '<span class="spin">⟳</span> Looking up…';
+
+  const rows = [];
+  const ages = {};
+  for (const [label, k] of [['Source', src], ['Target', dst]]) {
+    if (!k) continue;
+    try {
+      const json = await ksFetch(`/kingdom-tracker?kingdomId=${k}`);
+      const s = json.data?.servers?.[0];
+      if (s) {
+        const open = new Date(s.openTime);
+        const days = Math.floor((Date.now() - open) / 86400000) + 1;
+        ages[label] = days;
+        rows.push(`<div><span class="api-badge">✓</span> <strong style="color:var(--text)">${label} #${k}</strong> — opened ${open.toLocaleDateString()}, <strong style="color:var(--text)">${days} days old</strong>${s.isExclusive ? ' · Exclusive server' : ''}</div>`);
+      } else {
+        rows.push(`<div>⚠️ ${label} #${k} — not found in the kingdom database.</div>`);
+      }
+    } catch (e) {
+      rows.push(`<div>✗ ${label} #${k} — lookup failed (API unavailable).</div>`);
+    }
+  }
+
+  if (ages.Source != null && ages.Target != null) {
+    const gap = Math.abs(ages.Source - ages.Target);
+    const likely = gap <= 60;
+    rows.push(`<div style="padding:6px 10px;background:var(--surface3);border-radius:6px;border-left:3px solid ${likely ? 'var(--s)' : 'var(--red)'}">
+      Age gap: <strong style="color:var(--text)">${gap} days</strong> — transfer groups are typically banded by kingdom age &amp; power, so a ${likely ? 'small gap makes the same group plausible' : 'gap this large makes the same group unlikely'}. Only the in-game transfer panel can confirm.</div>`);
+  }
+
+  if (dst) {
+    try {
+      const json = await ksFetch(`/kvk/matches?kingdom_a=${dst}&limit=6`);
+      const matches = (json.status === 'success' && json.data) || [];
+      if (matches.length) {
+        const wins = matches.filter(m => m.castle_winner === dst).length;
+        rows.push(`<div>🏆 Target KvK record (last ${matches.length}): <strong style="color:${wins >= matches.length / 2 ? 'var(--s)' : 'var(--red)'}">${wins}W – ${matches.length - wins}L</strong> — ${wins >= matches.length / 2 ? 'a winning kingdom; expect demand (and possibly a stricter cap)' : 'a struggling kingdom; may be actively recruiting transfers'}.</div>`);
+      }
+    } catch (e) { /* KvK record is a bonus — fail silently */ }
+  }
+
+  rows.push(`<div style="font-size:10px;margin-top:4px">Power Cap, transfer group and rating are set per event inside the game (the cap by the destination's leadership) — read them off the destination's transfer panel and enter them in Step 3.</div>`);
+  el.innerHTML = rows.join('');
 }
 
 // ============================================================
