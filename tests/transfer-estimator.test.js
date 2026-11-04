@@ -17,10 +17,10 @@ function test(name, fn) {
 
 console.log('Acceptance criteria');
 
-// 1. Snow White September data → observed game result was 8, historic
+// 1. Benchmark A September data → observed game result was 8, historic
 //    first estimate 8–10, no claim a general-purpose model was proved.
-test('AC1: Snow White benchmark preserved; dev-based estimate stays a humble range', () => {
-  const sw = TRANSFER_SAMPLES.find(s => s.id === 'snow-white-2026-09');
+test('AC1: Benchmark A preserved; dev-based estimate is a tight range containing 8', () => {
+  const sw = TRANSFER_SAMPLES.find(s => s.id === 'benchmark-a-2026-09');
   assert.strictEqual(sw.actual_passes, 8);
   assert.deepStrictEqual(sw.estimated_passes_at_time, [8, 10]);
   assert.strictEqual(sw.transfer_score, null, 'estimated score must never be stored as an observed score');
@@ -31,12 +31,14 @@ test('AC1: Snow White benchmark preserved; dev-based estimate stays a humble ran
   assert.strictEqual(est.tier, 'C');
   assert.ok(est.range[0] <= 8 && 8 <= est.range[1], `range ${est.range} must contain the observed 8`);
   assert.ok(['Low', 'Very low'].includes(est.confidence), 'two samples can never justify high confidence');
-  assert.strictEqual(est.best, null, 'no false-precision best guess in Tier C');
+  assert.ok(est.best >= est.range[0] && est.best <= est.range[1], 'central guess must sit inside the range');
+  // Tightness: a profile matching a confirmed benchmark must not get a sprawling range.
+  assert.ok(est.range[1] - est.range[0] <= 3, `near-benchmark range ${est.range} should be tight (width ≤ 3)`);
 });
 
 // 2. Comparison example → 10 observed passes and 329,379 observed score as a distinct sample.
-test('AC2: comparison sample is a distinct observed record; its score reproduces ~10 passes', () => {
-  const cmp = TRANSFER_SAMPLES.find(s => s.id === 'comparison-2026-09');
+test('AC2: Benchmark B is a distinct observed record; its score reproduces ~10 passes', () => {
+  const cmp = TRANSFER_SAMPLES.find(s => s.id === 'benchmark-b-2026-09');
   assert.strictEqual(cmp.actual_passes, 10);
   assert.strictEqual(cmp.transfer_score, 329379);
   const est = computeTransferEstimate({ transferScore: 329379, groupRating: 1 });
