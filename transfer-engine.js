@@ -7,14 +7,14 @@
 // Pure functions only — no DOM access — so they can be unit-tested.
 // ============================================================
 
-const TRANSFER_MODEL_VERSION = '1.0 (last reviewed 2026-11-04)';
+const TRANSFER_MODEL_VERSION = '1.1 (last reviewed 2026-11-04)';
 const TRANSFER_DISCLAIMER = 'Estimated only — confirm the number in the KingShot Transfer screen.';
 
 // Calibration observations. Keep null for unknown fields — never assume zero.
 // Never mix inferred scores and observed game scores in one column.
 const TRANSFER_SAMPLES = [
   {
-    id: 'snow-white-2026-09',
+    id: 'benchmark-a-2026-09',
     observed_date: '2026-09-13',
     displayed_power: 95600000,
     troop_power: 40300000,
@@ -32,7 +32,7 @@ const TRANSFER_SAMPLES = [
     notes: 'Confirmed pass quote; transfer score was only a previous estimate'
   },
   {
-    id: 'comparison-2026-09',
+    id: 'benchmark-b-2026-09',
     observed_date: '2026-09',
     governor_gear_power: 13420000,
     hero_power: 21020000,
@@ -147,36 +147,49 @@ function computeTransferEstimate(d) {
   const have = devFields.filter(f => d[f] != null && d[f] > 0);
 
   if (have.length >= 2) {
-    // Nearest-neighbour style: scale each benchmark's actual passes by the
-    // geometric-mean ratio of shared development fields.
-    const ests = TRANSFER_SAMPLES.map(s => {
+    // Similarity-weighted estimate: scale each benchmark's actual passes by the
+    // geometric-mean ratio of shared development fields, then weight each
+    // scaled estimate by how closely the account resembles that benchmark
+    // (mean |log ratio| distance). A profile that nearly matches a benchmark
+    // gets a tight range around it; a distant profile gets a wider one.
+    const comps = TRANSFER_SAMPLES.map(s => {
       const ratios = have
         .map(f => (s[FIELD_MAP[f]] != null && s[FIELD_MAP[f]] > 0) ? d[f] / s[FIELD_MAP[f]] : null)
         .filter(r => r !== null && isFinite(r) && r > 0);
       if (!ratios.length) return null;
-      const gmean = Math.exp(ratios.reduce((a, r) => a + Math.log(r), 0) / ratios.length);
-      return s.actual_passes * gmean;
-    }).filter(e => e !== null);
+      const logs = ratios.map(r => Math.log(r));
+      const gmean = Math.exp(logs.reduce((a, l) => a + l, 0) / logs.length);
+      const dist = logs.reduce((a, l) => a + Math.abs(l), 0) / logs.length;
+      return { est: s.actual_passes * gmean, dist };
+    }).filter(c => c !== null);
 
-    let lo = clampPasses(Math.floor(Math.min(...ests)) - 1);
-    let hi = clampPasses(Math.ceil(Math.max(...ests)) + 1);
+    const wsum = comps.reduce((a, c) => a + 1 / (c.dist + 0.03), 0);
+    const center = comps.reduce((a, c) => a + c.est / (c.dist + 0.03), 0) / wsum;
+    const variance = comps.reduce((a, c) => a + Math.pow(c.est - center, 2) / (c.dist + 0.03), 0) / wsum;
+    const dNear = Math.min(...comps.map(c => c.dist));
+    // Spread: at least ±1 (two samples can never justify less), grows with
+    // benchmark disagreement and with distance from the nearest benchmark.
+    let spread = Math.max(1, Math.sqrt(variance)) + Math.min(2, dNear * 3);
     let confidence = 'Low';
 
     const absent = devFields.filter(f => !(d[f] != null && d[f] > 0));
     if (absent.length > 0) {
-      lo = clampPasses(lo - 1); hi = clampPasses(hi + 1);
+      spread += 1;
       confidence = 'Very low';
       const NICE = { govGear: 'Governor Gear Power', heroPower: 'Hero Power', petPower: 'Pet Power', masterPower: 'Master Power' };
       absent.forEach(f => missing.push(NICE[f]));
     }
     if (d.groupRating == null) missing.push('Transfer group rating / comparison value');
 
-    reasons.push('Compared your development stats to the only two confirmed observations (Snow White, 8 actual passes; comparison account, 10 actual passes — both Sept 2026).');
-    reasons.push('Two samples cannot fit a universal cost curve, so the range is kept deliberately wide. Troop power is ignored for pass cost by design.');
+    const lo = clampPasses(center - spread);
+    const hi = clampPasses(center + spread);
+
+    reasons.push('Compared your development stats to the two confirmed observations (Benchmark A: 8 actual passes; Benchmark B: 10 actual passes — both Sept 2026), weighted by how closely your profile matches each.');
+    reasons.push('The closer your stats sit to a confirmed benchmark, the tighter this range gets — but two samples can never justify a single exact number. Troop power is ignored for pass cost by design.');
     reasons.push('Your in-game Transfer Score, if the event screen shows one, beats any figure inferred from these stats — enter it above if you can see it.');
     return {
       tier: 'C', modelVersion: TRANSFER_MODEL_VERSION, disclaimer: TRANSFER_DISCLAIMER,
-      range: [lo, hi], best: null,
+      range: [lo, hi], best: clampPasses(center),
       confidence, reasons, missing, nonTroopPower: nonTroop,
     };
   }

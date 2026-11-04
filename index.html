@@ -120,6 +120,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
   border-radius: 6px; padding: 8px 10px; font-size: 13px; font-family: inherit;
 }
 .tf-label input:focus, .tf-label select:focus { outline: none; border-color: var(--accent); }
+.tf-hint { font-size: 10px; color: var(--muted); opacity: .85; line-height: 1.5; margin-top: -2px; }
 .tf-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
 .tf-elig-row { display: flex; align-items: baseline; gap: 10px; padding: 8px 12px; background: var(--surface2); border-radius: 6px; margin-bottom: 6px; font-size: 12px; }
 .tf-badge { flex-shrink: 0; min-width: 72px; text-align: center; font-size: 10px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
@@ -2392,12 +2393,16 @@ document.getElementById('page-guide').insertAdjacentHTML('beforeend', `
       <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Power fields accept <code>95,600,000</code>, <code>95.6m</code> or <code>95,6M</code>. Only fill what you know — missing data lowers confidence, it is never invented.</div>
       <div class="tf-grid2">
         <label class="tf-label">Overall displayed power
+          <span class="tf-hint">The big Power number on your Governor Profile</span>
           <input id="tf-total" placeholder="e.g. 95.6m" oninput="tfSave()"></label>
         <label class="tf-label">Troop power
+          <span class="tf-hint">Profile → tap your Power number → "Troops" row</span>
           <input id="tf-troop" placeholder="e.g. 40.3m" oninput="tfSave()"></label>
         <label class="tf-label">Town Center level
+          <span class="tf-hint">Your TC building level (TG counts as 30+)</span>
           <input id="tf-tc" type="number" min="1" max="35" placeholder="e.g. 27" oninput="tfSave()"></label>
         <label class="tf-label">Truegold progression
+          <span class="tf-hint">Your Truegold TC tier, if reached</span>
           <select id="tf-tg" onchange="tfSave()">
             <option value="">—</option><option value="0">None (pre-TG)</option>
             <option value="1">TG1</option><option value="2">TG2</option><option value="3">TG3</option>
@@ -2416,24 +2421,34 @@ document.getElementById('page-guide').insertAdjacentHTML('beforeend', `
 
     <div class="card">
       <div class="card-title">Step 2 — Development Power (improves the estimate)</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:10px">From your profile/power screens. <strong style="color:var(--text)">Troop power is never used for pass cost</strong> — only development drives the Transfer Score.</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.8;padding:8px 10px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent);margin-bottom:10px">
+        <strong style="color:var(--text)">Where to find these:</strong> open your <strong style="color:var(--text)">Governor Profile</strong> and tap your total <strong style="color:var(--text)">Power</strong> number — the Power breakdown screen lists every category. Copy each row exactly as shown there. The closer these four are to a confirmed benchmark, the tighter your estimate. <strong style="color:var(--text)">Troop power is never used for pass cost.</strong>
+      </div>
       <div class="tf-grid2">
         <label class="tf-label">Governor Gear Power
-          <input id="tf-govgear" placeholder="e.g. 12.5m" oninput="tfSave()"></label>
+          <span class="tf-hint">Breakdown row "Governor Gear" — your chief's own gear, NOT hero gear</span>
+          <input id="tf-govgear" placeholder="e.g. 12,527,040" oninput="tfSave()"></label>
         <label class="tf-label">Hero Power
-          <input id="tf-hero" placeholder="e.g. 21.8m" oninput="tfSave()"></label>
+          <span class="tf-hint">Breakdown row "Heroes" — levels, stars &amp; skills combined</span>
+          <input id="tf-hero" placeholder="e.g. 21,791,408" oninput="tfSave()"></label>
         <label class="tf-label">Pet Power
-          <input id="tf-pet" placeholder="e.g. 6.8m" oninput="tfSave()"></label>
+          <span class="tf-hint">Breakdown row "Pets"</span>
+          <input id="tf-pet" placeholder="e.g. 6,793,200" oninput="tfSave()"></label>
         <label class="tf-label">Master Power
-          <input id="tf-master" placeholder="e.g. 5.4m" oninput="tfSave()"></label>
+          <span class="tf-hint">Breakdown row "Masters"</span>
+          <input id="tf-master" placeholder="e.g. 5,444,760" oninput="tfSave()"></label>
         <label class="tf-label">Governor Charm Power (optional)
+          <span class="tf-hint">Breakdown row "Charms", if listed separately</span>
           <input id="tf-charm" placeholder="number or blank" oninput="tfSave()"></label>
-        <label class="tf-label">Hero Gear Power (optional, if shown separately)
-          <input id="tf-herogear" placeholder="avoid double counting" oninput="tfSave()"></label>
+        <label class="tf-label">Hero Gear Power (optional)
+          <span class="tf-hint">ONLY if the breakdown shows "Hero Gear" as its own row — skip if it's inside Heroes (avoids double counting)</span>
+          <input id="tf-herogear" placeholder="usually leave blank" oninput="tfSave()"></label>
         <label class="tf-label">Tech / Research Power (optional)
+          <span class="tf-hint">Breakdown row "Tech" or "Research"</span>
           <input id="tf-tech" placeholder="if shown" oninput="tfSave()"></label>
-        <label class="tf-label" style="border-left:3px solid var(--accent);padding-left:8px">In-game Transfer Score (if the event shows it)
-          <input id="tf-score" placeholder="e.g. 329379 — beats all estimates" oninput="tfSave()"></label>
+        <label class="tf-label" style="border-left:3px solid var(--accent);padding-left:8px">In-game Transfer Score
+          <span class="tf-hint">Shown on the Kingdom Transfer event screen itself — beats every estimate from the fields above</span>
+          <input id="tf-score" placeholder="e.g. 329379" oninput="tfSave()"></label>
       </div>
     </div>
   </div>
@@ -2443,6 +2458,7 @@ document.getElementById('page-guide').insertAdjacentHTML('beforeend', `
       <div class="card-title">Step 3 — Transfer Context</div>
       <div class="tf-grid2">
         <label class="tf-label" style="border-left:3px solid var(--s);padding-left:8px">Actual in-game pass quote (if seen)
+          <span class="tf-hint">The exact pass number the Transfer screen quotes you — overrides all estimates</span>
           <input id="tf-quote" type="number" min="1" max="50" placeholder="the Transfer screen number" oninput="tfSave()"></label>
         <label class="tf-label">Transfer Passes owned
           <input id="tf-owned" type="number" min="0" placeholder="e.g. 3" oninput="tfSave()"></label>
@@ -2486,12 +2502,12 @@ document.getElementById('page-guide').insertAdjacentHTML('beforeend', `
       <div class="card-title">📐 Calibration Observations (all of them)</div>
       <div style="font-size:12px;color:var(--muted);line-height:1.8">
         <div style="padding:10px 12px;background:var(--surface2);border-radius:6px;margin-bottom:8px">
-          <strong style="color:var(--text)">Snow White — 12–13 Sept 2026</strong><br>
+          <strong style="color:var(--text)">Benchmark A — 12–13 Sept 2026</strong><br>
           95.6M total · 40.3M troops · Gov Gear 12,527,040 · Hero 21,791,408 · Pet 6,793,200 · Master 5,444,760 · Charms all Lv 3 · TG2<br>
           Early estimate: 8–10 passes (score ~300–350k, <em>never confirmed</em>) → <strong style="color:var(--s)">actual in-game: 8 passes</strong>
         </div>
         <div style="padding:10px 12px;background:var(--surface2);border-radius:6px;margin-bottom:8px">
-          <strong style="color:var(--text)">Comparison account — Sept 2026</strong><br>
+          <strong style="color:var(--text)">Benchmark B — Sept 2026</strong><br>
           Gov Gear 13.42M · Hero 21.02M · Pet 6.57M · Master 5.84M · TG3<br>
           <strong style="color:var(--s)">Observed Transfer Score 329,379 → 10 passes</strong> (incomplete breakdown, group unknown)
         </div>
