@@ -1,5 +1,5 @@
-const CACHE = 'kingshot-v3';
-const PRECACHE = ['/', '/index.html'];
+const CACHE = 'kingshot-v6';
+const PRECACHE = ['/', '/index.html', '/transfer-engine.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(
