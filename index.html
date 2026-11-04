@@ -113,6 +113,21 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', syste
 .home-bear-slot .hb-note { font-size: 10px; color: var(--muted); line-height: 1.5; }
 .home-bear-slot.empty { border-style: dashed; opacity: .6; }
 
+/* ── TRANSFER ESTIMATOR ── */
+.tf-label { font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+.tf-label input, .tf-label select {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+  border-radius: 6px; padding: 8px 10px; font-size: 13px; font-family: inherit;
+}
+.tf-label input:focus, .tf-label select:focus { outline: none; border-color: var(--accent); }
+.tf-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+.tf-elig-row { display: flex; align-items: baseline; gap: 10px; padding: 8px 12px; background: var(--surface2); border-radius: 6px; margin-bottom: 6px; font-size: 12px; }
+.tf-badge { flex-shrink: 0; min-width: 72px; text-align: center; font-size: 10px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
+.tf-badge.pass { background: #4ade8018; color: var(--s); border: 1px solid #4ade8040; }
+.tf-badge.fail { background: #ff4f4f18; color: var(--red); border: 1px solid #ff4f4f40; }
+.tf-badge.unknown { background: var(--surface3); color: var(--muted); border: 1px solid var(--border); }
+.tf-result-passes { font-size: 30px; font-weight: 800; color: var(--accent); line-height: 1.1; }
+
 /* ── GUIDE TOOLBAR ── */
 .guide-toolbar {
   position: sticky; top: 0; z-index: 50; background: var(--bg);
@@ -711,6 +726,7 @@ option { background: var(--surface2); }
   <div class="nav-section">
     <div class="nav-label">Tools</div>
     <div class="nav-item" onclick="goPage('traincalc')"><span class="icon">&#9201;</span>Training Calc</div>
+    <div class="nav-item" onclick="goPage('transfer')"><span class="icon">&#9992;&#65039;</span>Transfer Estimator</div>
     <div class="nav-item" onclick="goPage('daily')"><span class="icon">&#9989;</span>Daily Checklist</div>
     <div class="nav-item" onclick="goPage('compare')"><span class="icon">&#9878;</span>Hero Compare</div>
     <div class="nav-item" onclick="goPage('research')"><span class="icon">&#127981;</span>Research Tracker</div>
@@ -784,6 +800,7 @@ option { background: var(--surface2); }
       <div class="home-tile" onclick="goPage('traincalc')"><span class="ht-icon">&#9201;</span><span class="ht-label">Training Calc</span><span class="ht-sub">Points per hour</span></div>
       <div class="home-tile" onclick="goPage('alliance')"><span class="ht-icon">&#127756;</span><span class="ht-label">Alliance HQ</span><span class="ht-sub">Members &amp; lookup</span></div>
       <div class="home-tile" onclick="goPage('powerup')"><span class="ht-icon">&#128200;</span><span class="ht-label">Power Up</span><span class="ht-sub">Next best upgrade</span></div>
+      <div class="home-tile" onclick="goPage('transfer')"><span class="ht-icon">&#9992;&#65039;</span><span class="ht-label">Transfer Est.</span><span class="ht-sub">Pass cost &amp; eligibility</span></div>
     </div>
   </div>
 </div>
@@ -2357,6 +2374,149 @@ document.getElementById('page-guide').insertAdjacentHTML('beforeend', `
 `);
 </script>
 
+<!-- ===== KINGDOM TRANSFER PASS ESTIMATOR ===== -->
+<div class="page" id="page-transfer">
+  <div class="page-header">
+    <h2>Kingdom Transfer Estimator</h2>
+    <p>Rough Transfer Pass estimate, eligibility checklist, and planning summary. Community estimator — <strong>not</strong> an official KingShot calculator.</p>
+  </div>
+
+  <div class="warn-box" style="margin-bottom:14px">
+    ⚠️ <strong>Estimated only — confirm the number in the KingShot Transfer screen.</strong>
+    The game's formula is not publicly disclosed; this tool scales from two recorded September 2026 observations and keeps its ranges honest. Last reviewed: 4 Nov 2026.
+  </div>
+
+  <div class="g2" style="align-items:start;margin-bottom:12px">
+    <div class="card">
+      <div class="card-title">Step 1 — Basic Account Info</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Power fields accept <code>95,600,000</code>, <code>95.6m</code> or <code>95,6M</code>. Only fill what you know — missing data lowers confidence, it is never invented.</div>
+      <div class="tf-grid2">
+        <label class="tf-label">Overall displayed power
+          <input id="tf-total" placeholder="e.g. 95.6m" oninput="tfSave()"></label>
+        <label class="tf-label">Troop power
+          <input id="tf-troop" placeholder="e.g. 40.3m" oninput="tfSave()"></label>
+        <label class="tf-label">Town Center level
+          <input id="tf-tc" type="number" min="1" max="35" placeholder="e.g. 27" oninput="tfSave()"></label>
+        <label class="tf-label">Truegold progression
+          <select id="tf-tg" onchange="tfSave()">
+            <option value="">—</option><option value="0">None (pre-TG)</option>
+            <option value="1">TG1</option><option value="2">TG2</option><option value="3">TG3</option>
+            <option value="4">TG4</option><option value="5">TG5</option><option value="6">TG6</option>
+            <option value="7">TG7</option><option value="8">TG8+</option>
+          </select></label>
+        <label class="tf-label">Source kingdom (optional)
+          <input id="tf-src" type="number" min="1" placeholder="e.g. 1898" oninput="tfSave()"></label>
+        <label class="tf-label">Target kingdom (optional)
+          <input id="tf-dst" type="number" min="1" placeholder="e.g. 1750" oninput="tfSave()"></label>
+      </div>
+      <div style="font-size:11px;color:var(--muted);padding:8px 10px;background:var(--surface2);border-radius:6px" id="tf-nontroop-line">
+        Non-troop power appears here once total &amp; troop power are set — context only, <strong>not</strong> the Transfer Score.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Step 2 — Development Power (improves the estimate)</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px">From your profile/power screens. <strong style="color:var(--text)">Troop power is never used for pass cost</strong> — only development drives the Transfer Score.</div>
+      <div class="tf-grid2">
+        <label class="tf-label">Governor Gear Power
+          <input id="tf-govgear" placeholder="e.g. 12.5m" oninput="tfSave()"></label>
+        <label class="tf-label">Hero Power
+          <input id="tf-hero" placeholder="e.g. 21.8m" oninput="tfSave()"></label>
+        <label class="tf-label">Pet Power
+          <input id="tf-pet" placeholder="e.g. 6.8m" oninput="tfSave()"></label>
+        <label class="tf-label">Master Power
+          <input id="tf-master" placeholder="e.g. 5.4m" oninput="tfSave()"></label>
+        <label class="tf-label">Governor Charm Power (optional)
+          <input id="tf-charm" placeholder="number or blank" oninput="tfSave()"></label>
+        <label class="tf-label">Hero Gear Power (optional, if shown separately)
+          <input id="tf-herogear" placeholder="avoid double counting" oninput="tfSave()"></label>
+        <label class="tf-label">Tech / Research Power (optional)
+          <input id="tf-tech" placeholder="if shown" oninput="tfSave()"></label>
+        <label class="tf-label" style="border-left:3px solid var(--accent);padding-left:8px">In-game Transfer Score (if the event shows it)
+          <input id="tf-score" placeholder="e.g. 329379 — beats all estimates" oninput="tfSave()"></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2" style="align-items:start;margin-bottom:12px">
+    <div class="card">
+      <div class="card-title">Step 3 — Transfer Context</div>
+      <div class="tf-grid2">
+        <label class="tf-label" style="border-left:3px solid var(--s);padding-left:8px">Actual in-game pass quote (if seen)
+          <input id="tf-quote" type="number" min="1" max="50" placeholder="the Transfer screen number" oninput="tfSave()"></label>
+        <label class="tf-label">Transfer Passes owned
+          <input id="tf-owned" type="number" min="0" placeholder="e.g. 3" oninput="tfSave()"></label>
+        <label class="tf-label">Transfer group rating / comparison (if shown)
+          <input id="tf-grouprating" placeholder="exact value from the panel" oninput="tfSave()"></label>
+        <label class="tf-label">Target kingdom Power Cap
+          <input id="tf-cap" placeholder="e.g. 90m" oninput="tfSave()"></label>
+        <label class="tf-label">Same eligible transfer group?
+          <select id="tf-samegroup" onchange="tfSave()"><option value="">Unsure</option><option value="yes">Yes</option><option value="no">No</option></select></label>
+        <label class="tf-label">Destination accepting players?
+          <select id="tf-capacity" onchange="tfSave()"><option value="">Unsure</option><option value="yes">Yes</option><option value="no">No</option></select></label>
+        <label class="tf-label">Special Invite available (if above cap)?
+          <select id="tf-invite" onchange="tfSave()"><option value="">Unsure</option><option value="yes">Yes</option><option value="no">No</option></select></label>
+        <label class="tf-label">Transferred in the last 25 days?
+          <select id="tf-recent" onchange="tfSave()"><option value="">Unsure</option><option value="yes">Yes</option><option value="no">No</option></select></label>
+        <label class="tf-label">Blocking state? (in alliance / active battle / role)
+          <select id="tf-blocked" onchange="tfSave()"><option value="">Unsure</option><option value="yes">Yes — blocked</option><option value="no">No — clear</option></select></label>
+        <label class="tf-label">Destination under its character limit?
+          <select id="tf-charlimit" onchange="tfSave()"><option value="">Unsure</option><option value="yes">Yes</option><option value="no">No</option></select></label>
+        <label class="tf-label">Current phase permits your route?
+          <select id="tf-phase" onchange="tfSave()"><option value="">Unsure</option><option value="yes">Yes</option><option value="no">No</option></select></label>
+        <label class="tf-label">Infirmary wounded / reserves (optional what-if)
+          <input id="tf-wounded" placeholder="for cap what-if only" oninput="tfSave()"></label>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:#f0a50050">
+      <div class="card-title">📊 Estimate</div>
+      <div id="tf-result"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-title">✅ Transfer Eligibility Checklist <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)">— separate from the pass estimate</span></div>
+    <div id="tf-eligibility"></div>
+    <div style="font-size:11px;color:var(--muted);margin-top:8px">Power Cap is an eligibility question, never a price question. Unknown items stay Unknown until you confirm them — nothing is assumed.</div>
+  </div>
+
+  <div class="g2" style="align-items:start">
+    <div class="card">
+      <div class="card-title">📐 Calibration Observations (all of them)</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.8">
+        <div style="padding:10px 12px;background:var(--surface2);border-radius:6px;margin-bottom:8px">
+          <strong style="color:var(--text)">Snow White — 12–13 Sept 2026</strong><br>
+          95.6M total · 40.3M troops · Gov Gear 12,527,040 · Hero 21,791,408 · Pet 6,793,200 · Master 5,444,760 · Charms all Lv 3 · TG2<br>
+          Early estimate: 8–10 passes (score ~300–350k, <em>never confirmed</em>) → <strong style="color:var(--s)">actual in-game: 8 passes</strong>
+        </div>
+        <div style="padding:10px 12px;background:var(--surface2);border-radius:6px;margin-bottom:8px">
+          <strong style="color:var(--text)">Comparison account — Sept 2026</strong><br>
+          Gov Gear 13.42M · Hero 21.02M · Pet 6.57M · Master 5.84M · TG3<br>
+          <strong style="color:var(--s)">Observed Transfer Score 329,379 → 10 passes</strong> (incomplete breakdown, group unknown)
+        </div>
+        <div style="font-size:11px">That's the whole training set — which is why every output is a wide range with a confidence label, not a precise promise. Saw your own quote? Enter it in Step 3 and the tool records it as your observed result for planning.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📜 Verified Rules vs Community Assumptions</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.9">
+        <div style="font-weight:700;color:var(--s);margin-bottom:4px">Publisher-supported</div>
+        <div>• Transfers cost <strong style="color:var(--text)">1–50 Transfer Passes</strong></div>
+        <div>• Cost = your Transfer Score <em>relative to</em> the eligible group's rating</div>
+        <div>• Phases: Pre-Transfer → Invitational → Open Transfer</div>
+        <div>• Destination Power Cap: above it generally needs a <strong style="color:var(--text)">Special Invite</strong></div>
+        <div>• Official FAQ: <strong style="color:var(--text)">dismissing troops or unequipping gear does NOT lower the score</strong> — don't try it</div>
+        <div style="font-weight:700;color:var(--accent);margin:8px 0 4px">Community-inferred (unvalidated)</div>
+        <div>• Score built from development (gear, charms, heroes, pets, masters, tech, TC/TG) excluding troops</div>
+        <div>• Fan percentage-to-pass tables are a hypothesis, not a publisher formula</div>
+        <div>• Whether Leading vs Ordinary destinations price differently is disputed</div>
+        <div>• Whether wounded/reserves count toward Transfer Power: verify on the live panel</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== TRAINING EFFICIENCY CALCULATOR ===== -->
 <div class="page" id="page-traincalc">
   <div class="page-header">
@@ -3104,6 +3264,7 @@ document.getElementById('page-guide').insertAdjacentHTML('beforeend', `
 </div>
 </div><!-- end .shell -->
 
+<script src="transfer-engine.js"></script>
 <script>
 // ============================================================
 // FIREBASE — alliance data sync
@@ -4306,7 +4467,7 @@ function goPage(name) {
     tierlist:'tier', troops:'troop', guide:'guide', age:'kingdom',
     calendar:'calendar', alliance:'alliance hq', kvkplanner:'kvk',
     stockpile:'stockpile', powerboard:'power board', swordland:'swordland',
-    alliancetech:'alliance tech', indivtech:'research tree',
+    alliancetech:'alliance tech', indivtech:'research tree', transfer:'transfer',
     traincalc:'training', daily:'daily', compare:'compare', research:'research', settings:'settings'
   };
   const label = PAGE_LABELS[name] || name;
@@ -4330,6 +4491,7 @@ function goPage(name) {
   if (name==='alliancetech') atSetTab(atCurrentTab);
   if (name==='indivtech') { itSetTab(indivCurrentTab); }
   if (name==='traincalc') renderTrainCalc();
+  if (name==='transfer') renderTransfer();
   if (name==='daily') renderDaily();
   if (name==='compare') renderCompare();
   if (name==='research') renderResearch();
@@ -7913,7 +8075,7 @@ function renderSettings() {
 // ============================================================
 // DATA EXPORT / IMPORT
 // ============================================================
-const EXPORT_KEYS = ['roster','skillLevels','troops','ageData','calData','allianceData','kvkPlan','stockpileData','allianceTech','indivTech','dailyState','researchData','reminderSettings'];
+const EXPORT_KEYS = ['roster','skillLevels','troops','ageData','calData','allianceData','kvkPlan','stockpileData','allianceTech','indivTech','dailyState','researchData','reminderSettings','transferData'];
 
 function exportAllData() {
   const dump = {};
@@ -8356,6 +8518,118 @@ async function fetchKvkHistory() {
 }
 
 // ============================================================
+// KINGDOM TRANSFER PASS ESTIMATOR (UI glue — engine in transfer-engine.js)
+// ============================================================
+const TF_TEXT_FIELDS = ['total','troop','govgear','hero','pet','master','charm','herogear','tech','score','grouprating','cap','wounded'];
+const TF_RAW_FIELDS  = ['tc','tg','src','dst','quote','owned','samegroup','capacity','invite','recent','blocked','charlimit','phase'];
+let transferData = {};
+
+function loadTransferData() {
+  try { transferData = JSON.parse(localStorage.getItem('transferData')||'{}'); } catch(e) { transferData = {}; }
+  fsGet('transferData').then(d => {
+    if (!d) return;
+    transferData = d;
+    localStorage.setItem('transferData', JSON.stringify(d));
+    if (document.getElementById('page-transfer')?.classList.contains('active')) renderTransfer();
+  }).catch(() => {});
+}
+
+function tfSave() {
+  [...TF_TEXT_FIELDS, ...TF_RAW_FIELDS].forEach(f => {
+    const el = document.getElementById('tf-'+f);
+    if (el) transferData[f] = el.value;
+  });
+  localStorage.setItem('transferData', JSON.stringify(transferData));
+  fsSet('transferData', transferData);
+  renderTransferResult();
+}
+
+function tfInputs() {
+  const p = f => parsePowerInput(transferData[f]);
+  const n = f => { const v = parseInt(transferData[f]); return isNaN(v) ? null : v; };
+  const s = f => transferData[f] || null;
+  return {
+    totalPower: p('total'), troopPower: p('troop'),
+    govGear: p('govgear'), heroPower: p('hero'), petPower: p('pet'), masterPower: p('master'),
+    charmPower: p('charm'), heroGearPower: p('herogear'), techPower: p('tech'),
+    transferScore: p('score'), groupRating: p('grouprating'), targetCap: p('cap'), wounded: p('wounded'),
+    tcLevel: n('tc'), observedQuote: n('quote'), passesOwned: n('owned'),
+    sameGroup: s('samegroup'), capacity: s('capacity'), specialInvite: s('invite'),
+    recentTransfer: s('recent'), blockedState: s('blocked'), charLimit: s('charlimit'), phaseOk: s('phase'),
+  };
+}
+
+function renderTransfer() {
+  [...TF_TEXT_FIELDS, ...TF_RAW_FIELDS].forEach(f => {
+    const el = document.getElementById('tf-'+f);
+    if (el && transferData[f] != null) el.value = transferData[f];
+  });
+  renderTransferResult();
+}
+
+function renderTransferResult() {
+  const d = tfInputs();
+  const est = computeTransferEstimate(d);
+  const short = computePassShortfall(est, d.passesOwned);
+
+  // Non-troop context line
+  const ntEl = document.getElementById('tf-nontroop-line');
+  if (ntEl) ntEl.innerHTML = est.nonTroopPower != null
+    ? `Non-troop displayed power: <strong style="color:var(--text)">${est.nonTroopPower.toLocaleString()}</strong> — development context only, <strong>not</strong> the Transfer Score.`
+    : 'Non-troop power appears here once total &amp; troop power are set — context only, <strong>not</strong> the Transfer Score.';
+
+  const confCol = { 'Observed':'var(--s)', 'Medium':'var(--s)', 'Low':'var(--accent)', 'Very low':'var(--red)', 'Insufficient data':'var(--red)' }[est.confidence] || 'var(--muted)';
+
+  let head;
+  if (est.observed != null) {
+    head = `<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:700">Actual requirement (entered by you)</div>
+      <div class="tf-result-passes">${est.observed} passes</div>`;
+  } else if (est.range) {
+    head = `<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:700">Estimated Transfer Passes</div>
+      <div class="tf-result-passes">${est.range[0]}–${est.range[1]}</div>
+      ${est.best != null ? `<div style="font-size:12px;color:var(--muted)">Central guess: ~${est.best} (range first, guess second)</div>` : ''}`;
+  } else {
+    head = `<div style="font-size:13px;color:var(--text);font-weight:700">Not enough data for a pass number</div>
+      <div style="font-size:12px;color:var(--muted)">A generic “total power → passes” lookup would be misleading, so none is shown. Add Step 2 development stats — or best, the in-game score or quote.</div>`;
+  }
+
+  let capLine;
+  if (d.totalPower != null && d.targetCap != null) {
+    const over = d.totalPower > d.targetCap;
+    capLine = `<strong style="color:${over?'var(--red)':'var(--s)'}">${over ? 'Above cap — Special Invite generally required' : 'Within cap'}</strong> (you: ${d.totalPower.toLocaleString()} · cap: ${d.targetCap.toLocaleString()})`;
+    if (d.wounded != null && d.wounded > 0) capLine += `<br><span style="font-size:11px">What-if incl. wounded/reserves ${ (d.totalPower + d.wounded).toLocaleString()} — ${(d.totalPower + d.wounded) > d.targetCap ? 'would exceed cap' : 'still within cap'} <em>if</em> they count; verify on the live transfer panel.</span>`;
+  } else {
+    capLine = 'Cannot confirm without your displayed power and the destination cap.';
+  }
+
+  document.getElementById('tf-result').innerHTML = `
+    ${head}
+    <div style="display:flex;gap:8px;align-items:center;margin:10px 0">
+      <span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:${confCol};border:1px solid ${confCol}40;background:${confCol}12;padding:3px 10px;border-radius:999px">Confidence: ${est.confidence}</span>
+      <span style="font-size:10px;color:var(--muted)">Model ${est.modelVersion} · Tier ${est.tier}</span>
+    </div>
+    ${short ? `<div style="font-size:12px;color:var(--text);padding:8px 12px;background:var(--surface2);border-radius:6px;margin-bottom:8px">
+      Owned: <strong>${d.passesOwned || 0}</strong> → additional passes to budget: <strong style="color:var(--accent)">${short.lo === short.hi ? short.lo : short.lo + '–' + short.hi}</strong></div>` : ''}
+    <div style="font-size:12px;color:var(--muted);padding:8px 12px;background:var(--surface2);border-radius:6px;margin-bottom:8px">
+      <strong style="color:var(--text)">Transfer Power / Cap:</strong> ${capLine}</div>
+    <div style="font-size:11px;color:var(--muted);line-height:1.8;margin-bottom:8px">
+      ${est.reasons.map(r => `<div>• ${r}</div>`).join('')}</div>
+    ${est.missing.length ? `<div style="font-size:11px;color:var(--muted);padding:8px 12px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--accent);margin-bottom:8px">
+      <strong style="color:var(--text)">Would most improve confidence:</strong>${est.missing.map(m => `<div>• ${m}</div>`).join('')}</div>` : ''}
+    <div style="font-size:11px;color:var(--red);font-weight:700">⚠️ ${est.disclaimer} Your game screen is the final authority.</div>`;
+
+  // Eligibility checklist
+  const rows = computeTransferEligibility(d);
+  const BADGE = { pass:'Pass', fail:'Fail', unknown:'Unknown' };
+  document.getElementById('tf-eligibility').innerHTML = rows.map(r => `
+    <div class="tf-elig-row">
+      <span class="tf-badge ${r.status}">${BADGE[r.status]}</span>
+      <div><div style="color:var(--text);font-weight:600">${r.label}</div>
+      <div style="color:var(--muted);font-size:11px">${r.note}</div></div>
+    </div>`).join('');
+}
+
+// ============================================================
 // INIT
 // ============================================================
 loadRoster();
@@ -8371,7 +8645,7 @@ renderTierList();
 
 // Fix nav click detection
 document.querySelectorAll('.nav-item').forEach((el, i) => {
-  const pages = ['home','roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance','kvkplanner','stockpile','powerboard','swordland','alliancetech','indivtech','traincalc','daily','compare','research','settings'];
+  const pages = ['home','roster','builds','powerup','skills','tierlist','troops','guide','age','calendar','alliance','kvkplanner','stockpile','powerboard','swordland','alliancetech','indivtech','traincalc','transfer','daily','compare','research','settings'];
   el.addEventListener('click', () => goPage(pages[i]));
 });
 
@@ -8385,6 +8659,7 @@ loadIndivTech();
 loadDailyState();
 loadResearchData();
 loadReminderSettings();
+loadTransferData();
 scheduleReminderCheck();
 populateCompareSelects();
 renderHome();
