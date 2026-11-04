@@ -36,6 +36,20 @@ test('AC1: Benchmark A preserved; dev-based estimate is a tight range containing
   assert.ok(est.range[1] - est.range[0] <= 3, `near-benchmark range ${est.range} should be tight (width ≤ 3)`);
 });
 
+// Field calibration (Nov 2026): a tester's symmetric 6–9 estimate resolved to
+// exactly 9 in-game — the ceiling. Tier C ranges keep a tight floor but pad
+// the ceiling by one pass so players budget enough.
+test('Tier C range is ceiling-biased: tight floor, +1 budget margin on top', () => {
+  const sw = TRANSFER_SAMPLES.find(s => s.id === 'benchmark-a-2026-09');
+  const est = computeTransferEstimate({
+    govGear: sw.governor_gear_power, heroPower: sw.hero_power,
+    petPower: sw.pet_power, masterPower: sw.master_power,
+  });
+  assert.ok(est.range[1] - est.best > est.best - est.range[0],
+    `ceiling headroom must exceed floor headroom, got ${est.range} around best ${est.best}`);
+  assert.ok(est.reasons.some(r => /safety margin/.test(r)), 'the asymmetry must be explained to the user');
+});
+
 // 2. Comparison example → 10 observed passes and 329,379 observed score as a distinct sample.
 test('AC2: Benchmark B is a distinct observed record; its score reproduces ~10 passes', () => {
   const cmp = TRANSFER_SAMPLES.find(s => s.id === 'benchmark-b-2026-09');

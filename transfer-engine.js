@@ -7,8 +7,12 @@
 // Pure functions only — no DOM access — so they can be unit-tested.
 // ============================================================
 
-const TRANSFER_MODEL_VERSION = '1.1 (last reviewed 2026-11-04)';
+const TRANSFER_MODEL_VERSION = '1.2 (last reviewed 2026-11-04)';
 const TRANSFER_DISCLAIMER = 'Estimated only — confirm the number in the KingShot Transfer screen.';
+// Ceiling-only safety pad on development-based (Tier C) estimates: a Nov 2026
+// field test needed exactly the ceiling of the symmetric range, so the top of
+// the range gets one extra pass for budgeting while the floor stays tight.
+const TRANSFER_CEILING_MARGIN = 1;
 
 // Calibration observations. Keep null for unknown fields — never assume zero.
 // Never mix inferred scores and observed game scores in one column.
@@ -181,10 +185,15 @@ function computeTransferEstimate(d) {
     }
     if (d.groupRating == null) missing.push('Transfer group rating / comparison value');
 
+    // Asymmetric range: the floor stays tight, but the ceiling carries a +1
+    // budget safety margin. Field-tested Nov 2026: an account quoted 6-9 by
+    // the symmetric model needed exactly 9 in-game — landing on the ceiling.
+    // Running out of passes mid-transfer hurts more than owning one spare.
     const lo = clampPasses(center - spread);
-    const hi = clampPasses(center + spread);
+    const hi = clampPasses(center + spread + TRANSFER_CEILING_MARGIN);
 
     reasons.push('Compared your development stats to the two confirmed observations (Benchmark A: 8 actual passes; Benchmark B: 10 actual passes — both Sept 2026), weighted by how closely your profile matches each.');
+    reasons.push('The ceiling includes a +1 budget safety margin: a November 2026 field test landed exactly on the model’s ceiling, so plan passes against the top of the range.');
     reasons.push('The closer your stats sit to a confirmed benchmark, the tighter this range gets — but two samples can never justify a single exact number. Troop power is ignored for pass cost by design.');
     reasons.push('Your in-game Transfer Score, if the event screen shows one, beats any figure inferred from these stats — enter it above if you can see it.');
     return {
@@ -307,7 +316,7 @@ function computeTransferEligibility(d) {
 // Node export for unit tests; browser just gets globals.
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
-    TRANSFER_MODEL_VERSION, TRANSFER_DISCLAIMER, TRANSFER_SAMPLES,
+    TRANSFER_MODEL_VERSION, TRANSFER_DISCLAIMER, TRANSFER_SAMPLES, TRANSFER_CEILING_MARGIN,
     parsePowerInput, clampPasses, computePassShortfall,
     computeTransferEstimate, computeTransferEligibility,
   };
